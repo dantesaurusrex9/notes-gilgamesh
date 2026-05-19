@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" width="800" height="460" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="800" height="460" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-thick" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="32" text-anchor="middle" fill="#333" font-weight="bold" font-size="17">The Four Fundamental Subspaces of a matrix A : ℝⁿ → ℝᵐ</text>
+  <text x="400" y="52" text-anchor="middle" fill="#555" font-size="12">rank(A) = r · dim ker = n − r · dim left null = m − r</text>
+
+  <!-- =================== DOMAIN ℝⁿ (left) =================== -->
+  <g>
+    <!-- Outer rectangle = ℝⁿ -->
+    <rect x="60" y="100" width="280" height="320" rx="12" ry="12"
+          fill="#f0f4ff" stroke="#1f6feb" stroke-width="2.5"/>
+    <text x="200" y="125" text-anchor="middle" fill="#1f6feb" font-weight="bold" font-size="14">Domain ℝⁿ</text>
+
+    <!-- Row space (top half of domain) — dim = r -->
+    <rect x="80" y="140" width="240" height="120" rx="8" ry="8"
+          fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+    <text x="200" y="180" text-anchor="middle" fill="#059669" font-weight="bold" font-size="14">Row space</text>
+    <text x="200" y="200" text-anchor="middle" fill="#059669" font-size="12">im(Aᵀ)  ·  dim = r</text>
+    <text x="200" y="225" text-anchor="middle" fill="#059669" font-size="11" font-style="italic">"useful inputs"</text>
+    <text x="200" y="245" text-anchor="middle" fill="#059669" font-size="11" font-style="italic">(perpendicular to ker A)</text>
+
+    <!-- Null space (bottom half) — dim = n - r -->
+    <rect x="80" y="280" width="240" height="120" rx="8" ry="8"
+          fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="200" y="320" text-anchor="middle" fill="#d97706" font-weight="bold" font-size="14">Null space</text>
+    <text x="200" y="340" text-anchor="middle" fill="#d97706" font-size="12">ker A  ·  dim = n − r</text>
+    <text x="200" y="365" text-anchor="middle" fill="#d97706" font-size="11" font-style="italic">"wasted inputs"</text>
+    <text x="200" y="385" text-anchor="middle" fill="#d97706" font-size="11" font-style="italic">(maps to 0)</text>
+  </g>
+
+  <!-- =================== ARROW =================== -->
+  <g>
+    <text x="400" y="248" text-anchor="middle" fill="#333" font-weight="bold" font-size="22">A</text>
+    <line x1="340" y1="260" x2="460" y2="260" stroke="#333" stroke-width="3" marker-end="url(#ah-thick)"/>
+    <text x="400" y="285" text-anchor="middle" fill="#555" font-size="11">multiplies by A</text>
+  </g>
+
+  <!-- =================== CODOMAIN ℝᵐ (right) =================== -->
+  <g>
+    <rect x="460" y="100" width="280" height="320" rx="12" ry="12"
+          fill="#fdf4ff" stroke="#be185d" stroke-width="2.5"/>
+    <text x="600" y="125" text-anchor="middle" fill="#be185d" font-weight="bold" font-size="14">Codomain ℝᵐ</text>
+
+    <!-- Column space (top) — dim = r -->
+    <rect x="480" y="140" width="240" height="120" rx="8" ry="8"
+          fill="#dbeafe" stroke="#1f6feb" stroke-width="2"/>
+    <text x="600" y="180" text-anchor="middle" fill="#1f6feb" font-weight="bold" font-size="14">Column space</text>
+    <text x="600" y="200" text-anchor="middle" fill="#1f6feb" font-size="12">im A  ·  dim = r</text>
+    <text x="600" y="225" text-anchor="middle" fill="#1f6feb" font-size="11" font-style="italic">"reachable outputs"</text>
+    <text x="600" y="245" text-anchor="middle" fill="#1f6feb" font-size="11" font-style="italic">(what A can produce)</text>
+
+    <!-- Left null space (bottom) — dim = m - r -->
+    <rect x="480" y="280" width="240" height="120" rx="8" ry="8"
+          fill="#ffe4e6" stroke="#be185d" stroke-width="2"/>
+    <text x="600" y="320" text-anchor="middle" fill="#be185d" font-weight="bold" font-size="14">Left null space</text>
+    <text x="600" y="340" text-anchor="middle" fill="#be185d" font-size="12">ker Aᵀ  ·  dim = m − r</text>
+    <text x="600" y="365" text-anchor="middle" fill="#be185d" font-size="11" font-style="italic">"unreachable outputs"</text>
+    <text x="600" y="385" text-anchor="middle" fill="#be185d" font-size="11" font-style="italic">(perpendicular to im A)</text>
+  </g>
+
+  <!-- Dimension footnotes -->
+  <text x="400" y="440" text-anchor="middle" fill="#333" font-size="13">rank–nullity: dim row space + dim null space = n   |   dim col space + dim left null space = m</text>
+</svg>

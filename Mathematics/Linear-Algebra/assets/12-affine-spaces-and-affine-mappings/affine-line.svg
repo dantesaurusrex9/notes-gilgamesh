@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 400" width="480" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="480" height="400" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-axis" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <marker id="ah-bx" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="ah-rd" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <text x="240" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="16">Affine subspace L = x₀ + span{u}</text>
+  <text x="240" y="52" text-anchor="middle" fill="#555" font-size="12">a line through x₀ in direction u — does NOT pass through 0</text>
+
+  <!-- Grid -->
+  <g stroke="#e0e0e0" stroke-width="1">
+    <line x1="120" y1="80"  x2="120" y2="370"/>
+    <line x1="170" y1="80"  x2="170" y2="370"/>
+    <line x1="220" y1="80"  x2="220" y2="370"/>
+    <line x1="270" y1="80"  x2="270" y2="370"/>
+    <line x1="320" y1="80"  x2="320" y2="370"/>
+    <line x1="370" y1="80"  x2="370" y2="370"/>
+    <line x1="420" y1="80"  x2="420" y2="370"/>
+    <line x1="70" y1="120" x2="450" y2="120"/>
+    <line x1="70" y1="170" x2="450" y2="170"/>
+    <line x1="70" y1="220" x2="450" y2="220"/>
+    <line x1="70" y1="270" x2="450" y2="270"/>
+    <line x1="70" y1="320" x2="450" y2="320"/>
+    <line x1="70" y1="80"  x2="450" y2="80"/>
+  </g>
+
+  <!-- Origin at (120, 320). Each unit = 50px. -->
+
+  <!-- Axes -->
+  <line x1="70"  y1="320" x2="450" y2="320" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+  <line x1="120" y1="370" x2="120" y2="75"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+  <text x="455" y="325" font-style="italic" fill="#333">x</text>
+  <text x="105" y="73"  font-style="italic" fill="#333">y</text>
+
+  <!-- Origin label -->
+  <text x="106" y="335" fill="#555" font-style="italic">O</text>
+
+  <!-- Support point x0 = (1, 1) → (170, 270) -->
+  <circle cx="170" cy="270" r="6" fill="#1f6feb" stroke="#fff" stroke-width="2"/>
+  <text x="178" y="266" fill="#1f6feb" font-weight="bold">x₀ = (1, 1)</text>
+
+  <!-- Direction u = (1, 1) → screen (50, -50). Line extends in both directions through x0. -->
+  <!-- Parametric: (1+t, 1+t). At t=-2: (-1, -1) → (70, 370). At t=4: (5, 5) → (370, 70). -->
+  <line x1="70" y1="370" x2="370" y2="70" stroke="#1f6feb" stroke-width="3"/>
+  <text x="380" y="70" fill="#1f6feb" font-weight="bold">L</text>
+
+  <!-- Direction vector u drawn from x0 -->
+  <line x1="170" y1="270" x2="220" y2="220" stroke="#d97706" stroke-width="3" marker-end="url(#ah-rd)"/>
+  <text x="225" y="220" fill="#d97706" font-weight="bold">u = (1, 1)</text>
+
+  <!-- Dashed connector from origin to x0 (showing the translation) -->
+  <line x1="120" y1="320" x2="170" y2="270" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="125" y="298" fill="#888" font-size="11" font-style="italic">offset</text>
+
+  <!-- Cross-mark at origin to emphasise the line misses it -->
+  <g stroke="#be185d" stroke-width="2">
+    <line x1="114" y1="314" x2="126" y2="326"/>
+    <line x1="126" y1="314" x2="114" y2="326"/>
+  </g>
+
+  <!-- Tick labels -->
+  <g fill="#555" font-size="11">
+    <text x="120" y="385" text-anchor="middle">0</text>
+    <text x="170" y="385" text-anchor="middle">1</text>
+    <text x="220" y="385" text-anchor="middle">2</text>
+    <text x="270" y="385" text-anchor="middle">3</text>
+    <text x="320" y="385" text-anchor="middle">4</text>
+    <text x="370" y="385" text-anchor="middle">5</text>
+    <text x="420" y="385" text-anchor="middle">6</text>
+    <text x="112" y="323" text-anchor="end">0</text>
+    <text x="112" y="273" text-anchor="end">1</text>
+    <text x="112" y="223" text-anchor="end">2</text>
+    <text x="112" y="173" text-anchor="end">3</text>
+    <text x="112" y="123" text-anchor="end">4</text>
+  </g>
+</svg>

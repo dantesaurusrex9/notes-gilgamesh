@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="800" height="400" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-axis" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <marker id="ah-bx" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="ah-rd" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- ============== LEFT PANEL: BEFORE ============== -->
+  <g transform="translate(0, 0)">
+    <text x="200" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="15">Before — input space ℝ²</text>
+
+    <!-- Grid (50px per unit, origin at (50, 350)) -->
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50" y1="300" x2="380" y2="300"/>
+      <line x1="50" y1="250" x2="380" y2="250"/>
+      <line x1="50" y1="200" x2="380" y2="200"/>
+      <line x1="50" y1="150" x2="380" y2="150"/>
+      <line x1="50" y1="100" x2="380" y2="100"/>
+      <line x1="50" y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="350" x2="380" y2="350" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="50" y1="350" x2="50"  y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <text x="385" y="355" font-style="italic" fill="#333">x</text>
+    <text x="38"  y="48"  font-style="italic" fill="#333">y</text>
+
+    <!-- Unit square: (0,0)-(1,0)-(1,1)-(0,1) → (50,350)-(100,350)-(100,300)-(50,300) -->
+    <polygon points="50,350 100,350 100,300 50,300" fill="#1f6feb" fill-opacity="0.15" stroke="#1f6feb" stroke-width="2"/>
+
+    <!-- Basis vector e1 -->
+    <line x1="50" y1="350" x2="100" y2="350" stroke="#1f6feb" stroke-width="3" marker-end="url(#ah-bx)"/>
+    <text x="62"  y="343" fill="#1f6feb" font-weight="bold">e₁</text>
+
+    <!-- Basis vector e2 -->
+    <line x1="50" y1="350" x2="50"  y2="300" stroke="#1f6feb" stroke-width="3" marker-end="url(#ah-bx)"/>
+    <text x="20"  y="328" fill="#1f6feb" font-weight="bold">e₂</text>
+
+    <!-- Tick numbers -->
+    <g fill="#555" font-size="12">
+      <text x="46"  y="365" text-anchor="middle">0</text>
+      <text x="100" y="365" text-anchor="middle">1</text>
+      <text x="150" y="365" text-anchor="middle">2</text>
+      <text x="200" y="365" text-anchor="middle">3</text>
+      <text x="40"  y="304" text-anchor="end">1</text>
+      <text x="40"  y="254" text-anchor="end">2</text>
+      <text x="40"  y="204" text-anchor="end">3</text>
+    </g>
+  </g>
+
+  <!-- ============== ARROW BETWEEN ============== -->
+  <g>
+    <text x="400" y="190" text-anchor="middle" fill="#333" font-weight="bold" font-size="18">A</text>
+    <line x1="380" y1="200" x2="420" y2="200" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <text x="400" y="225" text-anchor="middle" fill="#555" font-size="12">apply matrix</text>
+  </g>
+
+  <!-- ============== RIGHT PANEL: AFTER ============== -->
+  <g transform="translate(400, 0)">
+    <text x="200" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="15">After — A = [[2, 1], [1, 2]]</text>
+
+    <!-- Grid -->
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50" y1="300" x2="380" y2="300"/>
+      <line x1="50" y1="250" x2="380" y2="250"/>
+      <line x1="50" y1="200" x2="380" y2="200"/>
+      <line x1="50" y1="150" x2="380" y2="150"/>
+      <line x1="50" y1="100" x2="380" y2="100"/>
+      <line x1="50" y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="350" x2="380" y2="350" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="50" y1="350" x2="50"  y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <text x="385" y="355" font-style="italic" fill="#333">x</text>
+    <text x="38"  y="48"  font-style="italic" fill="#333">y</text>
+
+    <!-- Transformed square: e1 → (2,1) = (150, 300); e2 → (1,2) = (100, 250); e1+e2 → (3,3) = (200, 200) -->
+    <polygon points="50,350 150,300 200,200 100,250" fill="#d97706" fill-opacity="0.15" stroke="#d97706" stroke-width="2"/>
+
+    <!-- A e1 = (2, 1) → (150, 300) -->
+    <line x1="50" y1="350" x2="150" y2="300" stroke="#d97706" stroke-width="3" marker-end="url(#ah-rd)"/>
+    <text x="105" y="333" fill="#d97706" font-weight="bold">A e₁</text>
+
+    <!-- A e2 = (1, 2) → (100, 250) -->
+    <line x1="50" y1="350" x2="100" y2="250" stroke="#d97706" stroke-width="3" marker-end="url(#ah-rd)"/>
+    <text x="55"  y="285" fill="#d97706" font-weight="bold">A e₂</text>
+
+    <!-- Tick numbers -->
+    <g fill="#555" font-size="12">
+      <text x="46"  y="365" text-anchor="middle">0</text>
+      <text x="100" y="365" text-anchor="middle">1</text>
+      <text x="150" y="365" text-anchor="middle">2</text>
+      <text x="200" y="365" text-anchor="middle">3</text>
+      <text x="40"  y="304" text-anchor="end">1</text>
+      <text x="40"  y="254" text-anchor="end">2</text>
+      <text x="40"  y="204" text-anchor="end">3</text>
+    </g>
+  </g>
+</svg>

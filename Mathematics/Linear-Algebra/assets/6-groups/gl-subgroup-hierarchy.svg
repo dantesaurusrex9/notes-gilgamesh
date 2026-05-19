@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 460" width="600" height="460" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="600" height="460" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="16">Subgroups of GLₙ(ℝ)</text>
+  <text x="300" y="52" text-anchor="middle" fill="#555" font-size="12">each inner region is a subgroup of every outer region</text>
+
+  <!-- Outer: GL_n(ℝ) -->
+  <ellipse cx="300" cy="260" rx="270" ry="170" fill="#eff6ff" stroke="#1f6feb" stroke-width="2.5"/>
+  <text x="300" y="100" text-anchor="middle" fill="#1f6feb" font-weight="bold" font-size="18">GLₙ(ℝ)</text>
+  <text x="300" y="120" text-anchor="middle" fill="#1f6feb" font-size="12">all invertible matrices · det ≠ 0</text>
+
+  <!-- Two main subgroups: SL_n and O_n, partially overlapping -->
+  <!-- SL_n(ℝ): det = 1 -->
+  <ellipse cx="200" cy="290" rx="150" ry="100" fill="#fef3c7" fill-opacity="0.55" stroke="#d97706" stroke-width="2.5"/>
+  <text x="125" y="200" text-anchor="middle" fill="#d97706" font-weight="bold" font-size="15">SLₙ(ℝ)</text>
+  <text x="125" y="218" text-anchor="middle" fill="#d97706" font-size="11">det = 1</text>
+  <text x="125" y="234" text-anchor="middle" fill="#d97706" font-size="11" font-style="italic">volume-preserving</text>
+
+  <!-- O_n: Q^T Q = I -->
+  <ellipse cx="400" cy="290" rx="150" ry="100" fill="#d1fae5" fill-opacity="0.55" stroke="#059669" stroke-width="2.5"/>
+  <text x="475" y="200" text-anchor="middle" fill="#059669" font-weight="bold" font-size="15">Oₙ</text>
+  <text x="475" y="218" text-anchor="middle" fill="#059669" font-size="11">QᵀQ = I</text>
+  <text x="475" y="234" text-anchor="middle" fill="#059669" font-size="11" font-style="italic">rotations + reflections</text>
+
+  <!-- Intersection: SO_n = SL_n ∩ O_n -->
+  <ellipse cx="300" cy="290" rx="55" ry="55" fill="#fce7f3" fill-opacity="0.9" stroke="#be185d" stroke-width="2.5"/>
+  <text x="300" y="290" text-anchor="middle" fill="#be185d" font-weight="bold" font-size="14">SOₙ</text>
+  <text x="300" y="308" text-anchor="middle" fill="#be185d" font-size="10">pure rotations</text>
+  <text x="300" y="322" text-anchor="middle" fill="#be185d" font-size="10">(det = 1, QᵀQ = I)</text>
+
+  <!-- Example concrete matrices in each region (decorative) -->
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#555" font-size="11">
+    <!-- Inside SL but outside O: shear matrix [[1, 1], [0, 1]] -->
+    <text x="130" y="340" text-anchor="middle">e.g. shear [[1,1],[0,1]]</text>
+    <!-- Inside O but outside SL: reflection [[-1, 0], [0, 1]] (det = -1) -->
+    <text x="470" y="340" text-anchor="middle">e.g. reflection diag(-1, 1)</text>
+    <!-- Inside SO: 30° rotation -->
+    <text x="300" y="370" text-anchor="middle" fill="#be185d">30° rotation</text>
+  </g>
+
+  <!-- Footnote -->
+  <text x="300" y="440" text-anchor="middle" fill="#555" font-size="12" font-style="italic">SOₙ = SLₙ(ℝ) ∩ Oₙ — pure rotations preserve both volume AND length/angles.</text>
+</svg>

@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="600" height="280" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="15">Row-Echelon Form — the "staircase" pattern</text>
+
+  <!-- Grid: 5 rows × 6 cols of cells. Each cell 60×40. Top-left at (60, 60). -->
+  <!-- Pivots are along a descending staircase. -->
+
+  <!-- Cell coordinates: col i (0-based) → x = 60 + i*60; row j (0-based) → y = 60 + j*40 -->
+  <!-- Cells (j, i): pivots at (0, 0), (1, 1), (2, 3), and the rest of (j, i) shaped by the staircase -->
+
+  <!-- Background shading for non-zero region above and on the staircase -->
+  <g fill="#e3f0ff" stroke="none">
+    <!-- Row 0: columns 0..5 -->
+    <rect x="60"  y="60" width="60"  height="40"/>
+    <rect x="120" y="60" width="60"  height="40"/>
+    <rect x="180" y="60" width="60"  height="40"/>
+    <rect x="240" y="60" width="60"  height="40"/>
+    <rect x="300" y="60" width="60"  height="40"/>
+    <rect x="360" y="60" width="60"  height="40"/>
+    <!-- Row 1: columns 1..5 -->
+    <rect x="120" y="100" width="60" height="40"/>
+    <rect x="180" y="100" width="60" height="40"/>
+    <rect x="240" y="100" width="60" height="40"/>
+    <rect x="300" y="100" width="60" height="40"/>
+    <rect x="360" y="100" width="60" height="40"/>
+    <!-- Row 2: columns 3..5 -->
+    <rect x="240" y="140" width="60" height="40"/>
+    <rect x="300" y="140" width="60" height="40"/>
+    <rect x="360" y="140" width="60" height="40"/>
+  </g>
+
+  <!-- Pivot cells (golden) -->
+  <g fill="#fef3c7" stroke="#d97706" stroke-width="2">
+    <rect x="60"  y="60"  width="60" height="40"/>
+    <rect x="120" y="100" width="60" height="40"/>
+    <rect x="240" y="140" width="60" height="40"/>
+  </g>
+
+  <!-- Grid lines -->
+  <g stroke="#999" stroke-width="1" fill="none">
+    <!-- Outer box -->
+    <rect x="60" y="60" width="360" height="200"/>
+    <!-- Vertical -->
+    <line x1="120" y1="60" x2="120" y2="260"/>
+    <line x1="180" y1="60" x2="180" y2="260"/>
+    <line x1="240" y1="60" x2="240" y2="260"/>
+    <line x1="300" y1="60" x2="300" y2="260"/>
+    <line x1="360" y1="60" x2="360" y2="260"/>
+    <!-- Horizontal -->
+    <line x1="60" y1="100" x2="420" y2="100"/>
+    <line x1="60" y1="140" x2="420" y2="140"/>
+    <line x1="60" y1="180" x2="420" y2="180"/>
+    <line x1="60" y1="220" x2="420" y2="220"/>
+  </g>
+
+  <!-- Cell contents -->
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="16">
+    <!-- Row 0 — first pivot -->
+    <text x="90"  y="86" text-anchor="middle" fill="#d97706" font-weight="bold">2</text>
+    <text x="150" y="86" text-anchor="middle" fill="#333">1</text>
+    <text x="210" y="86" text-anchor="middle" fill="#333">-1</text>
+    <text x="270" y="86" text-anchor="middle" fill="#333">0</text>
+    <text x="330" y="86" text-anchor="middle" fill="#333">3</text>
+    <text x="390" y="86" text-anchor="middle" fill="#333">5</text>
+
+    <!-- Row 1 — second pivot at column 1 -->
+    <text x="90"  y="126" text-anchor="middle" fill="#999">0</text>
+    <text x="150" y="126" text-anchor="middle" fill="#d97706" font-weight="bold">3</text>
+    <text x="210" y="126" text-anchor="middle" fill="#333">2</text>
+    <text x="270" y="126" text-anchor="middle" fill="#333">1</text>
+    <text x="330" y="126" text-anchor="middle" fill="#333">-2</text>
+    <text x="390" y="126" text-anchor="middle" fill="#333">4</text>
+
+    <!-- Row 2 — third pivot at column 3 (skipping column 2: it has no pivot, x₃ is free) -->
+    <text x="90"  y="166" text-anchor="middle" fill="#999">0</text>
+    <text x="150" y="166" text-anchor="middle" fill="#999">0</text>
+    <text x="210" y="166" text-anchor="middle" fill="#999">0</text>
+    <text x="270" y="166" text-anchor="middle" fill="#d97706" font-weight="bold">5</text>
+    <text x="330" y="166" text-anchor="middle" fill="#333">1</text>
+    <text x="390" y="166" text-anchor="middle" fill="#333">7</text>
+
+    <!-- Row 3 — all zeros -->
+    <text x="90"  y="206" text-anchor="middle" fill="#999">0</text>
+    <text x="150" y="206" text-anchor="middle" fill="#999">0</text>
+    <text x="210" y="206" text-anchor="middle" fill="#999">0</text>
+    <text x="270" y="206" text-anchor="middle" fill="#999">0</text>
+    <text x="330" y="206" text-anchor="middle" fill="#999">0</text>
+    <text x="390" y="206" text-anchor="middle" fill="#999">0</text>
+
+    <!-- Row 4 — all zeros -->
+    <text x="90"  y="246" text-anchor="middle" fill="#999">0</text>
+    <text x="150" y="246" text-anchor="middle" fill="#999">0</text>
+    <text x="210" y="246" text-anchor="middle" fill="#999">0</text>
+    <text x="270" y="246" text-anchor="middle" fill="#999">0</text>
+    <text x="330" y="246" text-anchor="middle" fill="#999">0</text>
+    <text x="390" y="246" text-anchor="middle" fill="#999">0</text>
+  </g>
+
+  <!-- Column labels -->
+  <g fill="#555" font-style="italic" font-size="12">
+    <text x="90"  y="55" text-anchor="middle">x₁</text>
+    <text x="150" y="55" text-anchor="middle">x₂</text>
+    <text x="210" y="55" text-anchor="middle">x₃</text>
+    <text x="270" y="55" text-anchor="middle">x₄</text>
+    <text x="330" y="55" text-anchor="middle">x₅</text>
+    <text x="390" y="55" text-anchor="middle">b</text>
+  </g>
+
+  <!-- Legend on the right -->
+  <g transform="translate(450, 80)">
+    <rect x="0" y="0" width="20" height="20" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="28" y="15" fill="#333">Pivot</text>
+
+    <rect x="0" y="35" width="20" height="20" fill="#e3f0ff" stroke="#999"/>
+    <text x="28" y="50" fill="#333">May be nonzero</text>
+
+    <text x="0" y="95" fill="#555" font-style="italic">x₃ has no pivot:</text>
+    <text x="0" y="115" fill="#555" font-style="italic">it is a free</text>
+    <text x="0" y="135" fill="#555" font-style="italic">variable.</text>
+  </g>
+</svg>

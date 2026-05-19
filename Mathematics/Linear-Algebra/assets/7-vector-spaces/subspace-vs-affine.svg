@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="800" height="400" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-axis" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- ============== LEFT: SUBSPACE (through origin) ============== -->
+  <g>
+    <text x="200" y="30" text-anchor="middle" fill="#059669" font-weight="bold" font-size="15">✓ Subspace — line through origin</text>
+
+    <!-- Grid -->
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50"  y1="100" x2="380" y2="100"/>
+      <line x1="50"  y1="150" x2="380" y2="150"/>
+      <line x1="50"  y1="200" x2="380" y2="200"/>
+      <line x1="50"  y1="250" x2="380" y2="250"/>
+      <line x1="50"  y1="300" x2="380" y2="300"/>
+      <line x1="50"  y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="200" x2="380" y2="200" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="200" y1="350" x2="200" y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <text x="385" y="205" font-style="italic" fill="#333">x</text>
+    <text x="208" y="48"  font-style="italic" fill="#333">y</text>
+
+    <!-- The subspace: line y = (1/2) x passing through origin.
+         At x=-3 (point (50,200) - shift): origin is at (200, 200). At x=-3 (50,200-(-1.5*50)=200+75=275... wait).
+         Origin (200, 200). x increases right (+50/unit), y increases up (-50/unit).
+         Line y = 0.5 x: at x=-3 → y=-1.5, screen pos (50, 200+1.5*50) = (50, 275). At x=3 → y=1.5, (350, 200-75) = (350, 125). -->
+    <line x1="50" y1="275" x2="350" y2="125" stroke="#059669" stroke-width="3"/>
+
+    <!-- Origin -->
+    <circle cx="200" cy="200" r="6" fill="#059669" stroke="#fff" stroke-width="2"/>
+    <text x="208" y="220" fill="#059669" font-weight="bold">0</text>
+
+    <!-- Annotation -->
+    <text x="200" y="380" text-anchor="middle" fill="#059669" font-size="12">contains 0 · closed under + and scalar ·</text>
+  </g>
+
+  <!-- ============== RIGHT: TRANSLATED LINE (not a subspace) ============== -->
+  <g transform="translate(400, 0)">
+    <text x="200" y="30" text-anchor="middle" fill="#be185d" font-weight="bold" font-size="15">✗ Not a subspace — translated line</text>
+
+    <!-- Grid -->
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50"  y1="100" x2="380" y2="100"/>
+      <line x1="50"  y1="150" x2="380" y2="150"/>
+      <line x1="50"  y1="200" x2="380" y2="200"/>
+      <line x1="50"  y1="250" x2="380" y2="250"/>
+      <line x1="50"  y1="300" x2="380" y2="300"/>
+      <line x1="50"  y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <!-- Axes -->
+    <line x1="50" y1="200" x2="380" y2="200" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="200" y1="350" x2="200" y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <text x="385" y="205" font-style="italic" fill="#333">x</text>
+    <text x="208" y="48"  font-style="italic" fill="#333">y</text>
+
+    <!-- Line y = 0.5 x + 2, i.e. shifted up by 2.
+         At x=-3 → y = 0.5; screen (50, 200 - 25) = (50, 175). At x=3 → y = 3.5; screen (350, 200 - 175) = (350, 25). -->
+    <line x1="50" y1="175" x2="350" y2="25" stroke="#be185d" stroke-width="3"/>
+
+    <!-- Origin (not on the line) -->
+    <circle cx="200" cy="200" r="6" fill="#333"/>
+    <text x="208" y="220" fill="#333" font-weight="bold">0</text>
+
+    <!-- Cross-out X near origin to emphasise -->
+    <g stroke="#be185d" stroke-width="2.5">
+      <line x1="194" y1="194" x2="206" y2="206"/>
+      <line x1="206" y1="194" x2="194" y2="206"/>
+    </g>
+
+    <!-- Dashed connector showing the line misses 0 -->
+    <line x1="200" y1="200" x2="200" y2="100" stroke="#be185d" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="208" y="160" fill="#be185d" font-size="11" font-style="italic">line doesn't reach 0</text>
+
+    <!-- Annotation -->
+    <text x="200" y="380" text-anchor="middle" fill="#be185d" font-size="12">does NOT contain 0 · subspace test fails</text>
+  </g>
+</svg>

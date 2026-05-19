@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="800" height="400" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-axis" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <marker id="ah-bx" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="ah-rd" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- ============== LEFT: INDEPENDENT ============== -->
+  <g>
+    <text x="200" y="30" text-anchor="middle" fill="#059669" font-weight="bold" font-size="15">Independent — span the whole plane</text>
+
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50"  y1="100" x2="380" y2="100"/>
+      <line x1="50"  y1="150" x2="380" y2="150"/>
+      <line x1="50"  y1="200" x2="380" y2="200"/>
+      <line x1="50"  y1="250" x2="380" y2="250"/>
+      <line x1="50"  y1="300" x2="380" y2="300"/>
+      <line x1="50"  y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <!-- Axes centered at (200, 200) -->
+    <line x1="50" y1="200" x2="380" y2="200" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="200" y1="350" x2="200" y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+
+    <!-- Shaded "span = whole plane" hint -->
+    <rect x="55" y="55" width="320" height="300" fill="#059669" fill-opacity="0.05" stroke="#059669" stroke-dasharray="6 4" stroke-width="1.5"/>
+
+    <!-- v1 = (2, 1) → (300, 150) -->
+    <line x1="200" y1="200" x2="300" y2="150" stroke="#1f6feb" stroke-width="3" marker-end="url(#ah-bx)"/>
+    <text x="270" y="175" fill="#1f6feb" font-weight="bold">v₁ = (2,1)</text>
+
+    <!-- v2 = (-1, 2) → (150, 100) -->
+    <line x1="200" y1="200" x2="150" y2="100" stroke="#d97706" stroke-width="3" marker-end="url(#ah-rd)"/>
+    <text x="80"  y="120" fill="#d97706" font-weight="bold">v₂ = (-1,2)</text>
+
+    <!-- Origin -->
+    <circle cx="200" cy="200" r="4" fill="#333"/>
+
+    <!-- Caption -->
+    <text x="200" y="380" text-anchor="middle" fill="#059669" font-size="12">span{v₁, v₂} = ℝ²  ·  no nontrivial combo = 0</text>
+  </g>
+
+  <!-- ============== RIGHT: DEPENDENT (collinear) ============== -->
+  <g transform="translate(400, 0)">
+    <text x="200" y="30" text-anchor="middle" fill="#be185d" font-weight="bold" font-size="15">Dependent — collinear, span only a line</text>
+
+    <g stroke="#e0e0e0" stroke-width="1">
+      <line x1="100" y1="60"  x2="100" y2="350"/>
+      <line x1="150" y1="60"  x2="150" y2="350"/>
+      <line x1="200" y1="60"  x2="200" y2="350"/>
+      <line x1="250" y1="60"  x2="250" y2="350"/>
+      <line x1="300" y1="60"  x2="300" y2="350"/>
+      <line x1="350" y1="60"  x2="350" y2="350"/>
+      <line x1="50"  y1="100" x2="380" y2="100"/>
+      <line x1="50"  y1="150" x2="380" y2="150"/>
+      <line x1="50"  y1="200" x2="380" y2="200"/>
+      <line x1="50"  y1="250" x2="380" y2="250"/>
+      <line x1="50"  y1="300" x2="380" y2="300"/>
+      <line x1="50"  y1="60"  x2="380" y2="60"/>
+    </g>
+
+    <line x1="50" y1="200" x2="380" y2="200" stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+    <line x1="200" y1="350" x2="200" y2="50"  stroke="#333" stroke-width="2" marker-end="url(#ah-axis)"/>
+
+    <!-- Shaded "span = a line" — show the span as a thin line through origin in direction (2, 1) -->
+    <line x1="50" y1="275" x2="380" y2="110" stroke="#be185d" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="6 4"/>
+
+    <!-- v1 = (2, 1) -->
+    <line x1="200" y1="200" x2="300" y2="150" stroke="#1f6feb" stroke-width="3" marker-end="url(#ah-bx)"/>
+    <text x="305" y="148" fill="#1f6feb" font-weight="bold">v₁ = (2, 1)</text>
+
+    <!-- v2 = (-3, -1.5) → twice the direction the other way → (50, 275). Actually -1.5 × v1 = (-3, -1.5). Let's use v2 = 2 v1 = (4, 2) but that goes off; use v2 = -2 v1 = (-4, -2) → (0, 300)? That's also off. Let's use v2 = (-2, -1) → (100, 250). -->
+    <line x1="200" y1="200" x2="100" y2="250" stroke="#d97706" stroke-width="3" marker-end="url(#ah-rd)"/>
+    <text x="85" y="285" fill="#d97706" font-weight="bold">v₂ = (-2,-1)</text>
+
+    <!-- Origin -->
+    <circle cx="200" cy="200" r="4" fill="#333"/>
+
+    <!-- Annotation: v2 = -v1 -->
+    <text x="200" y="365" text-anchor="middle" fill="#be185d" font-size="12">v₂ = −v₁ · nontrivial combo: 1·v₁ + 1·v₂ = 0</text>
+    <text x="200" y="385" text-anchor="middle" fill="#be185d" font-size="12">span = a single line, not the plane</text>
+  </g>
+</svg>

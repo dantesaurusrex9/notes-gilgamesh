@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="800" height="360" fill="#ffffff"/>
+
+  <defs>
+    <marker id="ah-thick" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- ============== LEFT: DOMAIN ============== -->
+  <g>
+    <text x="170" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="16">Domain ℝⁿ</text>
+
+    <!-- Outer ellipse (the whole domain) -->
+    <ellipse cx="170" cy="200" rx="140" ry="110" fill="#f0f4ff" stroke="#1f6feb" stroke-width="2"/>
+
+    <!-- Kernel (a line through origin in domain) — drawn as a thin oval through middle -->
+    <ellipse cx="170" cy="200" rx="100" ry="20" fill="#fef3c7" stroke="#d97706" stroke-width="2" transform="rotate(-15 170 200)"/>
+
+    <!-- Origin dot -->
+    <circle cx="170" cy="200" r="5" fill="#333"/>
+    <text x="160" y="195" fill="#333" font-weight="bold">0</text>
+
+    <!-- Labels -->
+    <text x="170" y="280" text-anchor="middle" fill="#d97706" font-weight="bold">ker A</text>
+    <text x="170" y="298" text-anchor="middle" fill="#d97706" font-size="12">(maps to zero)</text>
+
+    <text x="170" y="100" text-anchor="middle" fill="#1f6feb" font-size="12">all input vectors</text>
+  </g>
+
+  <!-- ============== ARROW BETWEEN ============== -->
+  <g>
+    <text x="400" y="190" text-anchor="middle" fill="#333" font-weight="bold" font-size="20">A</text>
+    <line x1="320" y1="200" x2="480" y2="200" stroke="#333" stroke-width="2.5" marker-end="url(#ah-thick)"/>
+    <text x="400" y="225" text-anchor="middle" fill="#555" font-size="12">linear map</text>
+  </g>
+
+  <!-- ============== RIGHT: CODOMAIN ============== -->
+  <g>
+    <text x="630" y="30" text-anchor="middle" fill="#333" font-weight="bold" font-size="16">Codomain ℝᵐ</text>
+
+    <!-- Outer ellipse -->
+    <ellipse cx="630" cy="200" rx="140" ry="110" fill="#f5f5f5" stroke="#555" stroke-width="2" stroke-dasharray="6 4"/>
+
+    <!-- Image (column space) — smaller filled ellipse inside -->
+    <ellipse cx="630" cy="200" rx="80" ry="55" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+
+    <!-- Origin dot -->
+    <circle cx="630" cy="200" r="5" fill="#333"/>
+    <text x="620" y="195" fill="#333" font-weight="bold">0</text>
+
+    <!-- Labels -->
+    <text x="630" y="245" text-anchor="middle" fill="#059669" font-weight="bold">im A</text>
+    <text x="630" y="263" text-anchor="middle" fill="#059669" font-size="12">(reachable outputs)</text>
+
+    <text x="630" y="100" text-anchor="middle" fill="#555" font-size="12" font-style="italic">unreachable region</text>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="345" text-anchor="middle" fill="#333" font-weight="bold" font-size="14">Kernel collapses to 0 · Image is the reachable subspace · dim ker + dim im = n</text>
+</svg>
