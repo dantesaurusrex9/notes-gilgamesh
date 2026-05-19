@@ -194,7 +194,7 @@ This is wᵀx + b with w fixed by the log-likelihood ratios and b by the log-pri
 
 The figure below shows a typical training dataset for a hiring-prediction problem, illustrating the feature-label pairs that NB learns from by counting frequencies.
 
-![Figure 1: Example NB training dataset — each row is a labelled example with categorical features; NB estimates p(feature value | class) for each cell.](./assets/7-naive-bayes-classifier/fig-01.png)
+![Figure 1: Example NB training dataset — each row is a labelled example with categorical features; NB estimates p(feature value | class) for each cell.](./assets/9-naive-bayes-classifier/fig-01.png)
 
 Spam classification with the 20 Newsgroups dataset. We fit a multinomial NB using scikit-learn's `MultinomialNB`, which implements the add-α smoothing described above, and evaluate on a held-out test set.
 

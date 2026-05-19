@@ -71,9 +71,9 @@ Linear regression predicts a real value. Classification needs a probability — 
 
 Logistic regression is not doing regression on the label (0/1). It is doing regression on the *log-odds*: the model says log(p/(1−p)) = θᵀx. This is a linear model in log-odds space, a natural choice for binary outcomes.
 
-![Sigmoid function σ(η) = 1/(1+e^{−η}): S-shaped, bounded in (0,1), derivative peaks at η=0.](./assets/4-logistic-regression/fig-01.png)
+![Sigmoid function σ(η) = 1/(1+e^{−η}): S-shaped, bounded in (0,1), derivative peaks at η=0.](./assets/6-logistic-regression/fig-01.png)
 
-![Linear decision boundary in 2D: σ(θᵀx) = 0.5 at the hyperplane θᵀx = 0, separating predicted positive from negative region.](./assets/4-logistic-regression/fig-02.png)
+![Linear decision boundary in 2D: σ(θᵀx) = 0.5 at the hyperplane θᵀx = 0, separating predicted positive from negative region.](./assets/6-logistic-regression/fig-02.png)
 
 ## How it works
 
@@ -172,7 +172,7 @@ Input x ──→ [θᵀx] ──→ σ(·) ──→ π̂ ──→ Cross-entro
 
 Adding hidden layers and different activations generalises this to a multi-layer network — but the output layer of any binary classifier is still logistic regression. The gradient derivation here is the manual version of backpropagation for a one-layer network.
 
-![Logistic regression as a one-layer neural network: input features feed a linear combination, sigmoid squashes to a probability, cross-entropy measures fit to the label.](./assets/4-logistic-regression/fig-03.png)
+![Logistic regression as a one-layer neural network: input features feed a linear combination, sigmoid squashes to a probability, cross-entropy measures fit to the label.](./assets/6-logistic-regression/fig-03.png)
 
 ## Math
 

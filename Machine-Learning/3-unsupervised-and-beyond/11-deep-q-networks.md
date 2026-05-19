@@ -66,11 +66,11 @@ The challenge is that naive application of gradient descent to the Bellman objec
 
 **Figure:** DQN 2013 architecture — pixel stack in, Q-value vector out.
 
-![DQN 2013 architecture: 4×84×84 input → conv stack → FC → Q-values](./assets/2-deep-q-networks/dqn-architecture-2013.jpg)
+![DQN 2013 architecture: 4×84×84 input → conv stack → FC → Q-values](./assets/11-deep-q-networks/dqn-architecture-2013.jpg)
 
 **Figure:** DQN 2015 (Nature) full network diagram with joystick action outputs.
 
-![DQN 2015 network diagram: conv1 → conv2 → FC → 18 Q-value heads](./assets/2-deep-q-networks/dqn-architecture-2015.jpg)
+![DQN 2015 network diagram: conv1 → conv2 → FC → 18 Q-value heads](./assets/11-deep-q-networks/dqn-architecture-2015.jpg)
 
 ## How it works
 
@@ -184,11 +184,11 @@ DQN completely failed on Montezuma's Revenge — a game requiring deep explorati
 
 **Figure:** t-SNE of the final FC layer activations across Space Invaders game states, coloured by Q-value. States with similar expected returns cluster together regardless of pixel-level similarity.
 
-![t-SNE of DQN representations from Space Invaders coloured by Q-value](./assets/2-deep-q-networks/dqn-tsne.png)
+![t-SNE of DQN representations from Space Invaders coloured by Q-value](./assets/11-deep-q-networks/dqn-tsne.png)
 
 **Figure:** DQN Q-value visualisation on Breakout (a) and Pong (b). Action-values respond predictably to game events.
 
-![DQN Q-value readouts during Breakout and Pong gameplay](./assets/2-deep-q-networks/dqn-qvalues.jpg)
+![DQN Q-value readouts during Breakout and Pong gameplay](./assets/11-deep-q-networks/dqn-qvalues.jpg)
 
 ## Math
 

@@ -65,7 +65,7 @@ The key conceptual shift: the likelihood L(θ; D) has D fixed and θ varying. It
 
 For linear regression with Gaussian noise, this machinery leads straight back to least squares — a remarkable alignment between the geometric minimum-distance criterion and the probabilistic maximum-likelihood criterion.
 
-![Gaussian likelihood visualisation: three training points and a 1D Gaussian likelihood centered at θᵀx for two candidate θ values.](./assets/2-maximum-likelihood-estimation/fig-01.png)
+![Gaussian likelihood visualisation: three training points and a 1D Gaussian likelihood centered at θᵀx for two candidate θ values.](./assets/3-maximum-likelihood-estimation/fig-01.png)
 
 ## How it works
 

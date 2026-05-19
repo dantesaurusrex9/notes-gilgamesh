@@ -121,7 +121,7 @@ The algorithm terminates at a node when one of three stopping conditions fires: 
 
 **Figure 1** below shows a concrete C4.5 tree built on a hiring dataset, with the first split on "Favorite Language."
 
-![Figure 1: A C4.5 decision tree built on a hiring dataset. First split on Favorite Language (highest IG). Each leaf shows Yes/No counts.](./assets/8-decision-trees/fig-01.png)
+![Figure 1: A C4.5 decision tree built on a hiring dataset. First split on Favorite Language (highest IG). Each leaf shows Yes/No counts.](./assets/12-decision-trees-entropy-gini-and-pruning/fig-01.png)
 
 ### Phase 2 — Splitting criteria in detail
 
@@ -138,7 +138,7 @@ C4.5 extends ID3 to handle continuous features natively by sorting and threshold
 
 **Figure 2** below shows the information gain calculation for splitting on "Work Experience" at the root of the same dataset — entropy annotations on each node make the IG formula concrete.
 
-![Figure 2: Information Gain computation for a split on Work Experience. The root entropy is 0.985 bits; weighted child entropy sums to 0.796 bits; IG = 0.189 bits.](./assets/8-decision-trees/fig-02.png)
+![Figure 2: Information Gain computation for a split on Work Experience. The root entropy is 0.985 bits; weighted child entropy sums to 0.796 bits; IG = 0.189 bits.](./assets/12-decision-trees-entropy-gini-and-pruning/fig-02.png)
 
 ### Phase 4 — Pruning
 

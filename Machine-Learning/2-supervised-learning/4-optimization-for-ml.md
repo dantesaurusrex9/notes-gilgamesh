@@ -75,7 +75,7 @@ The Lipschitz constant of the gradient, L (such that ‖∇J(θ) − ∇J(θ')�
 
 In practice, tune η on a log-scale (1e-4, 1e-3, 1e-2, 0.1, 1.0) and monitor the training loss. A good η produces a smoothly decreasing loss; a bad η produces oscillation (too large) or imperceptible progress (too small).
 
-![Gradient descent convergence: steep ravine causing zigzag with fixed η vs smooth descent with well-tuned η.](./assets/5-optimization-for-ml/fig-01.png)
+![Gradient descent convergence: steep ravine causing zigzag with fixed η vs smooth descent with well-tuned η.](./assets/4-optimization-for-ml/fig-01.png)
 
 ### Newton's method
 
@@ -135,7 +135,7 @@ v^{(t+1)} = \beta v^{(t)} + \eta \nabla J(\theta^{(t)})
 
 The momentum parameter β ∈ [0, 1) controls how much of the previous velocity is retained (β = 0.9 is typical). In directions where the gradient consistently points the same way (the ravine floor), velocity accumulates and descent accelerates. In directions that oscillate, opposing gradients cancel.
 
-![Momentum: smooth curved path vs GD's zigzag in an elongated loss surface.](./assets/5-optimization-for-ml/fig-02.png)
+![Momentum: smooth curved path vs GD's zigzag in an elongated loss surface.](./assets/4-optimization-for-ml/fig-02.png)
 
 ### AdaGrad and adaptive methods
 

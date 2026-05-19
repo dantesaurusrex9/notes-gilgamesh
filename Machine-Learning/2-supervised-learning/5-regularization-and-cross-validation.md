@@ -73,7 +73,7 @@ Regularisation is the algebraic lever for this tradeoff. By penalising large wei
 
 The bias-variance tradeoff is not unique to polynomials — it applies to every parameterised model family. Cross-validation is the practical tool for finding the sweet spot without peeking at test data.
 
-![Ridge regression with degree-14 polynomial: large λ (left) smooth underfit, medium λ (centre) good fit, small λ (right) wildly overfit.](./assets/3-regularization-and-cross-validation/fig-01.png)
+![Ridge regression with degree-14 polynomial: large λ (left) smooth underfit, medium λ (centre) good fit, small λ (right) wildly overfit.](./assets/5-regularization-and-cross-validation/fig-01.png)
 
 ## How it works
 
@@ -148,7 +148,7 @@ y_i = \theta^\top \phi(x_i) + \epsilon_i
 
 Common choices: polynomial features φ(x) = [1, x, x², …, xᴹ]; radial basis functions φ(x) = [k(x, μ₁), …, k(x, μd)] where k is a Gaussian kernel. The model remains linear in θ, so all of the theory (MLE, normal equations, ridge) applies unchanged to the feature matrix Φ = [φ(x₁) | … | φ(xₙ)]ᵀ.
 
-![Model complexity: left — correct model (degree 2), centre — too simple (degree 1), right — too complex (degree 14 with small λ).](./assets/3-regularization-and-cross-validation/fig-02.png)
+![Model complexity: left — correct model (degree 2), centre — too simple (degree 1), right — too complex (degree 14 with small λ).](./assets/5-regularization-and-cross-validation/fig-02.png)
 
 ### K-fold cross-validation
 
