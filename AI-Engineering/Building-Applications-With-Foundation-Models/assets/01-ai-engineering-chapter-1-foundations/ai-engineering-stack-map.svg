@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">AI engineering stack map</title>
+  <desc id="desc">A layered map showing application experience, AI engineering orchestration, foundation model access, and infrastructure feedback loops.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fb; }
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #4b5563; }
+      .layer-title { font: 700 22px Arial, sans-serif; fill: #111827; }
+      .body { font: 400 17px Arial, sans-serif; fill: #374151; }
+      .small { font: 400 14px Arial, sans-serif; fill: #4b5563; }
+      .box { stroke: #111827; stroke-width: 2; rx: 12; }
+      .soft { stroke: #6b7280; stroke-width: 1.5; rx: 10; }
+      .arrow { stroke: #111827; stroke-width: 3; marker-end: url(#arrowhead); fill: none; }
+      .feedback { stroke: #7c3aed; stroke-width: 3; marker-end: url(#purpleArrow); fill: none; stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111827" />
+    </marker>
+    <marker id="purpleArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#7c3aed" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" />
+  <text class="title" x="70" y="70">AI Engineering Stack</text>
+  <text class="subtitle" x="70" y="102">Chapter 1 mental model: build the application loop around a model you usually do not train from scratch.</text>
+
+  <rect class="box" x="90" y="145" width="1020" height="125" fill="#dbeafe" />
+  <text class="layer-title" x="125" y="190">1. Product and application layer</text>
+  <text class="body" x="125" y="223">User experience, workflow, UI, API, permissions, support process, acceptance criteria.</text>
+  <text class="small" x="125" y="250">Owner question: what user problem becomes easier, faster, cheaper, or newly possible?</text>
+
+  <rect class="box" x="90" y="315" width="1020" height="155" fill="#dcfce7" />
+  <text class="layer-title" x="125" y="360">2. AI engineering layer</text>
+  <text class="body" x="125" y="394">Prompting, context assembly, retrieval, tools, schemas, evaluation, guardrails, routing, caching.</text>
+  <text class="body" x="125" y="425">This is where most application teams create leverage without owning pretraining.</text>
+  <text class="small" x="125" y="452">Owner question: how do we make model behavior useful, measurable, and maintainable?</text>
+
+  <rect class="box" x="90" y="515" width="1020" height="125" fill="#fef3c7" />
+  <text class="layer-title" x="125" y="560">3. Foundation model and infrastructure layer</text>
+  <text class="body" x="125" y="593">Hosted model APIs, open weights, inference servers, GPUs, vector stores, observability, cost controls.</text>
+  <text class="small" x="125" y="620">Owner question: what model and serving path meet quality, latency, privacy, and budget constraints?</text>
+
+  <path class="arrow" d="M600 272 L600 310" />
+  <path class="arrow" d="M600 472 L600 510" />
+  <path class="feedback" d="M1125 582 C1170 430 1170 230 1125 205" />
+  <text class="small" x="900" y="710">Feedback turns product outcomes into eval cases, prompts, data, and architecture changes.</text>
+
+  <rect class="soft" x="720" y="180" width="330" height="58" fill="#eff6ff" />
+  <text class="small" x="745" y="214">Signals: conversion, time saved, user trust</text>
+
+  <rect class="soft" x="720" y="360" width="330" height="76" fill="#f0fdf4" />
+  <text class="small" x="745" y="391">Signals: accuracy, groundedness, latency, cost</text>
+  <text class="small" x="745" y="417">Artifacts: eval set, prompt versions, traces</text>
+
+  <rect class="soft" x="720" y="550" width="330" height="58" fill="#fffbeb" />
+  <text class="small" x="745" y="584">Signals: uptime, token spend, throughput</text>
+</svg>

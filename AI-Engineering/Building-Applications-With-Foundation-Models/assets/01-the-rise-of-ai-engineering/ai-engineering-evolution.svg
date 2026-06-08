@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Evolution from language models to AI engineering</title>
+  <desc id="desc">A linear diagram showing how language modeling, self-supervision, scale, foundation models, model services, and application engineering connect.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #475569; }
+      .box { stroke: #0f172a; stroke-width: 2; rx: 14; }
+      .step-title { font: 700 20px Arial, sans-serif; fill: #111827; }
+      .body { font: 400 15px Arial, sans-serif; fill: #334155; }
+      .small { font: 400 13px Arial, sans-serif; fill: #475569; }
+      .arrow { stroke: #111827; stroke-width: 3; marker-end: url(#arrowhead); fill: none; }
+      .thin { stroke: #64748b; stroke-width: 1.5; fill: none; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111827" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720" />
+  <text class="title" x="58" y="68">Chapter 1: Why AI Engineering Exists</text>
+  <text class="subtitle" x="58" y="101">The discipline emerges when powerful general models become reusable product infrastructure.</text>
+
+  <rect class="box" x="58" y="170" width="170" height="170" fill="#dbeafe" />
+  <text class="step-title" x="82" y="213">1. Language</text>
+  <text class="step-title" x="82" y="239">models</text>
+  <text class="body" x="82" y="278">Predict tokens from</text>
+  <text class="body" x="82" y="300">context.</text>
+  <text class="small" x="82" y="326">Completion is the</text>
+  <text class="small" x="82" y="344">basic behavior.</text>
+
+  <path class="arrow" d="M236 255 L292 255" />
+
+  <rect class="box" x="302" y="170" width="170" height="170" fill="#dcfce7" />
+  <text class="step-title" x="326" y="213">2. Self-</text>
+  <text class="step-title" x="326" y="239">supervision</text>
+  <text class="body" x="326" y="278">Raw sequences create</text>
+  <text class="body" x="326" y="300">their own labels.</text>
+  <text class="small" x="326" y="326">This unlocks much</text>
+  <text class="small" x="326" y="344">larger datasets.</text>
+
+  <path class="arrow" d="M480 255 L536 255" />
+
+  <rect class="box" x="546" y="170" width="170" height="170" fill="#fef3c7" />
+  <text class="step-title" x="570" y="213">3. Scale</text>
+  <text class="body" x="570" y="252">More data, compute,</text>
+  <text class="body" x="570" y="274">and parameters create</text>
+  <text class="body" x="570" y="296">broad capabilities.</text>
+  <text class="small" x="570" y="326">Training becomes too</text>
+  <text class="small" x="570" y="344">expensive for most teams.</text>
+
+  <path class="arrow" d="M724 255 L780 255" />
+
+  <rect class="box" x="790" y="170" width="190" height="170" fill="#ede9fe" />
+  <text class="step-title" x="814" y="213">4. Foundation</text>
+  <text class="step-title" x="814" y="239">models</text>
+  <text class="body" x="814" y="278">General-purpose models</text>
+  <text class="body" x="814" y="300">support many tasks and</text>
+  <text class="body" x="814" y="322">multiple modalities.</text>
+
+  <path class="arrow" d="M988 255 L1044 255" />
+
+  <rect class="box" x="1054" y="170" width="170" height="170" fill="#fee2e2" />
+  <text class="step-title" x="1078" y="213">5. AI</text>
+  <text class="step-title" x="1078" y="239">engineering</text>
+  <text class="body" x="1078" y="278">Adapt, evaluate, ship,</text>
+  <text class="body" x="1078" y="300">and maintain model</text>
+  <text class="body" x="1078" y="322">behavior in products.</text>
+
+  <path class="thin" d="M143 395 C143 445 1139 445 1139 395" />
+  <text class="small" x="370" y="480">The product value is no longer only in the model. It is in the loop around the model.</text>
+
+  <rect class="box" x="180" y="535" width="920" height="92" fill="#ffffff" />
+  <text class="step-title" x="220" y="575">AI engineering question</text>
+  <text class="body" x="220" y="606">How do we turn probabilistic, general model behavior into a reliable workflow with clear metrics, controls, and feedback?</text>
+</svg>

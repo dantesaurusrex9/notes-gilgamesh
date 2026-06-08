@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Evaluation methodology map</title>
+  <desc id="desc">A map of evaluation methods from language modeling metrics to exact checks, semantic checks, AI judges, and ranking.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #475569; }
+      .box { stroke: #0f172a; stroke-width: 2; rx: 14; }
+      .h { font: 700 19px Arial, sans-serif; fill: #111827; }
+      .b { font: 400 15px Arial, sans-serif; fill: #334155; }
+      .arrow { stroke: #111827; stroke-width: 3; marker-end: url(#arrowhead); fill: none; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111827" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1280" height="720" />
+  <text class="title" x="64" y="72">Evaluation Methodology</text>
+  <text class="subtitle" x="64" y="104">Chapter 3: choose the method that matches the failure mode.</text>
+  <rect class="box" x="90" y="185" width="200" height="150" fill="#dbeafe" />
+  <text class="h" x="120" y="230">LM metrics</text>
+  <text class="b" x="120" y="265">Entropy, cross</text>
+  <text class="b" x="120" y="287">entropy, perplexity.</text>
+  <path class="arrow" d="M300 260 L360 260" />
+  <rect class="box" x="370" y="185" width="200" height="150" fill="#dcfce7" />
+  <text class="h" x="400" y="230">Exact checks</text>
+  <text class="b" x="400" y="265">Tests, schemas,</text>
+  <text class="b" x="400" y="287">reference answers.</text>
+  <path class="arrow" d="M580 260 L640 260" />
+  <rect class="box" x="650" y="185" width="200" height="150" fill="#fef3c7" />
+  <text class="h" x="680" y="230">Similarity</text>
+  <text class="b" x="680" y="265">Lexical and semantic</text>
+  <text class="b" x="680" y="287">comparison.</text>
+  <path class="arrow" d="M860 260 L920 260" />
+  <rect class="box" x="930" y="185" width="250" height="150" fill="#ede9fe" />
+  <text class="h" x="960" y="230">Judgment</text>
+  <text class="b" x="960" y="265">Human review, AI judge,</text>
+  <text class="b" x="960" y="287">pairwise ranking.</text>
+  <rect class="box" x="250" y="460" width="780" height="95" fill="#ffffff" />
+  <text class="h" x="290" y="502">Evaluation rule</text>
+  <text class="b" x="290" y="532">Use exact checks when possible, judges when necessary, and calibrate every method against real product failures.</text>
+</svg>

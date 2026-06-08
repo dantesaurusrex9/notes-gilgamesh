@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">AI application planning loop</title>
+  <desc id="desc">A circular loop for building an AI application from task definition through baseline, prompt and context, evaluation, release, and monitoring.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #4b5563; }
+      .node-title { font: 700 18px Arial, sans-serif; fill: #111827; }
+      .node-body { font: 400 14px Arial, sans-serif; fill: #374151; }
+      .center-title { font: 700 24px Arial, sans-serif; fill: #111827; text-anchor: middle; }
+      .center-body { font: 400 16px Arial, sans-serif; fill: #374151; text-anchor: middle; }
+      .arrow { stroke: #111827; stroke-width: 3; marker-end: url(#arrowhead); fill: none; }
+      .feedback { stroke: #2563eb; stroke-width: 3; marker-end: url(#blueArrow); fill: none; stroke-dasharray: 7 7; }
+      .node { stroke: #111827; stroke-width: 2; rx: 16; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111827" />
+    </marker>
+    <marker id="blueArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" />
+  <text class="title" x="70" y="70">First AI Application Loop</text>
+  <text class="subtitle" x="70" y="102">Use this before choosing a model: define the task, prove value, measure behavior, then deepen the system.</text>
+
+  <circle cx="600" cy="405" r="135" fill="#e0f2fe" stroke="#111827" stroke-width="2" />
+  <text class="center-title" x="600" y="382">Useful AI system</text>
+  <text class="center-body" x="600" y="414">Task + model + context</text>
+  <text class="center-body" x="600" y="440">+ evaluation + feedback</text>
+
+  <rect class="node" x="465" y="145" width="270" height="98" fill="#dbeafe" />
+  <text class="node-title" x="495" y="180">1. Define task</text>
+  <text class="node-body" x="495" y="207">Input, output, user, failure cost</text>
+  <text class="node-body" x="495" y="228">Write acceptance criteria</text>
+
+  <rect class="node" x="825" y="250" width="270" height="98" fill="#dcfce7" />
+  <text class="node-title" x="855" y="285">2. Build baseline</text>
+  <text class="node-body" x="855" y="312">Manual, rules, search, or simple prompt</text>
+  <text class="node-body" x="855" y="333">Make improvement measurable</text>
+
+  <rect class="node" x="825" y="515" width="270" height="98" fill="#fef3c7" />
+  <text class="node-title" x="855" y="550">3. Add context</text>
+  <text class="node-body" x="855" y="577">Instructions, examples, retrieval, tools</text>
+  <text class="node-body" x="855" y="598">Constrain output shape</text>
+
+  <rect class="node" x="465" y="620" width="270" height="98" fill="#ede9fe" />
+  <text class="node-title" x="495" y="655">4. Evaluate</text>
+  <text class="node-body" x="495" y="682">Quality, latency, cost, safety</text>
+  <text class="node-body" x="495" y="703">Keep real examples</text>
+
+  <rect class="node" x="105" y="515" width="270" height="98" fill="#fee2e2" />
+  <text class="node-title" x="135" y="550">5. Ship small</text>
+  <text class="node-body" x="135" y="577">Limited users, fallback path</text>
+  <text class="node-body" x="135" y="598">Monitor user-visible failures</text>
+
+  <rect class="node" x="105" y="250" width="270" height="98" fill="#ccfbf1" />
+  <text class="node-title" x="135" y="285">6. Maintain</text>
+  <text class="node-body" x="135" y="312">Prompt versions, traces, drift cases</text>
+  <text class="node-body" x="135" y="333">Feed production back into evals</text>
+
+  <path class="arrow" d="M735 195 C805 205 850 225 885 250" />
+  <path class="arrow" d="M960 350 C980 420 980 455 960 515" />
+  <path class="arrow" d="M825 610 C785 640 755 655 735 665" />
+  <path class="arrow" d="M465 665 C390 650 330 625 300 613" />
+  <path class="arrow" d="M240 515 C215 455 215 395 240 348" />
+  <path class="feedback" d="M300 250 C360 205 420 195 465 195" />
+</svg>
