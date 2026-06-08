@@ -503,4 +503,4 @@ The rule: generic when compile-time type safety matters; `any` when runtime flex
 
 - [2 - Types, Zero Values, and Declarations](./2-types-and-zero-values.md)
 - [5 - Interfaces and Type Assertions](./5-interfaces-and-type-assertions.md)
-- [3 - Composite Types](./3-composite-types.md)
+- ##### [3 - Composite Types](./3-composite-types.md)

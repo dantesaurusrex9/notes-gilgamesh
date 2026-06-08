@@ -680,5 +680,5 @@ The following output from `go build -gcflags='-m -m'` was produced by a hot JSON
 - [9 - Memory Management and the GC](./9-memory-management-gc.md)
 - [14 - Reference Types and Internal Headers](./14-reference-types-and-internal-headers.md)
 - [4 - Functions, Closures, and Methods](./4-functions-closures-methods.md)
-- [../../../Computer-Architecture/6-memory-hierarchy-and-caches.md](../../Computer-Architecture/6-memory-hierarchy-and-caches.md)
-- [../../../Computer-Architecture/7-virtual-memory-and-tlbs.md](../../Computer-Architecture/7-virtual-memory-and-tlbs.md)
+- Future low-level foundation note: memory hierarchy and CPU caches.
+- Future low-level foundation note: virtual memory and TLBs.
