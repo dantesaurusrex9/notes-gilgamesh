@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Separate chaining hash table</title>
+  <desc id="desc">An 8-bucket hash table. Buckets 2 and 5 point to linked lists of key-value entries. Keys apple and plum collide and share bucket 2; kiwi sits alone in bucket 5.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="620" fill="#ffffff"/>
+
+  <text class="title" x="60" y="58">Separate chaining: each bucket holds a list</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="muted" x="60" y="118">m = 8 buckets — a key lands in bucket hash(key) mod 8 — colliding keys chain together</text>
+
+  <!-- bucket index labels (above cells) -->
+  <text class="small" x="140" y="146" text-anchor="middle">0</text>
+  <text class="small" x="260" y="146" text-anchor="middle">1</text>
+  <text class="small" x="380" y="146" text-anchor="middle">2</text>
+  <text class="small" x="500" y="146" text-anchor="middle">3</text>
+  <text class="small" x="620" y="146" text-anchor="middle">4</text>
+  <text class="small" x="740" y="146" text-anchor="middle">5</text>
+  <text class="small" x="860" y="146" text-anchor="middle">6</text>
+  <text class="small" x="980" y="146" text-anchor="middle">7</text>
+
+  <!-- bucket array -->
+  <rect x="80"  y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="200" y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="320" y="154" width="120" height="64" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="440" y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="560" y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="680" y="154" width="120" height="64" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="800" y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="920" y="154" width="120" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text class="muted" x="140" y="195" text-anchor="middle">&#8709;</text>
+  <text class="muted" x="260" y="195" text-anchor="middle">&#8709;</text>
+  <circle cx="380" cy="186" r="6" fill="#0ea5e9"/>
+  <text class="muted" x="500" y="195" text-anchor="middle">&#8709;</text>
+  <text class="muted" x="620" y="195" text-anchor="middle">&#8709;</text>
+  <circle cx="740" cy="186" r="6" fill="#0ea5e9"/>
+  <text class="muted" x="860" y="195" text-anchor="middle">&#8709;</text>
+  <text class="muted" x="980" y="195" text-anchor="middle">&#8709;</text>
+
+  <!-- chain for bucket 2 -->
+  <line x1="380" y1="220" x2="380" y2="292" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <rect x="290" y="300" width="180" height="60" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="body" x="380" y="338" text-anchor="middle">'apple' &#8594; 3</text>
+  <line x1="380" y1="362" x2="380" y2="418" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <rect x="290" y="426" width="180" height="60" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="body" x="380" y="464" text-anchor="middle">'plum' &#8594; 9</text>
+  <line x1="380" y1="488" x2="380" y2="520" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text class="muted" x="380" y="548" text-anchor="middle">&#8709;</text>
+
+  <!-- chain for bucket 5 -->
+  <line x1="740" y1="220" x2="740" y2="292" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <rect x="650" y="300" width="180" height="60" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="body" x="740" y="338" text-anchor="middle">'kiwi' &#8594; 1</text>
+  <line x1="740" y1="362" x2="740" y2="400" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text class="muted" x="740" y="428" text-anchor="middle">&#8709;</text>
+
+  <!-- bottom annotation -->
+  <text class="small" x="80" y="578">hash('apple') = 10 and hash('plum') = 18 &#8594; 10 mod 8 = 18 mod 8 = 2 &#8594; both chain in bucket 2.</text>
+  <text class="small" x="80" y="604">hash('kiwi') = 13 &#8594; 13 mod 8 = 5 &#8594; bucket 5. Lookup hashes once, then walks the chain comparing keys with ==.</text>
+</svg>

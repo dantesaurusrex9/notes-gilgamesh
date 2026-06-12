@@ -1,7 +1,7 @@
 ---
 title: "2 - Types, Zero Values, and Declarations"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, types, zero-values, declarations]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's type system is static, explicit, and deliberately small. Every variable has a type determined at compile time, every type has a well-defined zero value (no uninitialised memory), and the two declaration syntaxes (`var` and `:=`) have distinct scoping and usage rules. Understanding zero values is not academic — it is the foundation for understanding nil slices, nil maps, nil errors, and zero-value struct idioms that appear in every Go codebase.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/2-types-and-zero-values/vocabulary.svg)
 
 **Built-in type**: A type provided by the language itself, not defined in any package. Includes `bool`, all integer types, `float32`, `float64`, `complex64`, `complex128`, `string`, `byte` (alias for `uint8`), `rune` (alias for `int32`), `error` (interface), `any` (alias for `interface{}`).
 
@@ -74,9 +76,13 @@ type rune = int32   // rune is literally int32
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/2-types-and-zero-values/intuition.svg)
+
 Go's philosophy on types has two key ideas. First: every piece of memory has a known, compile-time type, and there is no implicit coercion between numeric types — if you want to add an `int` to an `int64`, you write `int64(myInt) + myInt64`. This verbosity is intentional; it forces you to think about overflow and truncation at the call site. Second: the zero value makes programs safe by default. A freshly declared `sync.Mutex` is unlocked and ready to use; a freshly declared `[]byte` slice is nil but safe to `append` to; a freshly declared `map` is nil but safe to read from (though not write to). Understanding what is safe at zero value — and what is not — is one of the most practically important things to internalise.
 
 ## All Built-in Types
+
+![Visual diagram: All Built-in Types](./assets/2-types-and-zero-values/all-built-in-types.svg)
 
 ### Boolean
 
@@ -153,6 +159,8 @@ var r rune = '世'   // 19990 (Unicode code point U+4E16)
 
 ## `var` vs `:=` — Declaration Rules
 
+![Visual diagram: var vs := - Declaration Rules](./assets/2-types-and-zero-values/var-vs-declaration-rules.svg)
+
 The two declaration forms are not interchangeable. Understanding when each applies prevents subtle scoping bugs.
 
 ### `var` — explicit declaration
@@ -208,6 +216,8 @@ func readConfig(path string) (Config, error) {
 
 ## Zero Values — The Full Table
 
+![Visual diagram: Zero Values - The Full Table](./assets/2-types-and-zero-values/zero-values-the-full-table.svg)
+
 Every type's zero value is guaranteed by the spec. This table is worth memorising:
 
 | Type category | Zero value | Safe to use at zero? |
@@ -242,6 +252,8 @@ m["key"] = 1            // PANIC: assignment to entry in nil map
 
 ## Untyped Constants
 
+![Visual diagram: Untyped Constants](./assets/2-types-and-zero-values/untyped-constants.svg)
+
 Constants in Go can be typed or untyped. An untyped constant has a *kind* (untyped integer, untyped float, untyped string, etc.) but no fixed type until it is used. This allows a single constant to serve multiple numeric types without explicit casting.
 
 ```go
@@ -264,6 +276,8 @@ The distinction matters at interface boundaries: an untyped integer constant `0`
 
 ## Explicit Type Conversions
 
+![Visual diagram: Explicit Type Conversions](./assets/2-types-and-zero-values/explicit-type-conversions.svg)
+
 Go never implicitly converts between numeric types. Every conversion is written as `T(expr)`.
 
 ```go
@@ -282,6 +296,8 @@ _, _ = s2, n, err
 > `string(65)` produces `"A"`, not `"65"`. The integer is interpreted as a Unicode code point (rune). This is almost never what you want when converting a number to its decimal string representation. Use `strconv.Itoa` or `fmt.Sprintf("%d", n)` for that. Go vet will flag `string(int_value)` with a warning since Go 1.15.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/2-types-and-zero-values/real-world-example.svg)
 
 This example shows type declarations, zero values, and the `:=` pattern working together in a realistic data processing function. Every annotation shows the type and what would happen at zero value.
 
@@ -345,6 +361,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/2-types-and-zero-values/in-practice.svg)
+
 At scale, the most common type-related bugs are:
 
 1. **nil map writes** — caught immediately at runtime (panic), but often only hit in a code path exercised under load. Initialise maps at struct construction, not lazily.
@@ -356,6 +374,8 @@ At scale, the most common type-related bugs are:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/2-types-and-zero-values/pitfalls.svg)
+
 - **"`var x int` and `x := 0` are identical."** — They produce the same value but `:=` is only valid inside functions. At package scope you must use `var`.
 - **"nil and zero value are the same thing."** — For pointer, slice, map, channel, and interface types, nil IS the zero value. But `string`'s zero value is `""` not nil (strings cannot be nil). And a nil interface is not the same as an interface holding a nil pointer — see [5 - Interfaces and Type Assertions](./5-interfaces-and-type-assertions.md) for that subtlety.
 - **"I can add `int` and `int32` directly."** — No. `var a int = 1; var b int32 = 2; _ = a + b` is a compile error. Every cross-type addition requires an explicit conversion.
@@ -363,6 +383,8 @@ At scale, the most common type-related bugs are:
 - **"A zero-value struct is always safe to use."** — It depends on the fields. A zero-value `sync.Mutex` is safe and unlocked. A zero-value `http.Client` is functional. But a zero-value `os.File` (which holds a nil internal pointer) panics if you call `Read` on it. Know your types.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/2-types-and-zero-values/exercises.svg)
 
 ### Exercise 1 — Conceptual: Why does `string(65)` produce `"A"`?
 

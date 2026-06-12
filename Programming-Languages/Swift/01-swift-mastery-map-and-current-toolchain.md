@@ -1,7 +1,7 @@
 ---
 title: "01 - Swift Mastery Map and Current Toolchain"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, toolchain, roadmap]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift is a compiled, statically typed language built around safety, performance, and expressiveness across Apple apps, server programs, command-line tools, embedded systems, and increasingly cross-platform targets. This series starts with the mental model, then builds through syntax, value semantics, ARC, generics, concurrency, tooling, testing, shipping, and senior-level design judgment.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/01-swift-mastery-map-and-current-toolchain/real-world-example.svg)
 
 The fastest way to feel Swift is to run a tiny program through the command-line toolchain. This example uses only the standard library, so it works before you learn Xcode, SwiftUI, or server frameworks.
 
@@ -41,6 +43,8 @@ swift test
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/01-swift-mastery-map-and-current-toolchain/vocabulary.svg)
+
 **Swift driver**: The `swift` command-line entry point. It can run scripts, compile files, invoke SwiftPM, and report the installed compiler version.
 
 ---
@@ -65,6 +69,8 @@ swift test
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/01-swift-mastery-map-and-current-toolchain/intuition.svg)
+
 Think of Swift as a language trying to occupy the space between Python ergonomics, Rust-like safety aspirations, and C-family performance. It is not a garbage-collected scripting language. It is also not a manual-memory C replacement where every pointer is your problem. Swift's normal path is: express the model clearly, let the type system prove as much as it can, and use explicit unsafe APIs only at the boundary.
 
 The most important early distinction is value types versus reference types. Structs, enums, and tuples behave like values. Classes behave like references managed by ARC. This single distinction explains most Swift design choices: why arrays feel cheap to pass around, why retain cycles happen, why `mutating` exists, why protocols can be powerful, and why actor isolation matters.
@@ -84,6 +90,8 @@ flowchart LR
 
 ## The Current Baseline
 
+![Visual diagram: The Current Baseline](./assets/01-swift-mastery-map-and-current-toolchain/the-current-baseline.svg)
+
 For learning, use Swift 6.3 or newer unless you are maintaining an older codebase. Swift 6 introduced data-race safety as a central language-mode feature. Swift 6.2 improved approachable concurrency and safe systems programming APIs such as `InlineArray` and `Span`. Swift 6.3 expanded C interoperability, cross-platform build tooling, embedded Swift, Swift Testing, DocC, and official Android SDK support.
 
 This matters because many old tutorials teach Swift as "iOS syntax plus UIKit." That is too narrow. Modern Swift is a language for:
@@ -98,6 +106,8 @@ This matters because many old tutorials teach Swift as "iOS syntax plus UIKit." 
 
 ## How To Study This Series
 
+![Visual diagram: How To Study This Series](./assets/01-swift-mastery-map-and-current-toolchain/how-to-study-this-series.svg)
+
 Read each note in order first. Do not try to memorize every keyword. Instead, build a mental dependency graph:
 
 1. Syntax teaches the surface.
@@ -109,6 +119,8 @@ Read each note in order first. Do not try to memorize every keyword. Instead, bu
 7. Senior-level habits teach how to make maintainable Swift decisions.
 
 ## Mastery Checklist
+
+![Visual diagram: Mastery Checklist](./assets/01-swift-mastery-map-and-current-toolchain/mastery-checklist.svg)
 
 You are becoming strong in Swift when you can do these without guessing:
 
@@ -125,6 +137,8 @@ You are becoming strong in Swift when you can do these without guessing:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/01-swift-mastery-map-and-current-toolchain/pitfalls.svg)
+
 - **Learning only SwiftUI syntax**: SwiftUI is important, but it sits on the language. Master value semantics, ARC, protocols, generics, and concurrency first.
 - **Treating `let` as deep immutability**: `let` prevents rebinding the variable. It does not make every referenced object deeply immutable.
 - **Using `class` by default**: Reach for `struct` and `enum` first. Use `class` when identity, inheritance, Objective-C interop, or reference sharing is the point.
@@ -132,6 +146,8 @@ You are becoming strong in Swift when you can do these without guessing:
 - **Fighting Swift 6 concurrency**: The compiler is forcing you to state ownership and isolation. Treat the errors as design feedback.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/01-swift-mastery-map-and-current-toolchain/exercises.svg)
 
 1. Install or verify Swift with `swift --version`.
 2. Create an executable package with `swift package init --type executable`.

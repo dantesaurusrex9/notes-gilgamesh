@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="title desc">
+  <title id="title">Pastebin back-of-envelope estimation pipeline</title>
+  <desc id="desc">Two chains of boxes. Traffic row: 10 million DAU times 0.1 pastes per user-day gives 1 million writes per day, divided by 86,400 seconds gives about 12 write QPS, times 10 reads per write gives about 116 read QPS, times a peak factor of 3 gives about 350 peak read QPS. Storage row: 10 KB average paste times 1 million writes per day gives 10 GB per day, times 365 gives 3.65 TB per year, times 5 years retention gives about 18 TB total.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .value { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .sub   { font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .op    { font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .cap   { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; letter-spacing: 1px; }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="540" fill="#ffffff"/>
+  <text class="title" x="40" y="56">Pastebin back-of-envelope estimation</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- TRAFFIC row -->
+  <text class="cap" x="24" y="112">TRAFFIC</text>
+  <text class="op" x="234" y="130" text-anchor="middle">× 0.1 paste/user·day</text>
+  <text class="op" x="478" y="130" text-anchor="middle">÷ 86,400 s</text>
+  <text class="op" x="722" y="130" text-anchor="middle">× 10 reads/write</text>
+  <text class="op" x="966" y="130" text-anchor="middle">× 3 peak factor</text>
+
+  <rect x="20" y="142" width="184" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="value" x="112" y="182" text-anchor="middle">10 M</text>
+  <text class="sub"   x="112" y="210" text-anchor="middle">daily active users</text>
+
+  <rect x="264" y="142" width="184" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="value" x="356" y="182" text-anchor="middle">1 M</text>
+  <text class="sub"   x="356" y="210" text-anchor="middle">writes / day</text>
+
+  <rect x="508" y="142" width="184" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="value" x="600" y="182" text-anchor="middle">≈ 12</text>
+  <text class="sub"   x="600" y="210" text-anchor="middle">write QPS</text>
+
+  <rect x="752" y="142" width="184" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="value" x="844" y="182" text-anchor="middle">≈ 116</text>
+  <text class="sub"   x="844" y="210" text-anchor="middle">read QPS</text>
+
+  <rect x="996" y="142" width="184" height="88" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="value" x="1088" y="182" text-anchor="middle">≈ 350</text>
+  <text class="sub"   x="1088" y="210" text-anchor="middle">peak read QPS</text>
+
+  <line x1="207" y1="186" x2="256" y2="186" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="451" y1="186" x2="500" y2="186" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="695" y1="186" x2="744" y2="186" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="939" y1="186" x2="988" y2="186" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- STORAGE row -->
+  <text class="cap" x="24" y="292">STORAGE</text>
+  <text class="op" x="320" y="310" text-anchor="middle">× 1 M writes/day</text>
+  <text class="op" x="600" y="310" text-anchor="middle">× 365 days</text>
+  <text class="op" x="880" y="310" text-anchor="middle">× 5 yr retention</text>
+
+  <rect x="80" y="322" width="200" height="88" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="value" x="180" y="362" text-anchor="middle">10 KB</text>
+  <text class="sub"   x="180" y="390" text-anchor="middle">avg paste size</text>
+
+  <rect x="360" y="322" width="200" height="88" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="value" x="460" y="362" text-anchor="middle">10 GB</text>
+  <text class="sub"   x="460" y="390" text-anchor="middle">new data / day</text>
+
+  <rect x="640" y="322" width="200" height="88" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="value" x="740" y="362" text-anchor="middle">3.65 TB</text>
+  <text class="sub"   x="740" y="390" text-anchor="middle">per year</text>
+
+  <rect x="920" y="322" width="200" height="88" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="value" x="1020" y="362" text-anchor="middle">≈ 18 TB</text>
+  <text class="sub"   x="1020" y="390" text-anchor="middle">5-year total</text>
+
+  <line x1="283" y1="366" x2="352" y2="366" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="563" y1="366" x2="632" y2="366" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="843" y1="366" x2="912" y2="366" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <line x1="40" y1="450" x2="1160" y2="450" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="600" y="495" text-anchor="middle">Round hard — orders of magnitude drive the design, not decimals.</text>
+</svg>

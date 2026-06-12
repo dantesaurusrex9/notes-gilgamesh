@@ -1,7 +1,7 @@
 ---
 title: "03 - Functions, Closures, Error Handling, and Result"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, functions, closures, errors]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Functions are named behavior, closures are movable behavior, and Swift's error handling makes failure explicit without returning nil everywhere. Learn argument labels, throwing functions, `defer`, capture lists, and `Result` before building larger APIs.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/03-functions-closures-error-handling-and-result/real-world-example.svg)
 
 This example models a small parser. It shows a throwing function, domain-specific errors, `do`/`catch`, `defer`, and a closure used to transform validated input.
 
@@ -50,6 +52,8 @@ do {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/03-functions-closures-error-handling-and-result/vocabulary.svg)
+
 **Argument label**: The external name used at the call site. Swift uses labels to make function calls read clearly.
 
 ---
@@ -78,11 +82,15 @@ do {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/03-functions-closures-error-handling-and-result/intuition.svg)
+
 Function design is API design. Swift intentionally makes call sites read like phrases: `insert(_:at:)`, `move(from:to:)`, `fetchUser(id:)`. A good function name plus labels should explain the effect before you read the body.
 
 Closures are powerful because they move behavior. They are also dangerous because they capture state. In UI apps and long-lived services, accidental captures of `self`, request objects, database handles, or large buffers can keep memory alive much longer than expected.
 
 ## Argument Labels
+
+![Visual diagram: Argument Labels](./assets/03-functions-closures-error-handling-and-result/argument-labels.svg)
 
 Swift separates the external argument label from the internal parameter name. Use this to make the call site fluent while keeping the implementation readable.
 
@@ -106,6 +114,8 @@ print(square(9))
 
 ## Closures and Capture Lists
 
+![Visual diagram: Closures and Capture Lists](./assets/03-functions-closures-error-handling-and-result/closures-and-capture-lists.svg)
+
 Closures can capture variables from their surrounding scope. The capture is often exactly what you want for callbacks. It is also how many retain cycles begin.
 
 ```swift
@@ -126,6 +136,8 @@ final class Downloader {
 
 ## Throwing and Catching
 
+![Visual diagram: Throwing and Catching](./assets/03-functions-closures-error-handling-and-result/throwing-and-catching.svg)
+
 Use `throws` when the caller can reasonably recover or report the failure. Do not use optionals for rich failure states, because nil loses the reason.
 
 ```swift
@@ -142,6 +154,8 @@ func require(_ key: String, in config: [String: String]) throws -> String {
 ```
 
 ## `defer`
+
+![Visual diagram: defer](./assets/03-functions-closures-error-handling-and-result/defer.svg)
 
 `defer` is for cleanup that must happen regardless of which return path runs. It is especially useful with files, locks, temporary state, metrics, or manual resources.
 
@@ -160,6 +174,8 @@ func process(lines: [String]) {
 ```
 
 ## `Result`
+
+![Visual diagram: Result](./assets/03-functions-closures-error-handling-and-result/result.svg)
 
 Use `Result` when you need to store or pass around the outcome of work instead of immediately throwing. It is common at async boundaries, callback APIs, and test fixtures.
 
@@ -183,6 +199,8 @@ case .failure(let error):
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/03-functions-closures-error-handling-and-result/pitfalls.svg)
+
 - **Overusing closures for simple calls**: A named function is easier to test and document when behavior is reused.
 - **Catching and swallowing errors**: Empty catch blocks hide failures. Log, transform, rethrow, or intentionally ignore with a comment.
 - **Using `try!` in product code**: `try!` asserts that failure is impossible. If failure is merely unlikely, handle it.
@@ -190,6 +208,8 @@ case .failure(let error):
 - **Designing labels from declarations only**: Read the call site. Swift API design is judged at the use site.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/03-functions-closures-error-handling-and-result/exercises.svg)
 
 1. Write a throwing function that parses a port number and rejects values outside 1 through 65535.
 2. Rewrite it to return `Result<Int, PortError>`.

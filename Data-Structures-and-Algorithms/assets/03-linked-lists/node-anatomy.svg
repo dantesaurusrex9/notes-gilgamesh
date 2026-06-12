@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-labelledby="title desc">
+  <title id="title">Anatomy of a singly linked list</title>
+  <desc id="desc">Three heap-allocated nodes, each split into a value cell and a next-pointer cell, chained by arrows from head to None. Fake heap addresses below each node show the nodes are not contiguous in memory.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .val { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .nxt { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <rect width="1200" height="500" fill="#ffffff"/>
+  <defs>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <text class="t" x="60" y="64">Anatomy of a singly linked list</text>
+  <line class="rule" x1="60" y1="90" x2="1140" y2="90"/>
+
+  <!-- head pointer -->
+  <text class="c" x="80" y="277">head</text>
+  <line class="arrow" x1="152" y1="268" x2="222" y2="268" marker-end="url(#arrBlue)"/>
+
+  <!-- node 1 -->
+  <rect class="val" x="230" y="220" width="100" height="96"/>
+  <rect class="nxt" x="330" y="220" width="100" height="96"/>
+  <text class="b" x="280" y="278" text-anchor="middle">7</text>
+  <circle cx="380" cy="268" r="6" fill="#0ea5e9"/>
+  <text class="s" x="280" y="344" text-anchor="middle">val</text>
+  <text class="s" x="380" y="344" text-anchor="middle">next</text>
+  <text class="s" x="330" y="376" text-anchor="middle">addr 0x55a1f0</text>
+
+  <!-- node 2 -->
+  <rect class="val" x="560" y="220" width="100" height="96"/>
+  <rect class="nxt" x="660" y="220" width="100" height="96"/>
+  <text class="b" x="610" y="278" text-anchor="middle">3</text>
+  <circle cx="710" cy="268" r="6" fill="#0ea5e9"/>
+  <text class="s" x="660" y="344" text-anchor="middle">addr 0x91b2c8</text>
+
+  <!-- node 3 -->
+  <rect class="val" x="890" y="220" width="100" height="96"/>
+  <rect class="nxt" x="990" y="220" width="100" height="96"/>
+  <text class="b" x="940" y="278" text-anchor="middle">9</text>
+  <circle cx="1040" cy="268" r="6" fill="#0ea5e9"/>
+  <text class="s" x="990" y="344" text-anchor="middle">addr 0x12d4a0</text>
+
+  <!-- next arrows -->
+  <line class="arrow" x1="380" y1="268" x2="552" y2="268" marker-end="url(#arrBlue)"/>
+  <line class="arrow" x1="710" y1="268" x2="882" y2="268" marker-end="url(#arrBlue)"/>
+  <line class="arrow" x1="1040" y1="268" x2="1098" y2="268" marker-end="url(#arrBlue)"/>
+  <text class="c" x="1108" y="277">None</text>
+
+  <!-- caption -->
+  <text class="m" x="60" y="436">Each node = one value + one reference. Nodes live anywhere on the heap (note the scattered addresses);</text>
+  <text class="m" x="60" y="468">only the next arrows connect them. Following an arrow is a pointer dereference, and usually a cache miss.</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "19 - Advanced Testing: Fakes, Async, UI Boundaries, and CI"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, testing, ci]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Good Swift tests are behavior-focused, deterministic, async-aware, and cheap to run. Use pure tests for domain logic, fakes for dependencies, Swift Testing or XCTest for assertions, UI tests sparingly, and CI gates that match shipping risk.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/real-world-example.svg)
 
 This test injects a fake clock so the service can be tested without sleeping. Determinism is the point.
 
@@ -47,6 +49,8 @@ struct TokenService {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/vocabulary.svg)
+
 **Unit test**: A focused test for one behavior, usually without real external dependencies.
 
 ---
@@ -75,11 +79,15 @@ struct TokenService {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/intuition.svg)
+
 Tests should reduce fear. If tests are slow, random, brittle, or coupled to implementation details, developers stop trusting them. The best Swift tests usually test plain Swift types without launching UI frameworks or real servers.
 
 Async code needs deterministic dependencies. Replace real clocks, UUID generators, network clients, and storage with fakes. Then test cancellation, failure, nil, invalid inputs, and repeated calls.
 
 ## Test Pyramid
+
+![Visual diagram: Test Pyramid](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/test-pyramid.svg)
 
 Use many cheap tests and fewer expensive tests.
 
@@ -92,6 +100,8 @@ Manual:  exploratory release testing
 
 ## Async Tests
 
+![Visual diagram: Async Tests](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/async-tests.svg)
+
 Swift Testing supports async test functions. Keep async tests deterministic and bounded by timeouts where supported by your framework.
 
 ```swift
@@ -103,6 +113,8 @@ Swift Testing supports async test functions. Keep async tests deterministic and 
 ```
 
 ## Fakes Over Mocks
+
+![Visual diagram: Fakes Over Mocks](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/fakes-over-mocks.svg)
 
 Prefer fakes when behavior matters more than verifying exact calls. Mocks can make tests brittle if they lock onto implementation sequence.
 
@@ -122,6 +134,8 @@ actor InMemoryUserStore {
 
 ## UI Boundaries
 
+![Visual diagram: UI Boundaries](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/ui-boundaries.svg)
+
 Test view models, reducers, validators, and services directly. Use UI tests for critical user flows: onboarding, purchase, sign-in, permission flows, and high-risk regressions.
 
 ```bash
@@ -131,6 +145,8 @@ swift test --sanitize=thread
 ```
 
 ## CI Gates
+
+![Visual diagram: CI Gates](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/ci-gates.svg)
 
 A practical Swift CI pipeline:
 
@@ -144,6 +160,8 @@ A practical Swift CI pipeline:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/pitfalls.svg)
+
 - **Sleeping in tests**: Replace time with a fake clock.
 - **Testing private implementation**: Test behavior through public or internal seams.
 - **One giant integration test**: It is slow and hard to diagnose.
@@ -151,6 +169,8 @@ A practical Swift CI pipeline:
 - **Ignoring cancellation**: Async services should define cancellation behavior.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/19-advanced-testing-fakes-async-ui-boundaries-and-ci/exercises.svg)
 
 1. Create a fake clock and test expiration logic.
 2. Replace one network dependency with a fake client.

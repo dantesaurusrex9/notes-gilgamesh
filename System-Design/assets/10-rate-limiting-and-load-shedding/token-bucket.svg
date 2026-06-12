@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Token bucket mechanics</title>
+  <desc id="desc">A bucket of capacity six holds four tokens. A refill arrow adds two tokens per second up to capacity. A request that finds a token is allowed with HTTP 200; a request that finds the bucket empty is denied with HTTP 429.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="52">Token bucket: burst up to C, refill at r tokens/s</text>
+  <line x1="40" y1="72" x2="1160" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- refill arrow -->
+  <text class="b" x="120" y="172">refill: r = 2 tokens/s</text>
+  <line x1="120" y1="200" x2="428" y2="200" stroke="#4b5563" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- bucket -->
+  <text class="s" x="600" y="138" text-anchor="middle">bucket, capacity C = 6</text>
+  <rect x="440" y="152" width="320" height="296" rx="14" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+
+  <!-- empty token slots (top row, right two) -->
+  <circle cx="600" cy="252" r="34" fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="7 7"/>
+  <circle cx="680" cy="252" r="34" fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="7 7"/>
+
+  <!-- four banked tokens -->
+  <circle cx="520" cy="252" r="34" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="520" cy="372" r="34" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="600" cy="372" r="34" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="680" cy="372" r="34" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="s" x="600" y="438" text-anchor="middle">4 tokens banked while idle</text>
+
+  <!-- allowed outcome -->
+  <line x1="765" y1="232" x2="868" y2="232" stroke="#4b5563" stroke-width="3" marker-end="url(#arr)"/>
+  <rect x="880" y="186" width="290" height="92" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="b" x="1025" y="224" text-anchor="middle">request takes 1 token</text>
+  <text class="b" x="1025" y="258" text-anchor="middle">allowed (HTTP 200)</text>
+
+  <!-- denied outcome -->
+  <line x1="765" y1="372" x2="868" y2="372" stroke="#4b5563" stroke-width="3" marker-end="url(#arr)"/>
+  <rect x="880" y="326" width="290" height="92" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+  <text class="b" x="1025" y="364" text-anchor="middle">bucket empty</text>
+  <text class="b" x="1025" y="398" text-anchor="middle">denied (HTTP 429)</text>
+
+  <!-- lazy refill formula -->
+  <text class="c" x="600" y="505" text-anchor="middle">tokens(t) = min(C, tokens + r * elapsed)</text>
+  <text class="s" x="600" y="540" text-anchor="middle">idle time banks tokens up to C — that bank is the allowed burst</text>
+</svg>

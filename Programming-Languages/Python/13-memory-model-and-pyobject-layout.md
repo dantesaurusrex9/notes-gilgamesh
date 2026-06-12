@@ -1,7 +1,7 @@
 ---
 title: "13 - Memory Model and PyObject Layout"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Every Python value is a `PyObject` C struct on the heap. A variable is a name in a namespace dictionary holding a pointer to that struct — not a typed memory slot containing a value. CPython manages object lifetimes through reference counting (`ob_refcnt`), with a supplemental generational GC to break reference cycles. Understanding the byte layout of `PyObject`, `PyListObject`, `PyDictObject`, and `PyLongObject` explains every identity, aliasing, and memory-cost puzzle you will encounter in production Python.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/13-memory-model-and-pyobject-layout/vocabulary.svg)
 
 **PyObject**: The C struct at the base of every CPython object. Contains at minimum `ob_refcnt` (reference count) and `ob_type` (pointer to the type object). All other object types embed this struct as their first member.
 
@@ -64,11 +66,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/13-memory-model-and-pyobject-layout/intuition.svg)
+
 Python variables are sticky notes, not boxes. When you write `x = [1, 2, 3]`, Python builds a list object somewhere on the C heap and sticks the label `x` on it. `y = x` pastes a second label on the same heap object. The object has no idea how many labels it has — that count lives in `ob_refcnt`. When both labels are removed, the object's refcount hits zero and the memory is reclaimed immediately.
 
 The type pointer (`ob_type`) is what makes duck typing work. When you call `len(x)`, CPython does not inspect `x`'s Python-level class name. It reads `x->ob_type->tp_as_sequence->sq_length` — a C function pointer — and calls it directly. Every Python operation dispatches through this table. The type object is the dispatch table; the instance is just the data.
 
 ## How it Works
+
+![Visual diagram: How it Works](./assets/13-memory-model-and-pyobject-layout/how-it-works.svg)
 
 ### The PyObject Header
 
@@ -203,6 +209,8 @@ The `dk_indices` array is the hash table (open addressing). Each slot stores a s
 
 ## Reference Counting in Motion
 
+![Visual diagram: Reference Counting in Motion](./assets/13-memory-model-and-pyobject-layout/reference-counting-in-motion.svg)
+
 Let's trace what CPython actually does to `ob_refcnt` through a sequence of operations. Each assignment, container insertion, function call argument, and return value increments the refcount of the object involved.
 
 ```python
@@ -259,6 +267,8 @@ flowchart LR
 
 ## The Cyclic Garbage Collector
 
+![Visual diagram: The Cyclic Garbage Collector](./assets/13-memory-model-and-pyobject-layout/the-cyclic-garbage-collector.svg)
+
 Reference counting alone leaks memory when objects form cycles. The classic pattern is two objects each holding a reference to the other, with no external names pointing to either. Both have `ob_refcnt = 1` even when they are unreachable.
 
 ```python
@@ -305,6 +315,8 @@ flowchart TD
 
 ## id() is the Memory Address
 
+![Visual diagram: id() is the Memory Address](./assets/13-memory-model-and-pyobject-layout/id-is-the-memory-address.svg)
+
 In CPython, `id(obj)` returns the integer value of the C pointer to the PyObject. Two consequences:
 
 1. `a is b` is exactly `id(a) == id(b)` — same object, same address.
@@ -333,6 +345,8 @@ print(id(y) == addr)    # May be True! CPython's allocator reuses blocks.
 > Never use `id()` as a surrogate for object equality in production code. After deallocation, a new object can land at the same address. Code like `if id(obj) in seen_ids` is silently broken because `seen_ids` may contain addresses of already-dead objects that a new live object has reused.
 
 ## Mutability and Aliasing at the Byte Level
+
+![Visual diagram: Mutability and Aliasing at the Byte Level](./assets/13-memory-model-and-pyobject-layout/mutability-and-aliasing-at-the-byte-level.svg)
 
 Two names, one object — aliasing is the default for any assignment to a mutable object.
 
@@ -388,6 +402,8 @@ After: z = x.copy()
 A shallow copy creates a new container with a new pointer array, but the pointers inside both arrays point to the same objects. Mutating a contained object (like `x[0].append(99)` if `x[0]` is a list) affects both `x` and `z`.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/13-memory-model-and-pyobject-layout/real-world-example.svg)
 
 Using `ctypes`, `sys`, and `gc` to observe memory structure directly — the kind of investigation you'd do when hunting a memory leak in a long-running service.
 
@@ -469,6 +485,8 @@ print(f"\nCycle GC: collected {collected} objects, gen counts before/after del: 
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/13-memory-model-and-pyobject-layout/in-practice.svg)
+
 **Small-int cache and interning are implementation details, not contracts.** PyPy, Jython, and GraalPy do not guarantee the same cache ranges. Write code that uses `==` for value comparison and `is` only for singletons (`None`, `True`, `False`).
 
 **Every Python object reference crossing a C boundary increments `ob_refcnt`.** This includes: storing in a container, passing as a function argument, returning from a function, storing in a closure cell. Forgetting this when writing C extensions with the Python C API leads to reference leaks (forgot `Py_DECREF`) or use-after-free crashes (forgot `Py_INCREF`).
@@ -482,6 +500,8 @@ print(f"\nCycle GC: collected {collected} objects, gen counts before/after del: 
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/13-memory-model-and-pyobject-layout/pitfalls.svg)
+
 - **"`del x` frees the memory."** — `del x` removes the name `x` from its namespace and decrements `ob_refcnt`. If any other reference exists (another name, a container slot, a closure cell, a stack frame), the object lives on. Memory is reclaimed only when `ob_refcnt` hits zero.
 - **"`id(a) == id(b)` means `a is b` was true at some point."** — Only if both objects are alive simultaneously. `id` values are reused after deallocation. Two different objects, alive at different times, can have the same `id`.
 - **"The small-int cache covers all small numbers."** — The cache covers exactly −5 to 256. `int("257")`, `257`, and `256 + 1` evaluated at runtime are not guaranteed to return the same object as the literal `257` in a different expression. The cache is populated at startup; dynamically constructed integers outside the range are fresh allocations.
@@ -490,6 +510,8 @@ print(f"\nCycle GC: collected {collected} objects, gen counts before/after del: 
 - **"Tuples are always smaller than lists."** — A tuple's `ob_item` array is inline; a list's is a separate allocation. For the same element count, `sys.getsizeof(tuple)` < `sys.getsizeof(list)` (no over-allocation, no indirection). But a very over-allocated list that has shrunk (via `pop`) may have `allocated >> len`, wasting memory invisibly.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/13-memory-model-and-pyobject-layout/exercises.svg)
 
 ### Exercise 1 — Aliasing Prediction
 

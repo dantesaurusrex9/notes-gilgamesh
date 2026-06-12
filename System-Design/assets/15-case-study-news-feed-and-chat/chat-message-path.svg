@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">Chat message path and the three ack states</title>
+  <desc id="desc">A message hops from the sender's app through gateway A, a conversation-partitioned queue, and gateway B to the recipient. Below, the monotonic delivery-state machine: sent, delivered, read.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="660" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Chat message path and the three ack states</text>
+  <line x1="40" y1="74" x2="1160" y2="74" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- hop labels -->
+  <text class="s" x="222" y="130" text-anchor="middle">1 send</text>
+  <text class="s" x="447" y="130" text-anchor="middle">2 enqueue</text>
+  <text class="s" x="752" y="130" text-anchor="middle">3 route</text>
+  <text class="s" x="977" y="130" text-anchor="middle">4 deliver</text>
+
+  <!-- message path boxes -->
+  <rect x="40" y="140" width="160" height="70" rx="10" fill="#ffffff" stroke="#0ea5e9" stroke-width="2"/>
+  <text class="b" x="120" y="172" text-anchor="middle">alice</text>
+  <text class="s" x="120" y="196" text-anchor="middle">mobile app</text>
+
+  <rect x="245" y="140" width="180" height="70" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="b" x="335" y="172" text-anchor="middle">gateway A</text>
+  <text class="s" x="335" y="196" text-anchor="middle">alice's WebSocket</text>
+
+  <rect x="470" y="140" width="260" height="70" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="b" x="600" y="172" text-anchor="middle">message queue</text>
+  <text class="s" x="600" y="196" text-anchor="middle">partition = hash(conv)</text>
+
+  <rect x="775" y="140" width="180" height="70" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="b" x="865" y="172" text-anchor="middle">gateway B</text>
+  <text class="s" x="865" y="196" text-anchor="middle">bob's WebSocket</text>
+
+  <rect x="1000" y="140" width="160" height="70" rx="10" fill="#ffffff" stroke="#0ea5e9" stroke-width="2"/>
+  <text class="b" x="1080" y="172" text-anchor="middle">bob</text>
+  <text class="s" x="1080" y="196" text-anchor="middle">mobile app</text>
+
+  <line x1="202" y1="175" x2="239" y2="175" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <line x1="427" y1="175" x2="464" y2="175" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <line x1="732" y1="175" x2="769" y2="175" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <line x1="957" y1="175" x2="994" y2="175" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+
+  <!-- registry -->
+  <rect x="690" y="265" width="360" height="64" rx="10" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="s" x="870" y="291" text-anchor="middle">connection registry (Redis, TTL 60s)</text>
+  <text class="c" x="870" y="317" text-anchor="middle">bob → gw-B</text>
+  <line x1="865" y1="263" x2="865" y2="218" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr2)"/>
+  <text class="s" x="880" y="245">lookup before hop 3</text>
+
+  <!-- delivery states -->
+  <text class="s" x="60" y="392">DELIVERY STATES — MONOTONIC; DUPLICATE ACKS ARE NO-OPS</text>
+  <rect x="120" y="420" width="200" height="64" rx="32" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="b" x="220" y="460" text-anchor="middle">sent</text>
+  <rect x="500" y="420" width="200" height="64" rx="32" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="b" x="600" y="460" text-anchor="middle">delivered</text>
+  <rect x="880" y="420" width="200" height="64" rx="32" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+  <text class="b" x="980" y="460" text-anchor="middle">read</text>
+
+  <line x1="324" y1="452" x2="492" y2="452" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <text class="s" x="409" y="438" text-anchor="middle">device ack</text>
+  <line x1="704" y1="452" x2="872" y2="452" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <text class="s" x="789" y="438" text-anchor="middle">open conversation</text>
+
+  <text class="s" x="220" y="522" text-anchor="middle">queue write durable;</text>
+  <text class="s" x="220" y="546" text-anchor="middle">server acks alice</text>
+  <text class="s" x="600" y="522" text-anchor="middle">bob's device stored it;</text>
+  <text class="s" x="600" y="546" text-anchor="middle">receipt relayed to alice</text>
+  <text class="s" x="980" y="522" text-anchor="middle">bob opened the chat;</text>
+  <text class="s" x="980" y="546" text-anchor="middle">receipt is itself a message</text>
+
+  <text class="m" x="60" y="614">If gateway B is down, the message parks in bob's mailbox and a push notification fires.</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "7 - Goroutines and Channels"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, goroutines, channels, concurrency, scheduler]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Goroutines are Go's unit of concurrency — lightweight (starting at ~2 KB stack), multiplexed onto OS threads by an M:N scheduler built into the runtime. Channels are typed conduits for communication between goroutines; they embody the CSP principle "do not communicate by sharing memory; instead, share memory by communicating." Together, goroutines and channels make it practical to have hundreds of thousands of concurrent units in a single process, with communication patterns (fan-out, fan-in, pipeline, worker pool) as first-class code.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/7-goroutines-and-channels/vocabulary.svg)
 
 **Goroutine**: A cooperatively/preemptively scheduled lightweight thread managed by the Go runtime. Starts with a small (~2 KB) growable stack. Not a 1:1 OS thread.
 
@@ -56,11 +58,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/7-goroutines-and-channels/intuition.svg)
+
 Think of goroutines as very cheap coroutines. The Go runtime manages a pool of OS threads and schedules goroutines onto them. Starting a goroutine costs roughly the price of allocating a 2 KB stack — orders of magnitude cheaper than starting an OS thread (which typically costs ~64 KB–8 MB of stack and a kernel context switch). A production Go server routinely runs 100,000–1,000,000 goroutines.
 
 Channels are typed message queues between goroutines. An unbuffered channel is a synchronisation point: both sender and receiver must be present simultaneously, like a handshake. A buffered channel is a queue with a fixed capacity: senders write to the buffer asynchronously until it is full, and receivers drain it independently. The mental model: unbuffered = telephone call (both parties must be present); buffered = email inbox (sender leaves a message, receiver reads when ready).
 
 ## Goroutine Internals — The M:N Scheduler
+
+![Visual diagram: Goroutine Internals - The M:N Scheduler](./assets/7-goroutines-and-channels/goroutine-internals-the-m-n-scheduler.svg)
 
 The Go runtime scheduler is a three-layer system: M (machine = OS thread), P (processor = scheduling context), G (goroutine).
 
@@ -98,6 +104,8 @@ Each P holds a local run queue of goroutines and is bound to one M at a time. Wh
 
 ## Starting Goroutines
 
+![Visual diagram: Starting Goroutines](./assets/7-goroutines-and-channels/starting-goroutines.svg)
+
 Any function call prefixed with `go` launches the call in a new goroutine. The `go` statement does not block; it returns immediately. Goroutine arguments are evaluated synchronously in the launching goroutine.
 
 ```go
@@ -126,6 +134,8 @@ func main() {
 > When `main()` returns, the program exits and all goroutines are killed, regardless of whether they have finished. Use `sync.WaitGroup` or a channel to wait for goroutines before returning from `main`. This is the most common beginner concurrency mistake.
 
 ## Channels
+
+![Visual diagram: Channels](./assets/7-goroutines-and-channels/channels.svg)
 
 ### Creating and Using Channels
 
@@ -184,6 +194,8 @@ func consumer(ch <-chan int) {
 
 ## `select` — Multiplex Channel Operations
 
+![Visual diagram: select - Multiplex Channel Operations](./assets/7-goroutines-and-channels/select-multiplex-channel-operations.svg)
+
 `select` waits on multiple channel operations simultaneously. The first case that is ready executes; if multiple are ready, one is chosen uniformly at random. A `default` case runs immediately if no other case is ready (making the select non-blocking).
 
 ```go
@@ -214,6 +226,8 @@ default:
 ```
 
 ## Concurrency Patterns
+
+![Visual diagram: Concurrency Patterns](./assets/7-goroutines-and-channels/concurrency-patterns.svg)
 
 ### Pipeline
 
@@ -344,6 +358,8 @@ func main() {
 
 ## `for range` on Channels
 
+![Visual diagram: for range on Channels](./assets/7-goroutines-and-channels/for-range-on-channels.svg)
+
 `for v := range ch` reads from `ch` until the channel is closed and drained. This is the idiomatic way to consume an entire channel:
 
 ```go
@@ -356,6 +372,8 @@ for result := range results {
 If the channel is never closed, `for range` blocks forever (a goroutine leak). Always ensure the sender closes the channel.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/7-goroutines-and-channels/real-world-example.svg)
 
 A rate-limited batch processor using a ticker channel and a worker pool — a realistic pattern in data pipelines and background job systems.
 
@@ -429,6 +447,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/7-goroutines-and-channels/in-practice.svg)
+
 **Goroutine leaks** are the most common production concurrency bug in Go. A goroutine blocked on a channel receive that will never arrive stays alive forever, holding all its captured variables. In long-running services, leaked goroutines accumulate and gradually exhaust memory. Always ensure every goroutine has a termination path — either the channel it blocks on will eventually be closed or receive a signal, or it responds to context cancellation (see [8 - Concurrency Patterns](./8-concurrency-patterns.md)).
 
 The `goleak` library (`go.uber.org/goleak`) detects goroutine leaks in tests by comparing the goroutine count before and after a test.
@@ -441,6 +461,8 @@ The `goleak` library (`go.uber.org/goleak`) detects goroutine leaks in tests by 
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/7-goroutines-and-channels/pitfalls.svg)
+
 - **"Goroutines are threads — use them sparingly."** — Goroutines are not OS threads. Starting 100,000 goroutines is normal. The bottleneck is not goroutine count but contention on shared resources.
 - **"Channel operations are always fast."** — Channel operations involve lock acquisition on the channel's internal mutex, possible goroutine parking, and scheduler involvement. For very high-throughput (millions of ops/sec) paths, direct mutex or atomic operations can be faster.
 - **"Closing a channel is always the sender's job."** — Yes, with the corollary that there should be exactly one writer (or a coordinating wrapper that closes on behalf of multiple writers). Multiple senders closing the same channel causes a panic.
@@ -448,6 +470,8 @@ The `goleak` library (`go.uber.org/goleak`) detects goroutine leaks in tests by 
 - **"`for range ch` handles channel closing automatically."** — Only if the sender closes the channel. If the sender never closes it, `range` blocks forever. A goroutine leak.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/7-goroutines-and-channels/exercises.svg)
 
 ### Exercise 1 — Conceptual: What is the difference between unbuffered and buffered channels for synchronisation?
 

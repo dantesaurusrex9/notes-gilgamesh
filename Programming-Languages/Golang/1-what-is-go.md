@@ -1,7 +1,7 @@
 ---
 title: "1 - What is Go"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, design, toolchain]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go is a statically typed, compiled language designed at Google by Rob Pike, Ken Thompson, and Robert Griesemer to address the pain of large-scale C++/Java codebases: slow compilation, byzantine dependency graphs, and poor concurrency primitives. It trades generality for consistency — one obvious way to do each thing — and ships a single self-contained binary with a garbage collector, a goroutine scheduler, and a rich standard library baked in.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/1-what-is-go/vocabulary.svg)
 
 **Package**: The unit of code organisation and compilation in Go. Every `.go` source file belongs to exactly one package. Packages are the import targets, not individual files.
 
@@ -58,11 +60,15 @@ go 1.22
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/1-what-is-go/intuition.svg)
+
 Think of Go as "C with a garbage collector, first-class concurrency, and a package manager that doesn't make you cry." The language surface area is tiny by design — there is no inheritance, no operator overloading, no generics-until-1.18, no exceptions. What you lose in expressive power you gain in readability and build speed: a fresh build of a million-line Go project takes seconds, not minutes, because every package's compiled form is cached and the compiler does no header-file re-parsing.
 
 The philosophy is captured in the original design FAQ: "Simplicity is prerequisite for reliability." When there is only one idiomatic way to iterate over a slice, every Go programmer reads every other Go programmer's code without a mental syntax-translation step.
 
 ## Why Go Exists — the Design Story
+
+![Visual diagram: Why Go Exists - the Design Story](./assets/1-what-is-go/why-go-exists-the-design-story.svg)
 
 In 2007, Google engineers Rob Pike, Ken Thompson, and Robert Griesemer were waiting for a 45-minute C++ compile to finish and started designing a better language on a whiteboard. They wanted to keep the things C++ got right — static typing, high performance, compiled binaries — while discarding the things that made large-scale development painful.
 
@@ -85,6 +91,8 @@ flowchart LR
 > Ken Thompson co-invented Unix and C. Rob Pike co-invented UTF-8 with Thompson. When they say the language is designed around "what Google's infrastructure engineers actually need," they speak from direct experience building the systems that Go now helps maintain.
 
 ## The Toolchain
+
+![Visual diagram: The Toolchain](./assets/1-what-is-go/the-toolchain.svg)
 
 Go ships as a single `go` binary that is the compiler, linker, test runner, dependency manager, formatter, and documentation server in one. There is no separate `make`, no separate package manager, no separate formatter to install.
 
@@ -155,6 +163,8 @@ gofmt -w .         # rewrite all files in place
 
 ## The Standard Library Philosophy
 
+![Visual diagram: The Standard Library Philosophy](./assets/1-what-is-go/the-standard-library-philosophy.svg)
+
 Go's standard library is deliberately batteries-included for server-side, networking, and systems work. You can write a production HTTP server, a JSON encoder/decoder, a TLS client, a cryptographic hash, and a concurrent worker pool using only the standard library. The design principle is: if a use case is common enough that most real programs need it, it belongs in the standard library, implemented once and maintained by the core team.
 
 Key packages to know:
@@ -179,6 +189,8 @@ Key packages to know:
 > Go does NOT have a built-in GUI toolkit, a built-in ORM, or a built-in web framework. Those live in the third-party ecosystem. The stdlib focuses on infrastructure: networking, concurrency, encoding, and OS integration.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/1-what-is-go/real-world-example.svg)
 
 Below is the canonical "hello, world" extended to a real server skeleton — the pattern that starts virtually every Go service. Notice: explicit error handling, no framework, stdlib `net/http` only.
 
@@ -234,6 +246,8 @@ Every pattern shown here is idiomatic and repeated in production Go services at 
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/1-what-is-go/in-practice.svg)
+
 Go's single-binary deployment model is a massive operational advantage. The binary embeds the runtime, all package code, and (by default, with CGO disabled) the libc. You ship one file, run it anywhere with a matching OS/arch, and the only failure mode is a missing environment variable — not a missing `.so`, not a wrong Python version, not a missing gem.
 
 Go's compilation speed means the inner loop of development (edit → compile → test) is nearly instant for most codebases. A 500,000-line Go service typically builds in under 5 seconds from scratch; incremental builds (only changed packages) take under a second.
@@ -246,6 +260,8 @@ Go's compilation speed means the inner loop of development (edit → compile →
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/1-what-is-go/pitfalls.svg)
+
 - **"Go is a scripting language because of `go run`."** — `go run` compiles to a temp binary; it has the same performance as a built binary. There is no interpreter. The startup latency is compile time, which is near-instant for small files.
 - **"Unused imports are a warning."** — They are a compile error. The compiler refuses to build. This is intentional: it prevents dependency bloat and makes the import graph explicit.
 - **"GOPATH is where my code lives."** — GOPATH is the legacy pre-modules workspace. Since Go 1.11 modules are the standard. Your code goes anywhere; `go.mod` tells the toolchain what module it belongs to.
@@ -253,6 +269,8 @@ Go's compilation speed means the inner loop of development (edit → compile →
 - **"Go has no generics."** — Go 1.18 (March 2022) introduced type parameters. See [11 - Generics](./11-generics.md).
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/1-what-is-go/exercises.svg)
 
 ### Exercise 1 — Conceptual: What is the Go stability promise?
 

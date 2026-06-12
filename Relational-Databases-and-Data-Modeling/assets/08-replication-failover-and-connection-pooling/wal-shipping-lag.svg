@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Streaming replication: WAL shipping and the lag window</title>
+  <desc id="desc">A primary database streams WAL records to a replica. The replica has replayed up to record 104 while the primary is at 108, so records 105 to 108 form the replication lag window.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .ok  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .lag { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="60">WAL shipping and the lag window</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <defs>
+    <marker id="ar" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <!-- Primary -->
+  <rect class="box" x="60" y="130" width="280" height="120" rx="10"/>
+  <text class="b" x="200" y="175" text-anchor="middle">Primary</text>
+  <text class="c" x="200" y="215" text-anchor="middle">flushed: 108</text>
+
+  <!-- Replica -->
+  <rect class="box" x="860" y="130" width="280" height="120" rx="10"/>
+  <text class="b" x="1000" y="175" text-anchor="middle">Replica</text>
+  <text class="c" x="1000" y="215" text-anchor="middle">replayed: 104</text>
+
+  <!-- stream arrow -->
+  <line class="arrow" x1="340" y1="190" x2="848" y2="190" marker-end="url(#ar)"/>
+  <text class="m" x="594" y="170" text-anchor="middle">WAL stream (walsender → walreceiver)</text>
+
+  <!-- WAL records row -->
+  <text class="b" x="60" y="340">WAL records on the primary:</text>
+  <g>
+    <rect class="ok"  x="60"  y="370" width="120" height="70"/><text class="c" x="120" y="413" text-anchor="middle">101</text>
+    <rect class="ok"  x="180" y="370" width="120" height="70"/><text class="c" x="240" y="413" text-anchor="middle">102</text>
+    <rect class="ok"  x="300" y="370" width="120" height="70"/><text class="c" x="360" y="413" text-anchor="middle">103</text>
+    <rect class="ok"  x="420" y="370" width="120" height="70"/><text class="c" x="480" y="413" text-anchor="middle">104</text>
+    <rect class="lag" x="540" y="370" width="120" height="70"/><text class="c" x="600" y="413" text-anchor="middle">105</text>
+    <rect class="lag" x="660" y="370" width="120" height="70"/><text class="c" x="720" y="413" text-anchor="middle">106</text>
+    <rect class="lag" x="780" y="370" width="120" height="70"/><text class="c" x="840" y="413" text-anchor="middle">107</text>
+    <rect class="lag" x="900" y="370" width="120" height="70"/><text class="c" x="960" y="413" text-anchor="middle">108</text>
+  </g>
+  <text class="s" x="300" y="470" text-anchor="middle">replayed on replica (reads see these)</text>
+  <text class="s" x="780" y="470" text-anchor="middle">lag window — committed on primary, invisible on replica</text>
+
+  <text class="m" x="60" y="525">A read routed to the replica during the lag window misses writes 105–108: stale reads.</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Anatomy of one relaxation step</title>
+  <desc id="desc">Settled node u with distance 3 has an edge of weight 5 to node v whose current best is 9. The candidate 3 plus 5 equals 8 beats 9, so dist of v becomes 8, parent of v becomes u, and (8, v) is pushed onto the heap.</desc>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .nl { font: 700 30px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .edge { stroke: #6b7280; stroke-width: 3; fill: none; }
+    .settled { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .frontier { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .amberbox { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .bluebox { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .greenbox { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .redtxt { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #b91c1c; }
+    .flow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrblue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">Anatomy of one relaxation step</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- graph row -->
+  <circle class="settled" cx="300" cy="190" r="44"/>
+  <text class="nl" x="300" y="201" text-anchor="middle">u</text>
+  <text class="b" x="300" y="276" text-anchor="middle">dist[u] = 3</text>
+  <text class="s" x="300" y="302" text-anchor="middle">settled — never changes again</text>
+
+  <line class="edge" x1="348" y1="190" x2="846" y2="190" marker-end="url(#arr2)"/>
+  <text class="b" x="600" y="170" text-anchor="middle">w(u, v) = 5</text>
+
+  <circle class="frontier" cx="900" cy="190" r="44"/>
+  <text class="nl" x="900" y="201" text-anchor="middle">v</text>
+  <text class="b" x="900" y="276" text-anchor="middle">dist[v] = 9 (current best)</text>
+  <text class="s" x="900" y="302" text-anchor="middle">tentative — still improvable</text>
+
+  <!-- decision flow -->
+  <rect class="amberbox" x="60" y="350" width="390" height="64" rx="10"/>
+  <text class="c" x="255" y="390" text-anchor="middle">cand = dist[u] + w = 8</text>
+
+  <line class="flow" x1="450" y1="382" x2="520" y2="382" marker-end="url(#arrblue)"/>
+
+  <rect class="bluebox" x="525" y="350" width="320" height="64" rx="10"/>
+  <text class="c" x="685" y="390" text-anchor="middle">cand &lt; dist[v]? 8 &lt; 9</text>
+
+  <line class="flow" x1="845" y1="382" x2="915" y2="382" marker-end="url(#arrblue)"/>
+
+  <rect class="greenbox" x="920" y="350" width="220" height="64" rx="10"/>
+  <text class="b" x="1030" y="390" text-anchor="middle">yes → relax</text>
+
+  <rect class="greenbox" x="150" y="452" width="900" height="60" rx="10"/>
+  <text class="c" x="600" y="490" text-anchor="middle">dist[v] = 8;  parent[v] = u;  heappush(heap, (8, v))</text>
+  <text class="s" x="600" y="544" text-anchor="middle">If cand ≥ dist[v], do nothing — relaxation never makes a distance worse</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "12 - Initialization, Methods, Properties, and Subscripts"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, initialization, properties]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Initialization is where Swift forces valid objects into existence. Stored properties, computed properties, property observers, methods, mutating methods, static members, and subscripts are the tools that make types feel native.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/12-initialization-methods-properties-and-subscripts/real-world-example.svg)
 
 This example creates a validated `EmailAddress` value. The initializer rejects invalid input, the stored property holds canonical data, and the computed property exposes derived information.
 
@@ -43,6 +45,8 @@ print(email.domain)
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/12-initialization-methods-properties-and-subscripts/vocabulary.svg)
+
 **Initializer**: Code that creates a valid instance and assigns all stored properties.
 
 ---
@@ -71,11 +75,15 @@ print(email.domain)
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/12-initialization-methods-properties-and-subscripts/intuition.svg)
+
 A strong Swift type does not let invalid data leak in and then ask every caller to remember the rules. Put the rule at construction time. If a user ID cannot be empty, reject empty IDs in the initializer. If a percentage must be between 0 and 1, enforce that once.
 
 Initialization is also where class inheritance becomes more complex. Structs and enums are usually simpler: initialize all stored properties and move on. Classes add designated initializers, convenience initializers, superclass initialization, and deinitialization.
 
 ## Stored and Computed Properties
+
+![Visual diagram: Stored and Computed Properties](./assets/12-initialization-methods-properties-and-subscripts/stored-and-computed-properties.svg)
 
 Use stored properties for state and computed properties for derived values. Document non-trivial computed property cost.
 
@@ -91,6 +99,8 @@ struct Rectangle {
 ```
 
 ## Property Observers
+
+![Visual diagram: Property Observers](./assets/12-initialization-methods-properties-and-subscripts/property-observers.svg)
 
 Use observers for local side effects that belong to the property. Avoid hiding major business workflows inside `didSet`.
 
@@ -109,6 +119,8 @@ struct Progress {
 
 ## Methods and Mutating Methods
 
+![Visual diagram: Methods and Mutating Methods](./assets/12-initialization-methods-properties-and-subscripts/methods-and-mutating-methods.svg)
+
 Struct methods cannot mutate `self` unless marked `mutating`. This makes value mutation visible in the type's API.
 
 ```swift
@@ -123,6 +135,8 @@ struct RetryPolicy {
 
 ## Static Members
 
+![Visual diagram: Static Members](./assets/12-initialization-methods-properties-and-subscripts/static-members.svg)
+
 Use static members for shared constants, factories, and type-level behavior.
 
 ```swift
@@ -134,6 +148,8 @@ struct Timeout {
 ```
 
 ## Subscripts
+
+![Visual diagram: Subscripts](./assets/12-initialization-methods-properties-and-subscripts/subscripts.svg)
 
 Subscripts make sense when bracket access is natural for the domain: collections, grids, matrices, caches, and keyed stores.
 
@@ -156,6 +172,8 @@ struct Grid<Element> {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/12-initialization-methods-properties-and-subscripts/pitfalls.svg)
+
 - **Invalid states after init**: If every caller has to remember validation, the type is too weak.
 - **Heavy computed properties**: Callers assume property access is cheap unless told otherwise.
 - **Surprising `didSet` side effects**: Use explicit methods for meaningful workflows.
@@ -163,6 +181,8 @@ struct Grid<Element> {
 - **Class initializer complexity**: Prefer composition and structs unless class identity is required.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/12-initialization-methods-properties-and-subscripts/exercises.svg)
 
 1. Build a `NonEmptyString` type with a throwing initializer.
 2. Add a computed property and document its complexity.

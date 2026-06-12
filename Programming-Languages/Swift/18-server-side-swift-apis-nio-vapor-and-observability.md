@@ -1,7 +1,7 @@
 ---
 title: "18 - Server-Side Swift: APIs, NIO, Vapor, and Observability"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, server-side-swift, vapor, observability]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Server-side Swift is SwiftPM-first, Linux-aware, async-heavy, and observability-driven. Vapor and Hummingbird sit above lower-level networking foundations like SwiftNIO; production services need release builds, structured logging, metrics, tracing, tests, and containers.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/18-server-side-swift-apis-nio-vapor-and-observability/real-world-example.svg)
 
 This minimal Vapor route receives JSON and returns JSON. It shows why server-side Swift feels familiar to app developers but still requires backend discipline.
 
@@ -36,6 +38,8 @@ func routes(_ app: Application) throws {
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/18-server-side-swift-apis-nio-vapor-and-observability/vocabulary.svg)
 
 **SwiftNIO**: A low-level asynchronous networking framework used by many server-side Swift libraries.
 
@@ -65,11 +69,15 @@ func routes(_ app: Application) throws {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/18-server-side-swift-apis-nio-vapor-and-observability/intuition.svg)
+
 Server-side Swift is not "iOS code on Linux." It is backend engineering in Swift. You need HTTP semantics, database boundaries, migrations, deployment, observability, security, and performance testing.
 
 The language helps with typed models, async/await, errors, and performance. It does not remove the need for timeouts, resource limits, request validation, authentication, rate limiting, and safe deployments.
 
 ## Project Shape
+
+![Visual diagram: Project Shape](./assets/18-server-side-swift-apis-nio-vapor-and-observability/project-shape.svg)
 
 Keep route handlers thin. Put domain logic in services and pure types.
 
@@ -89,6 +97,8 @@ Tests/
 
 ## Vapor Startup
 
+![Visual diagram: Vapor Startup](./assets/18-server-side-swift-apis-nio-vapor-and-observability/vapor-startup.svg)
+
 The official Swift.org Vapor guide starts with the Vapor toolbox and template.
 
 ```bash
@@ -107,6 +117,8 @@ swift build -c release
 
 ## Observability
 
+![Visual diagram: Observability](./assets/18-server-side-swift-apis-nio-vapor-and-observability/observability.svg)
+
 At minimum, log one structured event per request and one structured event per user-impacting failure. Keep secrets and PII out of logs.
 
 ```swift
@@ -119,6 +131,8 @@ req.logger.info("handled request", metadata: [
 Swift.org's log-level guidance recommends restraint for libraries: `trace` and `debug` are generally safe for library internals, while applications decide production verbosity.
 
 ## Deployment
+
+![Visual diagram: Deployment](./assets/18-server-side-swift-apis-nio-vapor-and-observability/deployment.svg)
 
 For containers, build release binaries inside a Swift image and deploy the runtime artifact.
 
@@ -135,6 +149,8 @@ CMD ["App", "serve", "--hostname", "0.0.0.0"]
 
 ## Production Checklist
 
+![Visual diagram: Production Checklist](./assets/18-server-side-swift-apis-nio-vapor-and-observability/production-checklist.svg)
+
 - Health check endpoint.
 - Graceful shutdown.
 - Request size limits.
@@ -148,6 +164,8 @@ CMD ["App", "serve", "--hostname", "0.0.0.0"]
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/18-server-side-swift-apis-nio-vapor-and-observability/pitfalls.svg)
+
 - **Blocking event loops**: CPU-heavy or blocking work can stall many requests.
 - **No request IDs**: Debugging production without correlation IDs is slow.
 - **Debug builds in containers**: Release mode is mandatory for realistic performance.
@@ -155,6 +173,8 @@ CMD ["App", "serve", "--hostname", "0.0.0.0"]
 - **Ignoring Linux differences**: Test in the OS you deploy.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/18-server-side-swift-apis-nio-vapor-and-observability/exercises.svg)
 
 1. Create a Vapor route that accepts JSON and returns typed JSON.
 2. Add a request ID to logs.

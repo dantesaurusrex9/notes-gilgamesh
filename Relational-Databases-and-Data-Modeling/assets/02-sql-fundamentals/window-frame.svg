@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Window function frame for a running total</title>
+  <desc id="desc">Seven order rows sorted by date; the frame UNBOUNDED PRECEDING to CURRENT ROW highlights rows 1 through 4 while computing the running total at row 4.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .v { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .in   { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cur  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .out  { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Window frame: running total at row 4</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="b" x="40" y="116">Rows sorted by ordered_at. Frame = ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW. No rows are collapsed.</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+
+  <!-- column headers -->
+  <text class="s" x="105" y="170" text-anchor="middle">order_id</text>
+  <text class="s" x="235" y="170" text-anchor="middle">amount</text>
+  <text class="s" x="365" y="170" text-anchor="middle">running_total</text>
+
+  <!-- rows: x=50 width 110 each cell, rows at y=185 + i*46 -->
+  <!-- row data: (101,120,120) (102,80,200) (103,200,400) (104,50,450)* (105,75,...) (106,25) (107,999) -->
+  <g>
+    <rect class="in" x="50" y="185" width="110" height="40"/><text class="v" x="105" y="212" text-anchor="middle">101</text>
+    <rect class="in" x="180" y="185" width="110" height="40"/><text class="v" x="235" y="212" text-anchor="middle">120</text>
+    <rect class="out" x="310" y="185" width="110" height="40"/><text class="v" x="365" y="212" text-anchor="middle">120</text>
+
+    <rect class="in" x="50" y="231" width="110" height="40"/><text class="v" x="105" y="258" text-anchor="middle">102</text>
+    <rect class="in" x="180" y="231" width="110" height="40"/><text class="v" x="235" y="258" text-anchor="middle">80</text>
+    <rect class="out" x="310" y="231" width="110" height="40"/><text class="v" x="365" y="258" text-anchor="middle">200</text>
+
+    <rect class="in" x="50" y="277" width="110" height="40"/><text class="v" x="105" y="304" text-anchor="middle">103</text>
+    <rect class="in" x="180" y="277" width="110" height="40"/><text class="v" x="235" y="304" text-anchor="middle">200</text>
+    <rect class="out" x="310" y="277" width="110" height="40"/><text class="v" x="365" y="304" text-anchor="middle">400</text>
+
+    <rect class="cur" x="50" y="323" width="110" height="40"/><text class="v" x="105" y="350" text-anchor="middle">104</text>
+    <rect class="cur" x="180" y="323" width="110" height="40"/><text class="v" x="235" y="350" text-anchor="middle">50</text>
+    <rect class="cur" x="310" y="323" width="110" height="40"/><text class="v" x="365" y="350" text-anchor="middle">450</text>
+
+    <rect class="out" x="50" y="369" width="110" height="40"/><text class="v" x="105" y="396" text-anchor="middle">105</text>
+    <rect class="out" x="180" y="369" width="110" height="40"/><text class="v" x="235" y="396" text-anchor="middle">75</text>
+    <rect class="out" x="310" y="369" width="110" height="40"/><text class="s" x="365" y="396" text-anchor="middle">...</text>
+
+    <rect class="out" x="50" y="415" width="110" height="40"/><text class="v" x="105" y="442" text-anchor="middle">106</text>
+    <rect class="out" x="180" y="415" width="110" height="40"/><text class="v" x="235" y="442" text-anchor="middle">25</text>
+    <rect class="out" x="310" y="415" width="110" height="40"/><text class="s" x="365" y="442" text-anchor="middle">...</text>
+
+    <rect class="out" x="50" y="461" width="110" height="40"/><text class="v" x="105" y="488" text-anchor="middle">107</text>
+    <rect class="out" x="180" y="461" width="110" height="40"/><text class="v" x="235" y="488" text-anchor="middle">999</text>
+    <rect class="out" x="310" y="461" width="110" height="40"/><text class="s" x="365" y="488" text-anchor="middle">...</text>
+  </g>
+
+  <!-- frame brace -->
+  <path d="M 445 185 L 470 185 L 470 363 L 445 363" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+  <line x1="470" y1="274" x2="540" y2="274" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arr2)"/>
+
+  <!-- explanation panel -->
+  <text class="c" x="560" y="220">SUM(amount) OVER (</text>
+  <text class="c" x="590" y="254">ORDER BY ordered_at</text>
+  <text class="c" x="590" y="288">ROWS BETWEEN UNBOUNDED PRECEDING</text>
+  <text class="c" x="590" y="322">AND CURRENT ROW)</text>
+  <text class="b" x="560" y="372">Green rows = the frame visible at row 4 (order 104).</text>
+  <text class="b" x="560" y="404">120 + 80 + 200 + 50 = 450 — the running total.</text>
+  <text class="b" x="560" y="436">The frame slides down one row at a time; every input</text>
+  <text class="b" x="560" y="468">row stays in the output, unlike GROUP BY.</text>
+  <text class="s" x="40" y="535">Blue row = CURRENT ROW. GROUP BY would collapse these 7 rows; a window function keeps all 7 and annotates each.</text>
+</svg>

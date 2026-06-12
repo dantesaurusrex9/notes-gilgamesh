@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">DFS three-color cycle detection: a gray-to-gray edge is a back edge</title>
+  <desc id="desc">Four nodes A, B, C, D in a row. DFS has visited A, B, and C, which are colored gray because they sit on the recursion stack. D is still white. A dashed red edge from C back to A points at a gray node, proving a directed cycle.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .gray { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2.5; }
+    .white { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2.5; }
+    .black { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .edge { stroke: #4b5563; stroke-width: 2.5; fill: none; }
+    .back { stroke: #f87171; stroke-width: 3.5; fill: none; stroke-dasharray: 10 7; }
+    .alert { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <defs>
+    <marker id="arrg" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#f87171"/>
+    </marker>
+  </defs>
+  <text class="t" x="40" y="58">DFS cycle detection: gray → gray = back edge</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="40" y="130">Snapshot mid-DFS: recursion stack = A → B → C (all GRAY); D not visited yet.</text>
+
+  <!-- tree edges -->
+  <line class="edge" x1="264" y1="250" x2="416" y2="250" marker-end="url(#arrg)"/>
+  <line class="edge" x1="514" y1="250" x2="666" y2="250" marker-end="url(#arrg)"/>
+  <line class="edge" x1="764" y1="250" x2="916" y2="250" marker-end="url(#arrg)"/>
+
+  <!-- back edge C -> A -->
+  <path class="back" d="M 700 288 Q 470 380 244 286" marker-end="url(#arrr)"/>
+
+  <!-- nodes -->
+  <circle class="gray" cx="220" cy="250" r="44"/>
+  <text class="b" x="220" y="259" text-anchor="middle">A</text>
+  <circle class="gray" cx="470" cy="250" r="44"/>
+  <text class="b" x="470" y="259" text-anchor="middle">B</text>
+  <circle class="gray" cx="720" cy="250" r="44"/>
+  <text class="b" x="720" y="259" text-anchor="middle">C</text>
+  <circle class="white" cx="970" cy="250" r="44"/>
+  <text class="b" x="970" y="259" text-anchor="middle">D</text>
+
+  <!-- alert label -->
+  <rect class="alert" x="320" y="392" width="300" height="44" rx="10"/>
+  <text class="s" x="470" y="420" text-anchor="middle">back edge C → A ⇒ cycle</text>
+
+  <!-- legend -->
+  <circle class="white" cx="60" cy="500" r="14"/>
+  <text class="s" x="85" y="507">WHITE — not visited yet</text>
+  <circle class="gray" cx="400" cy="500" r="14"/>
+  <text class="s" x="425" y="507">GRAY — on the recursion stack</text>
+  <circle class="black" cx="800" cy="500" r="14"/>
+  <text class="s" x="825" y="507">BLACK — fully finished</text>
+</svg>

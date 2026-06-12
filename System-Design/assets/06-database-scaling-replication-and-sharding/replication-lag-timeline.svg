@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Asynchronous replication lag timeline</title>
+  <desc id="desc">Three lanes: primary, replica, and the same user. At time zero the user writes and the primary commits LSN 101. The asynchronous WAL stream finishes replaying on the replica 120 milliseconds later. At 40 milliseconds the same user reads from the replica, which is still at LSN 100, and gets a stale answer — their own comment is missing. The amber band marks the stale window.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .m  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <defs>
+    <marker id="ablue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="agray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fca5a5"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">Async replication lag — the stale-read window</text>
+  <line x1="40" y1="84" x2="1160" y2="84" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- time gridlines -->
+  <text class="m" x="300" y="112" text-anchor="middle">t = 0</text>
+  <line x1="300" y1="122" x2="300" y2="512" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="3 5"/>
+  <text class="m" x="470" y="112" text-anchor="middle">t = 40 ms</text>
+  <line x1="470" y1="122" x2="470" y2="512" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="3 5"/>
+  <text class="m" x="900" y="112" text-anchor="middle">t = 120 ms</text>
+  <line x1="900" y1="122" x2="900" y2="512" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="3 5"/>
+
+  <!-- stale window band on the replica lane -->
+  <rect x="300" y="287" width="600" height="36" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="s" x="700" y="350" text-anchor="middle" fill="#6b7280">stale window — replica still serves LSN 100</text>
+
+  <!-- lanes -->
+  <line x1="150" y1="180" x2="1140" y2="180" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="s" x="40" y="187">Primary</text>
+  <line x1="150" y1="305" x2="1140" y2="305" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="s" x="40" y="312">Replica</text>
+  <line x1="150" y1="450" x2="1140" y2="450" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="s" x="40" y="457">Same user</text>
+
+  <!-- write at t=0 -->
+  <line x1="300" y1="444" x2="300" y2="192" stroke="#0ea5e9" stroke-width="3" marker-end="url(#ablue)"/>
+  <text class="s" x="312" y="405" fill="#0ea5e9">write: post comment v2</text>
+  <circle cx="300" cy="180" r="9" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="s" x="318" y="152">commit — LSN 101</text>
+
+  <!-- async WAL stream -->
+  <line x1="312" y1="186" x2="888" y2="296" stroke="#6b7280" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#agray)"/>
+  <text class="m" x="640" y="200">async WAL stream (replay ≈ 120 ms)</text>
+  <circle cx="900" cy="305" r="9" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="s" x="918" y="285">replica applies LSN 101</text>
+
+  <!-- stale read at t=40 -->
+  <line x1="470" y1="444" x2="470" y2="317" stroke="#fca5a5" stroke-width="3" marker-end="url(#ared)"/>
+  <text class="s" x="458" y="410" text-anchor="end">read at t = 40 ms</text>
+  <line x1="482" y1="317" x2="482" y2="438" stroke="#fca5a5" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#ared)"/>
+  <text class="s" x="495" y="390">returns v1 (stale!)</text>
+
+  <!-- consequence badge -->
+  <rect x="350" y="462" width="300" height="38" fill="#fee2e2" stroke="#fca5a5" stroke-width="2" rx="8"/>
+  <text class="s" x="500" y="487" text-anchor="middle">user's own comment is missing</text>
+</svg>

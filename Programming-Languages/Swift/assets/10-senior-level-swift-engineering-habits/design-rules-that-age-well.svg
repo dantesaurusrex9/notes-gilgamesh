@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Swift - Design Rules That Age Well</title>
+  <desc id="desc">Visual study diagram for the Design Rules That Age Well section in 10 - Senior-Level Swift Engineering Habits.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="960" height="540" fill="#fffaf5"/>
+  <rect x="28" y="28" width="904" height="484" rx="28" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <rect x="28" y="28" width="904" height="82" rx="28" fill="#ffedd5"/>
+  <rect x="28" y="82" width="904" height="28" fill="#ffedd5"/>
+  <text x="60" y="66" font-size="18" font-weight="800" fill="#f97316">Swift visual model</text>
+  <text x="60" y="96" text-anchor="start" font-size="28" font-weight="850" fill="#111827"><tspan x="60" dy="0">Design Rules That Age Well</tspan></text>
+  <text x="900" y="66" text-anchor="end" font-size="14" font-weight="700" fill="#475569">service</text>
+  <rect x="95" y="250" width="140" height="130" rx="16" fill="#ffedd5" stroke="#cbd5e1" stroke-width="2"/><circle cx="165" cy="285" r="21" fill="#e2e8f0" stroke="#f97316" stroke-width="2"/><text x="165" y="291" text-anchor="middle" font-size="13" font-weight="900" fill="#334155"><tspan x="165" dy="0">in</tspan></text><text x="165" y="340" text-anchor="middle" font-size="19" font-weight="800" fill="#111827"><tspan x="165" dy="0">Request</tspan></text><path d="M 239 315 C 268 315, 268 315, 297 315" fill="none" stroke="#f97316" stroke-width="3" marker-end="url(#arrow)"/><rect x="305" y="250" width="140" height="130" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><circle cx="375" cy="285" r="21" fill="#e2e8f0" stroke="#f97316" stroke-width="2"/><text x="375" y="291" text-anchor="middle" font-size="13" font-weight="900" fill="#334155"><tspan x="375" dy="0">edge</tspan></text><text x="375" y="340" text-anchor="middle" font-size="19" font-weight="800" fill="#111827"><tspan x="375" dy="0">Boundary</tspan></text><path d="M 449 315 C 478 315, 478 315, 507 315" fill="none" stroke="#f97316" stroke-width="3" marker-end="url(#arrow)"/><rect x="515" y="250" width="140" height="130" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><circle cx="585" cy="285" r="21" fill="#e2e8f0" stroke="#f97316" stroke-width="2"/><text x="585" y="291" text-anchor="middle" font-size="13" font-weight="900" fill="#334155"><tspan x="585" dy="0">core</tspan></text><text x="585" y="340" text-anchor="middle" font-size="19" font-weight="800" fill="#111827"><tspan x="585" dy="0">Handler</tspan></text><path d="M 659 315 C 688 315, 688 315, 717 315" fill="none" stroke="#f97316" stroke-width="3" marker-end="url(#arrow)"/><rect x="725" y="250" width="140" height="130" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="2"/><circle cx="795" cy="285" r="21" fill="#dcfce7" stroke="#4f46e5" stroke-width="2"/><text x="795" y="291" text-anchor="middle" font-size="13" font-weight="900" fill="#334155"><tspan x="795" dy="0">obs</tspan></text><text x="795" y="340" text-anchor="middle" font-size="19" font-weight="800" fill="#111827"><tspan x="795" dy="0">Telemetry</tspan></text><text x="480" y="455" text-anchor="middle" font-size="18" font-weight="650" fill="#334155"><tspan x="480" dy="0">Track the boundary, the handler, and the signal you can observe later.</tspan></text>
+</svg>

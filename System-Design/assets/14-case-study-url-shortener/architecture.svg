@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">URL shortener full architecture</title>
+  <desc id="desc">Clients reach app servers through a load balancer. App servers read from a Redis cache, fall back to sharded PostgreSQL, lease code batches from a key service, and emit click events asynchronously to Kafka for analytics workers.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .muted { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .node  { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .db    { fill: #ffffff; stroke: #8b5cf6; stroke-width: 2; }
+    .hl    { fill: #dbeafe; stroke: #38bdf8; stroke-width: 1.5; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 1.5; }
+    .flow  { stroke: #4b5563; stroke-width: 2.5; fill: none; }
+    .dash  { stroke: #6b7280; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="660" fill="#ffffff"/>
+  <text x="40" y="60" class="title">URL shortener — full architecture</text>
+  <line x1="40" y1="82" x2="1160" y2="82" class="rule"/>
+
+  <!-- request row -->
+  <rect x="40" y="160" width="140" height="80" rx="10" class="node"/>
+  <text x="110" y="195" class="body" text-anchor="middle">Client</text>
+  <text x="110" y="224" class="small" text-anchor="middle">&#8776; 4 k req/s</text>
+
+  <line x1="180" y1="200" x2="266" y2="200" class="flow" marker-end="url(#arrow)"/>
+
+  <rect x="270" y="160" width="180" height="80" rx="10" class="node"/>
+  <text x="360" y="195" class="body" text-anchor="middle">Load balancer</text>
+  <text x="360" y="224" class="small" text-anchor="middle">TLS, health checks</text>
+
+  <line x1="450" y1="200" x2="526" y2="200" class="flow" marker-end="url(#arrow)"/>
+
+  <rect x="530" y="150" width="200" height="100" rx="10" class="node"/>
+  <text x="630" y="195" class="body" text-anchor="middle">App servers</text>
+  <text x="630" y="228" class="small" text-anchor="middle">stateless &#215; N</text>
+
+  <!-- cache -->
+  <rect x="820" y="110" width="210" height="80" rx="10" class="hl"/>
+  <text x="925" y="145" class="body" text-anchor="middle">Redis cache</text>
+  <text x="925" y="174" class="small" text-anchor="middle">~34 GB hot set</text>
+  <line x1="730" y1="180" x2="816" y2="153" class="flow" marker-end="url(#arrow)"/>
+  <text x="776" y="146" class="muted" text-anchor="middle">reads</text>
+
+  <!-- database -->
+  <rect x="820" y="250" width="210" height="90" rx="10" class="db"/>
+  <text x="925" y="287" class="body" text-anchor="middle">PostgreSQL</text>
+  <text x="925" y="318" class="small" text-anchor="middle">urls table, sharded</text>
+  <line x1="730" y1="220" x2="816" y2="283" class="flow" marker-end="url(#arrow)"/>
+  <text x="736" y="268" class="muted" text-anchor="start">miss + writes</text>
+
+  <!-- key service -->
+  <rect x="530" y="400" width="200" height="80" rx="10" class="amber"/>
+  <text x="630" y="435" class="body" text-anchor="middle">Key service</text>
+  <text x="630" y="464" class="small" text-anchor="middle">pre-generated codes</text>
+  <line x1="630" y1="250" x2="630" y2="396" class="dash" marker-end="url(#arrow)"/>
+  <text x="648" y="330" class="muted" text-anchor="start">lease 10 k codes</text>
+
+  <!-- async analytics -->
+  <rect x="790" y="460" width="180" height="80" rx="10" class="amber"/>
+  <text x="880" y="495" class="body" text-anchor="middle">Kafka</text>
+  <text x="880" y="524" class="small" text-anchor="middle">click events</text>
+  <line x1="700" y1="250" x2="788" y2="484" class="dash" marker-end="url(#arrow)"/>
+  <text x="758" y="372" class="muted" text-anchor="start">async click events</text>
+
+  <rect x="1020" y="460" width="160" height="80" rx="10" class="node"/>
+  <text x="1100" y="495" class="body" text-anchor="middle">Analytics</text>
+  <text x="1100" y="524" class="small" text-anchor="middle">workers &#8594; OLAP</text>
+  <line x1="970" y1="500" x2="1016" y2="500" class="flow" marker-end="url(#arrow)"/>
+
+  <!-- legend -->
+  <line x1="40" y1="600" x2="110" y2="600" class="flow" marker-end="url(#arrow)"/>
+  <text x="125" y="607" class="small" text-anchor="start">synchronous request path</text>
+  <line x1="470" y1="600" x2="540" y2="600" class="dash" marker-end="url(#arrow)"/>
+  <text x="555" y="607" class="small" text-anchor="start">async / background</text>
+</svg>

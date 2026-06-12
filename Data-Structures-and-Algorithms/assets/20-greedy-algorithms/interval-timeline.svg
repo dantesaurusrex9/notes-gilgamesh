@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Interval scheduling timeline: earliest finish first</title>
+  <desc id="desc">Five intervals A through E on a time axis from 0 to 10. Greedy scans in finish-time order, keeps A, C, E (green) and rejects B, D (red) because each rejected interval starts before the last kept finish time.</desc>
+  <style>
+    .t    { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b    { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m    { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s    { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .keep { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .rej  { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .axis { stroke: #4b5563; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+
+  <text x="60" y="58" class="t">Interval scheduling — earliest finish first</text>
+  <line x1="60" y1="78" x2="1140" y2="78" class="rule"/>
+
+  <!-- legend -->
+  <rect x="860" y="96" width="24" height="24" rx="6" class="keep"/>
+  <text x="894" y="114" class="s">kept</text>
+  <rect x="980" y="96" width="24" height="24" rx="6" class="rej"/>
+  <text x="1014" y="114" class="s">rejected</text>
+
+  <!-- A [1,4) kept -->
+  <rect x="200" y="120" width="300" height="48" rx="8" class="keep"/>
+  <text x="350" y="152" text-anchor="middle" class="b">A [1, 4)</text>
+  <text x="516" y="152" class="s">kept — finishes first of all</text>
+
+  <!-- B [0,6) rejected -->
+  <rect x="100" y="184" width="600" height="48" rx="8" class="rej"/>
+  <text x="400" y="216" text-anchor="middle" class="b">B [0, 6)</text>
+  <text x="716" y="216" class="s">rejected — starts at 0 &lt; 4</text>
+
+  <!-- C [5,7) kept -->
+  <rect x="600" y="248" width="200" height="48" rx="8" class="keep"/>
+  <text x="700" y="280" text-anchor="middle" class="b">C [5, 7)</text>
+  <text x="816" y="280" class="s">kept — 5 ≥ 4</text>
+
+  <!-- D [3,8) rejected -->
+  <rect x="400" y="312" width="500" height="48" rx="8" class="rej"/>
+  <text x="650" y="344" text-anchor="middle" class="b">D [3, 8)</text>
+  <text x="916" y="344" class="s">rejected — 3 &lt; 7</text>
+
+  <!-- E [8,10) kept -->
+  <rect x="900" y="376" width="200" height="48" rx="8" class="keep"/>
+  <text x="1000" y="408" text-anchor="middle" class="b">E [8, 10)</text>
+  <text x="884" y="408" text-anchor="end" class="s">kept — 8 ≥ 7</text>
+
+  <!-- time axis -->
+  <line x1="90" y1="470" x2="1110" y2="470" class="axis"/>
+  <line x1="100"  y1="464" x2="100"  y2="476" class="axis"/>
+  <line x1="200"  y1="464" x2="200"  y2="476" class="axis"/>
+  <line x1="300"  y1="464" x2="300"  y2="476" class="axis"/>
+  <line x1="400"  y1="464" x2="400"  y2="476" class="axis"/>
+  <line x1="500"  y1="464" x2="500"  y2="476" class="axis"/>
+  <line x1="600"  y1="464" x2="600"  y2="476" class="axis"/>
+  <line x1="700"  y1="464" x2="700"  y2="476" class="axis"/>
+  <line x1="800"  y1="464" x2="800"  y2="476" class="axis"/>
+  <line x1="900"  y1="464" x2="900"  y2="476" class="axis"/>
+  <line x1="1000" y1="464" x2="1000" y2="476" class="axis"/>
+  <line x1="1100" y1="464" x2="1100" y2="476" class="axis"/>
+  <text x="100"  y="500" text-anchor="middle" class="s">0</text>
+  <text x="200"  y="500" text-anchor="middle" class="s">1</text>
+  <text x="300"  y="500" text-anchor="middle" class="s">2</text>
+  <text x="400"  y="500" text-anchor="middle" class="s">3</text>
+  <text x="500"  y="500" text-anchor="middle" class="s">4</text>
+  <text x="600"  y="500" text-anchor="middle" class="s">5</text>
+  <text x="700"  y="500" text-anchor="middle" class="s">6</text>
+  <text x="800"  y="500" text-anchor="middle" class="s">7</text>
+  <text x="900"  y="500" text-anchor="middle" class="s">8</text>
+  <text x="1000" y="500" text-anchor="middle" class="s">9</text>
+  <text x="1100" y="500" text-anchor="middle" class="s">10</text>
+
+  <text x="600" y="540" text-anchor="middle" class="m">Keep when start ≥ last kept finish → A, C, E is the maximum.</text>
+</svg>

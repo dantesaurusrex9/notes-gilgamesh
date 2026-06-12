@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Functional dependency arrows over the messy orders table</title>
+  <desc id="desc">Attributes as boxes with arrows showing which attribute determines which, classifying full, partial, and transitive dependencies.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .key { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .attr { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .badattr { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .okattr { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="60">Functional dependencies: X → Y</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+  <defs>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#16a34a"/></marker>
+    <marker id="r" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#dc2626"/></marker>
+    <marker id="p" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/></marker>
+  </defs>
+
+  <!-- composite key -->
+  <rect class="key" x="60" y="140" width="240" height="60" rx="8"/>
+  <text class="b" x="90" y="178">(order_id, sku)</text>
+  <text class="s" x="90" y="222">composite key</text>
+
+  <!-- key parts -->
+  <rect class="key" x="60" y="300" width="180" height="60" rx="8"/>
+  <text class="b" x="90" y="338">order_id</text>
+  <rect class="key" x="60" y="420" width="180" height="60" rx="8"/>
+  <text class="b" x="105" y="458">sku</text>
+
+  <!-- right-hand attributes -->
+  <rect class="okattr" x="520" y="140" width="200" height="60" rx="8"/>
+  <text class="b" x="550" y="178">quantity</text>
+
+  <rect class="badattr" x="520" y="290" width="220" height="60" rx="8"/>
+  <text class="b" x="550" y="328">customer_id</text>
+
+  <rect class="badattr" x="900" y="290" width="260 " height="60" rx="8"/>
+  <text class="b" x="930" y="328">customer_email</text>
+
+  <rect class="badattr" x="520" y="420" width="240" height="60" rx="8"/>
+  <text class="b" x="550" y="458">product_name</text>
+
+  <!-- arrows -->
+  <line x1="300" y1="170" x2="510" y2="170" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+  <text class="s" x="330" y="155" fill="#16a34a">full dependency (good)</text>
+
+  <line x1="240" y1="320" x2="510" y2="320" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+  <text class="s" x="270" y="305" fill="#dc2626">partial: depends on part of key (2NF violation)</text>
+
+  <line x1="740" y1="320" x2="890" y2="320" stroke="#8b5cf6" stroke-width="3" marker-end="url(#p)"/>
+  <text class="s" x="755" y="305" fill="#8b5cf6">transitive (3NF violation)</text>
+
+  <line x1="240" y1="450" x2="510" y2="450" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+  <text class="s" x="270" y="435" fill="#dc2626">partial: depends only on sku (2NF violation)</text>
+
+  <text class="s" x="60" y="540">Green arrow = healthy (whole key determines it). Red = partial dependency. Purple = transitive chain key → customer_id → email.</text>
+</svg>

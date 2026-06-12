@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-labelledby="title desc">
+  <title id="title">Variable sliding window on the string abcabcbb</title>
+  <desc id="desc">Three snapshots of a variable-size window scanning the string abcabcbb. The right pointer always advances; when it reads a character already inside the window, the left pointer jumps just past the previous occurrence.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .lblL { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8b5cf6; }
+    .lblR { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .cellW { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .cellG { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cellR { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .cellB { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .arrL { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+    .arrR { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="headB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="headP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <text class="t" x="60" y="56">Variable window on "abcabcbb"</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Snapshot 1: right=3 reads a duplicate -->
+  <text class="b" x="60" y="132">1. right = 3 reads 'a', but last_seen['a'] = 0 ≥ left = 0 → duplicate inside window</text>
+  <text class="s" x="285" y="166" text-anchor="middle">0</text>
+  <text class="s" x="375" y="166" text-anchor="middle">1</text>
+  <text class="s" x="465" y="166" text-anchor="middle">2</text>
+  <text class="s" x="555" y="166" text-anchor="middle">3</text>
+  <text class="s" x="645" y="166" text-anchor="middle">4</text>
+  <text class="s" x="735" y="166" text-anchor="middle">5</text>
+  <text class="s" x="825" y="166" text-anchor="middle">6</text>
+  <text class="s" x="915" y="166" text-anchor="middle">7</text>
+  <rect class="cellR" x="240" y="176" width="90" height="70"/>
+  <rect class="cellG" x="330" y="176" width="90" height="70"/>
+  <rect class="cellG" x="420" y="176" width="90" height="70"/>
+  <rect class="cellB" x="510" y="176" width="90" height="70"/>
+  <rect class="cellW" x="600" y="176" width="90" height="70"/>
+  <rect class="cellW" x="690" y="176" width="90" height="70"/>
+  <rect class="cellW" x="780" y="176" width="90" height="70"/>
+  <rect class="cellW" x="870" y="176" width="90" height="70"/>
+  <text class="c" x="285" y="219" text-anchor="middle">a</text>
+  <text class="c" x="375" y="219" text-anchor="middle">b</text>
+  <text class="c" x="465" y="219" text-anchor="middle">c</text>
+  <text class="c" x="555" y="219" text-anchor="middle">a</text>
+  <text class="c" x="645" y="219" text-anchor="middle">b</text>
+  <text class="c" x="735" y="219" text-anchor="middle">c</text>
+  <text class="c" x="825" y="219" text-anchor="middle">b</text>
+  <text class="c" x="915" y="219" text-anchor="middle">b</text>
+  <line class="arrL" x1="285" y1="290" x2="285" y2="252" marker-end="url(#headP)"/>
+  <text class="lblL" x="285" y="314" text-anchor="middle">left = 0</text>
+  <line class="arrR" x1="555" y1="290" x2="555" y2="252" marker-end="url(#headB)"/>
+  <text class="lblR" x="555" y="314" text-anchor="middle">right = 3</text>
+
+  <!-- Snapshot 2: left jumps past the duplicate -->
+  <text class="b" x="60" y="356">2. shrink: left = last_seen['a'] + 1 = 1 → window "bca" valid again, length 3</text>
+  <text class="s" x="285" y="390" text-anchor="middle">0</text>
+  <text class="s" x="375" y="390" text-anchor="middle">1</text>
+  <text class="s" x="465" y="390" text-anchor="middle">2</text>
+  <text class="s" x="555" y="390" text-anchor="middle">3</text>
+  <text class="s" x="645" y="390" text-anchor="middle">4</text>
+  <text class="s" x="735" y="390" text-anchor="middle">5</text>
+  <text class="s" x="825" y="390" text-anchor="middle">6</text>
+  <text class="s" x="915" y="390" text-anchor="middle">7</text>
+  <rect class="cellW" x="240" y="400" width="90" height="70"/>
+  <rect class="cellG" x="330" y="400" width="90" height="70"/>
+  <rect class="cellG" x="420" y="400" width="90" height="70"/>
+  <rect class="cellG" x="510" y="400" width="90" height="70"/>
+  <rect class="cellW" x="600" y="400" width="90" height="70"/>
+  <rect class="cellW" x="690" y="400" width="90" height="70"/>
+  <rect class="cellW" x="780" y="400" width="90" height="70"/>
+  <rect class="cellW" x="870" y="400" width="90" height="70"/>
+  <text class="c" x="285" y="443" text-anchor="middle">a</text>
+  <text class="c" x="375" y="443" text-anchor="middle">b</text>
+  <text class="c" x="465" y="443" text-anchor="middle">c</text>
+  <text class="c" x="555" y="443" text-anchor="middle">a</text>
+  <text class="c" x="645" y="443" text-anchor="middle">b</text>
+  <text class="c" x="735" y="443" text-anchor="middle">c</text>
+  <text class="c" x="825" y="443" text-anchor="middle">b</text>
+  <text class="c" x="915" y="443" text-anchor="middle">b</text>
+  <line class="arrL" x1="375" y1="514" x2="375" y2="476" marker-end="url(#headP)"/>
+  <text class="lblL" x="375" y="538" text-anchor="middle">left = 1</text>
+  <line class="arrR" x1="555" y1="514" x2="555" y2="476" marker-end="url(#headB)"/>
+  <text class="lblR" x="555" y="538" text-anchor="middle">right = 3</text>
+
+  <!-- Snapshot 3: a later jump -->
+  <text class="b" x="60" y="580">3. later: right = 6 reads 'b', last 'b' at 4 ≥ left = 3 → left jumps to 5; best stays 3</text>
+  <text class="s" x="285" y="614" text-anchor="middle">0</text>
+  <text class="s" x="375" y="614" text-anchor="middle">1</text>
+  <text class="s" x="465" y="614" text-anchor="middle">2</text>
+  <text class="s" x="555" y="614" text-anchor="middle">3</text>
+  <text class="s" x="645" y="614" text-anchor="middle">4</text>
+  <text class="s" x="735" y="614" text-anchor="middle">5</text>
+  <text class="s" x="825" y="614" text-anchor="middle">6</text>
+  <text class="s" x="915" y="614" text-anchor="middle">7</text>
+  <rect class="cellW" x="240" y="624" width="90" height="70"/>
+  <rect class="cellW" x="330" y="624" width="90" height="70"/>
+  <rect class="cellW" x="420" y="624" width="90" height="70"/>
+  <rect class="cellW" x="510" y="624" width="90" height="70"/>
+  <rect class="cellR" x="600" y="624" width="90" height="70"/>
+  <rect class="cellG" x="690" y="624" width="90" height="70"/>
+  <rect class="cellB" x="780" y="624" width="90" height="70"/>
+  <rect class="cellW" x="870" y="624" width="90" height="70"/>
+  <text class="c" x="285" y="667" text-anchor="middle">a</text>
+  <text class="c" x="375" y="667" text-anchor="middle">b</text>
+  <text class="c" x="465" y="667" text-anchor="middle">c</text>
+  <text class="c" x="555" y="667" text-anchor="middle">a</text>
+  <text class="c" x="645" y="667" text-anchor="middle">b</text>
+  <text class="c" x="735" y="667" text-anchor="middle">c</text>
+  <text class="c" x="825" y="667" text-anchor="middle">b</text>
+  <text class="c" x="915" y="667" text-anchor="middle">b</text>
+  <text class="lblL" x="1010" y="650" text-anchor="start">left = 5</text>
+  <text class="lblR" x="1010" y="678" text-anchor="start">right = 6</text>
+</svg>

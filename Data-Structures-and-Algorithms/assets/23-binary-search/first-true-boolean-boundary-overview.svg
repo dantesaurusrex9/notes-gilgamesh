@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Sorted boolean array boundary overview</title>
+  <desc id="desc">A sorted boolean array with false values on the left, true values on the right, and the boundary at the first true index.</desc>
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .rule { stroke: #e5e7eb; stroke-width: 2; }
+      .title { font: 700 42px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .body { font: 400 25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .mono { font: 700 25px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+      .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .tiny { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .value { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .falseCell { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+      .trueCell { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+      .boundary { stroke: #8b5cf6; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 10 10; }
+      .answer { fill: #0ea5e9; }
+      .labelFalse { fill: #b91c1c; }
+      .labelTrue { fill: #15803d; }
+      .faint { fill: #6b7280; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="620"/>
+  <text class="title" x="64" y="78">First True Boundary</text>
+  <line class="rule" x1="64" y1="106" x2="1136" y2="106"/>
+  <text class="body" x="64" y="162">The array is split into a</text>
+  <text class="mono" x="371" y="162">False</text>
+  <text class="body" x="456" y="162">section and a</text>
+  <text class="mono" x="618" y="162">True</text>
+  <text class="body" x="689" y="162">section.</text>
+  <text class="body" x="64" y="209">The answer is the first index where the right section starts.</text>
+
+  <text class="small" x="64" y="278">arr = [false, false, true, true, true]</text>
+
+  <g transform="translate(285 335)">
+    <rect class="falseCell" x="0" y="0" width="125" height="78"/>
+    <rect class="falseCell" x="125" y="0" width="125" height="78"/>
+    <rect class="trueCell" x="250" y="0" width="125" height="78"/>
+    <rect class="trueCell" x="375" y="0" width="125" height="78"/>
+    <rect class="trueCell" x="500" y="0" width="125" height="78"/>
+
+    <text class="value labelFalse" x="62.5" y="48" text-anchor="middle">False</text>
+    <text class="value labelFalse" x="187.5" y="48" text-anchor="middle">False</text>
+    <text class="value labelTrue" x="312.5" y="48" text-anchor="middle">True</text>
+    <text class="value labelTrue" x="437.5" y="48" text-anchor="middle">True</text>
+    <text class="value labelTrue" x="562.5" y="48" text-anchor="middle">True</text>
+
+    <text class="tiny" x="62.5" y="108" text-anchor="middle">0</text>
+    <text class="tiny" x="187.5" y="108" text-anchor="middle">1</text>
+    <text class="tiny" x="312.5" y="108" text-anchor="middle">2</text>
+    <text class="tiny" x="437.5" y="108" text-anchor="middle">3</text>
+    <text class="tiny" x="562.5" y="108" text-anchor="middle">4</text>
+
+    <line class="boundary" x1="250" y1="-48" x2="250" y2="135"/>
+    <polygon class="answer" points="312.5,-80 344,-28 281,-28"/>
+    <text class="small" x="312.5" y="-45" text-anchor="middle" fill="#ffffff">A</text>
+  </g>
+
+  <text class="small" x="410" y="530">answer = 2</text>
+  <text class="small faint" x="532" y="530">Boundary means first true, not just any true.</text>
+</svg>

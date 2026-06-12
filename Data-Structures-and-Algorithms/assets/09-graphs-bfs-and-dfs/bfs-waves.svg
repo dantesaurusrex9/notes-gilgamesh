@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">BFS expands the frontier in waves of increasing distance</title>
+  <desc id="desc">Six nodes arranged in four columns. Source S sits at distance 0. Nodes A and B form the distance-1 wave, C and D the distance-2 wave, and E the distance-3 wave. Dashed vertical lines separate the waves. Each node is colored by the wave it belongs to.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .d0 { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .d1 { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .d2 { fill: #fef3c7; stroke: #fcd34d; stroke-width: 3; }
+    .d3 { fill: #fee2e2; stroke: #fca5a5; stroke-width: 3; }
+    .edge { stroke: #6b7280; stroke-width: 3; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .sep  { stroke: #e5e7eb; stroke-width: 2.5; stroke-dasharray: 8 8; }
+  </style>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+
+  <text x="40" y="60" class="t">BFS visits nodes in waves of distance</text>
+  <line x1="40" y1="82" x2="1160" y2="82" class="rule"/>
+
+  <!-- wave separators -->
+  <line x1="320" y1="120" x2="320" y2="480" class="sep"/>
+  <line x1="600" y1="120" x2="600" y2="480" class="sep"/>
+  <line x1="880" y1="120" x2="880" y2="480" class="sep"/>
+
+  <!-- edges -->
+  <line x1="180" y1="320" x2="460" y2="220" class="edge"/>
+  <line x1="180" y1="320" x2="460" y2="420" class="edge"/>
+  <line x1="460" y1="220" x2="740" y2="220" class="edge"/>
+  <line x1="460" y1="420" x2="740" y2="420" class="edge"/>
+  <line x1="740" y1="220" x2="1020" y2="320" class="edge"/>
+  <line x1="740" y1="420" x2="1020" y2="320" class="edge"/>
+
+  <!-- nodes -->
+  <circle cx="180" cy="320" r="36" class="d0"/>
+  <text x="180" y="330" class="b" text-anchor="middle" font-weight="700">S</text>
+
+  <circle cx="460" cy="220" r="36" class="d1"/>
+  <text x="460" y="230" class="b" text-anchor="middle" font-weight="700">A</text>
+  <circle cx="460" cy="420" r="36" class="d1"/>
+  <text x="460" y="430" class="b" text-anchor="middle" font-weight="700">B</text>
+
+  <circle cx="740" cy="220" r="36" class="d2"/>
+  <text x="740" y="230" class="b" text-anchor="middle" font-weight="700">C</text>
+  <circle cx="740" cy="420" r="36" class="d2"/>
+  <text x="740" y="430" class="b" text-anchor="middle" font-weight="700">D</text>
+
+  <circle cx="1020" cy="320" r="36" class="d3"/>
+  <text x="1020" y="330" class="b" text-anchor="middle" font-weight="700">E</text>
+
+  <!-- wave labels -->
+  <text x="180" y="525" class="m" text-anchor="middle">dist = 0</text>
+  <text x="460" y="525" class="m" text-anchor="middle">dist = 1</text>
+  <text x="740" y="525" class="m" text-anchor="middle">dist = 2</text>
+  <text x="1020" y="525" class="m" text-anchor="middle">dist = 3</text>
+
+  <text x="600" y="585" class="s" text-anchor="middle">The FIFO queue never holds nodes from more than two adjacent waves — that is why the first visit is the shortest path.</text>
+</svg>

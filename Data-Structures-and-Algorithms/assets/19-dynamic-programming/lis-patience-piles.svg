@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">Patience piles for the longest increasing subsequence</title>
+  <desc id="desc">The input sequence 10, 9, 2, 5, 3, 7, 101, 18 is dealt into four patience piles. Each card lands on the leftmost pile whose top is greater than or equal to it, otherwise it starts a new pile. The pile tops form the tails array 2, 3, 7, 18 and the number of piles, four, equals the LIS length.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .n { font: 700 20px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+    .seq { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .g { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .r { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="660" fill="#ffffff"/>
+
+  <text class="t" x="60" y="52">LIS patience piles: [10, 9, 2, 5, 3, 7, 101, 18]</text>
+  <line x1="60" y1="72" x2="1140" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- input sequence -->
+  <text class="s" x="225" y="142" text-anchor="end">input</text>
+  <rect class="seq" x="240" y="110" width="90" height="50"/><text class="n" x="285" y="142" text-anchor="middle">10</text>
+  <rect class="seq" x="330" y="110" width="90" height="50"/><text class="n" x="375" y="142" text-anchor="middle">9</text>
+  <rect class="seq" x="420" y="110" width="90" height="50"/><text class="n" x="465" y="142" text-anchor="middle">2</text>
+  <rect class="seq" x="510" y="110" width="90" height="50"/><text class="n" x="555" y="142" text-anchor="middle">5</text>
+  <rect class="seq" x="600" y="110" width="90" height="50"/><text class="n" x="645" y="142" text-anchor="middle">3</text>
+  <rect class="seq" x="690" y="110" width="90" height="50"/><text class="n" x="735" y="142" text-anchor="middle">7</text>
+  <rect class="seq" x="780" y="110" width="90" height="50"/><text class="n" x="825" y="142" text-anchor="middle">101</text>
+  <rect class="seq" x="870" y="110" width="90" height="50"/><text class="n" x="915" y="142" text-anchor="middle">18</text>
+  <text class="s" x="285" y="184" text-anchor="middle">0</text>
+  <text class="s" x="375" y="184" text-anchor="middle">1</text>
+  <text class="s" x="465" y="184" text-anchor="middle">2</text>
+  <text class="s" x="555" y="184" text-anchor="middle">3</text>
+  <text class="s" x="645" y="184" text-anchor="middle">4</text>
+  <text class="s" x="735" y="184" text-anchor="middle">5</text>
+  <text class="s" x="825" y="184" text-anchor="middle">6</text>
+  <text class="s" x="915" y="184" text-anchor="middle">7</text>
+
+  <text class="c" x="60" y="240">i = bisect_left(tails, x): leftmost pile top &#8805; x, else new pile</text>
+
+  <!-- pile 0: 10, 9, 2 -->
+  <rect class="r" x="160" y="480" width="130" height="54" rx="8"/><text class="n" x="225" y="514" text-anchor="middle">10</text>
+  <rect class="r" x="160" y="418" width="130" height="54" rx="8"/><text class="n" x="225" y="452" text-anchor="middle">9</text>
+  <rect class="g" x="160" y="356" width="130" height="54" rx="8"/><text class="n" x="225" y="390" text-anchor="middle">2</text>
+  <text class="s" x="225" y="566" text-anchor="middle">pile 0</text>
+
+  <!-- pile 1: 5, 3 -->
+  <rect class="r" x="430" y="480" width="130" height="54" rx="8"/><text class="n" x="495" y="514" text-anchor="middle">5</text>
+  <rect class="g" x="430" y="418" width="130" height="54" rx="8"/><text class="n" x="495" y="452" text-anchor="middle">3</text>
+  <text class="s" x="495" y="566" text-anchor="middle">pile 1</text>
+
+  <!-- pile 2: 7 -->
+  <rect class="g" x="700" y="480" width="130" height="54" rx="8"/><text class="n" x="765" y="514" text-anchor="middle">7</text>
+  <text class="s" x="765" y="566" text-anchor="middle">pile 2</text>
+
+  <!-- pile 3: 101, 18 -->
+  <rect class="r" x="970" y="480" width="130" height="54" rx="8"/><text class="n" x="1035" y="514" text-anchor="middle">101</text>
+  <rect class="g" x="970" y="418" width="130" height="54" rx="8"/><text class="n" x="1035" y="452" text-anchor="middle">18</text>
+  <text class="s" x="1035" y="566" text-anchor="middle">pile 3</text>
+
+  <!-- caption and legend -->
+  <text class="b" x="60" y="618">tails = [2, 3, 7, 18]  &#8594;  LIS length = number of piles = 4</text>
+  <rect class="g" x="820" y="584" width="22" height="22" rx="4"/>
+  <text class="s" x="852" y="601">pile top = tails[k]</text>
+  <rect class="r" x="820" y="616" width="22" height="22" rx="4"/>
+  <text class="s" x="852" y="633">covered — superseded tail</text>
+</svg>

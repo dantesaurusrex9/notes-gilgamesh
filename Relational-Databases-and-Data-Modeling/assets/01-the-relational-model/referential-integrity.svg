@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Referential integrity between users and orders</title>
+  <desc id="desc">Two tables: users (parent) and orders (child). Arrows from orders.user_id point to users.id. A dangling foreign key value 99 is shown in red as a violation.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .hdr { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .cell { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+    .pk { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .ok { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .lbl { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .badlbl { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #dc2626; }
+    .fk { stroke: #8b5cf6; stroke-width: 2.5; fill: none; }
+    .fkbad { stroke: #dc2626; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; }
+  </style>
+  <rect x="0" y="0" width="1200" height="600" fill="#ffffff"/>
+  <text x="40" y="58" class="t">Referential integrity: orders.user_id &#8594; users.id</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <defs>
+    <marker id="fkh" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+    <marker id="fkb" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- users (parent), right side -->
+  <text x="830" y="135" class="hdr">users (parent)</text>
+  <rect x="830" y="150" width="130" height="55" class="pk"/>
+  <rect x="960" y="150" width="200" height="55" class="cell"/>
+  <text x="850" y="185" class="s">id (PK)</text>
+  <text x="980" y="185" class="s">email</text>
+
+  <rect x="830" y="205" width="130" height="55" class="pk"/>
+  <rect x="960" y="205" width="200" height="55" class="cell"/>
+  <text x="850" y="240" class="c">1</text>
+  <text x="980" y="240" class="b">ada@ex.com</text>
+
+  <rect x="830" y="260" width="130" height="55" class="pk"/>
+  <rect x="960" y="260" width="200" height="55" class="cell"/>
+  <text x="850" y="295" class="c">2</text>
+  <text x="980" y="295" class="b">bob@ex.com</text>
+
+  <!-- orders (child), left side -->
+  <text x="60" y="135" class="hdr">orders (child)</text>
+  <rect x="60" y="150" width="150" height="55" class="cell"/>
+  <rect x="210" y="150" width="180" height="55" class="cell"/>
+  <rect x="390" y="150" width="160" height="55" class="cell"/>
+  <text x="80" y="185" class="s">order_id (PK)</text>
+  <text x="230" y="185" class="s">user_id (FK)</text>
+  <text x="410" y="185" class="s">total</text>
+
+  <rect x="60" y="205" width="150" height="55" class="cell"/>
+  <rect x="210" y="205" width="180" height="55" class="ok"/>
+  <rect x="390" y="205" width="160" height="55" class="cell"/>
+  <text x="80" y="240" class="c">10</text>
+  <text x="230" y="240" class="c">1</text>
+  <text x="410" y="240" class="b">19.99</text>
+
+  <rect x="60" y="260" width="150" height="55" class="cell"/>
+  <rect x="210" y="260" width="180" height="55" class="ok"/>
+  <rect x="390" y="260" width="160" height="55" class="cell"/>
+  <text x="80" y="295" class="c">11</text>
+  <text x="230" y="295" class="c">2</text>
+  <text x="410" y="295" class="b">5.00</text>
+
+  <rect x="60" y="315" width="150" height="55" class="cell"/>
+  <rect x="210" y="315" width="180" height="55" class="bad"/>
+  <rect x="390" y="315" width="160" height="55" class="cell"/>
+  <text x="80" y="350" class="c">12</text>
+  <text x="230" y="350" class="c">99</text>
+  <text x="410" y="350" class="b">7.50</text>
+
+  <!-- FK arrows -->
+  <path d="M395 232 C 620 232, 620 232, 822 232" class="fk" marker-end="url(#fkh)"/>
+  <path d="M395 287 C 620 287, 620 287, 822 287" class="fk" marker-end="url(#fkh)"/>
+  <path d="M395 342 C 620 342, 700 400, 760 400" class="fkbad" marker-end="url(#fkb)"/>
+  <text x="775" y="408" class="badlbl">no users.id = 99 &#8594; FK violation, INSERT rejected</text>
+
+  <text x="60" y="470" class="lbl">Every green user_id matches an existing users.id (referential integrity holds)</text>
+  <text x="60" y="530" class="m">ON DELETE of users.id = 1: CASCADE deletes order 10 &#183; RESTRICT blocks the delete &#183; SET NULL orphans it as NULL</text>
+</svg>

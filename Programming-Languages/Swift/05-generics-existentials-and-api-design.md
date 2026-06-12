@@ -1,7 +1,7 @@
 ---
 title: "05 - Generics, Existentials, and API Design"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, generics, api-design]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Generics let you express reusable code without throwing away type information. Existentials let you store "any value conforming to a protocol." Senior Swift design means knowing when to use concrete types, `some`, `any`, associated types, and clear names.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/05-generics-existentials-and-api-design/real-world-example.svg)
 
 This example builds a typed repository interface. The generic version preserves the exact model type, while the existential array stores mixed values that share a protocol.
 
@@ -46,6 +48,8 @@ print(users.find(id: "u-1")?.name ?? "missing")
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/05-generics-existentials-and-api-design/vocabulary.svg)
+
 **Generic type**: A type parameterized over another type, such as `Array<Element>` or `Repository<Model>`.
 
 ---
@@ -70,6 +74,8 @@ print(users.find(id: "u-1")?.name ?? "missing")
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/05-generics-existentials-and-api-design/intuition.svg)
+
 Generics are for preserving information. If a function accepts `[User]` and returns `[User]`, the compiler knows the exact element type. If it accepts `[any Identified]`, the compiler knows only the protocol contract at the use site. Both are valid, but they solve different problems.
 
 Use this decision rule:
@@ -83,6 +89,8 @@ Use this decision rule:
 | Framework/plugin boundary | Existential or type-erased wrapper |
 
 ## Generic Functions
+
+![Visual diagram: Generic Functions](./assets/05-generics-existentials-and-api-design/generic-functions.svg)
 
 Start with a generic function when the implementation is identical across types and the type relationship matters.
 
@@ -104,6 +112,8 @@ print(firstDuplicate(in: [1, 2, 3, 2]) ?? -1)
 ```
 
 ## Associated Types
+
+![Visual diagram: Associated Types](./assets/05-generics-existentials-and-api-design/associated-types.svg)
 
 Associated types make protocols more expressive, but they also make plain existential storage more complicated. Use them when the relationship is essential. This parser example defines its own error so it can run independently from the previous note.
 
@@ -129,6 +139,8 @@ struct IntParser: Parser {
 
 ## `some` Versus `any`
 
+![Visual diagram: some Versus any](./assets/05-generics-existentials-and-api-design/some-versus-any.svg)
+
 `some` means "there is one concrete type here, but I am not naming it." `any` means "this value can be any conforming type, and dynamic dispatch may be involved."
 
 ```swift
@@ -151,6 +163,8 @@ print(renderer.render())
 ```
 
 ## API Design
+
+![Visual diagram: API Design](./assets/05-generics-existentials-and-api-design/api-design.svg)
 
 Swift's official API guidelines are blunt: clarity at the point of use is the most important goal, and clarity is more important than brevity. That should shape your names, labels, return types, and overloads.
 
@@ -177,6 +191,8 @@ extension Array where Element == Int {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/05-generics-existentials-and-api-design/pitfalls.svg)
+
 - **Generic code without a payoff**: If only one concrete type exists and no algorithm is shared, a generic may be noise.
 - **`any` where `some` would preserve type information**: Existentials are useful, but they erase information and can affect dispatch and optimization.
 - **Protocols that mirror one concrete type**: A protocol with exactly one conformer may be premature unless it exists for testing or module boundaries.
@@ -184,6 +200,8 @@ extension Array where Element == Int {
 - **Leaking implementation types in public APIs**: For libraries, choose public return types deliberately because changing them is a compatibility event.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/05-generics-existentials-and-api-design/exercises.svg)
 
 1. Write a generic `Queue<Element>` with `enqueue` and `dequeue`.
 2. Create a `Parser` protocol with an associated `Output`, then implement parsers for `Int` and `URL`.

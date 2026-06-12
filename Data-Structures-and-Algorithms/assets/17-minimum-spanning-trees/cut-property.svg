@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">The cut property: the cheapest crossing edge is safe</title>
+  <desc id="desc">A graph split by a dashed vertical cut into a set S on the left and V minus S on the right. Three edges cross the cut with weights 8, 3, and 6. The weight-3 edge is highlighted blue as the cheapest crossing edge, which must belong to some minimum spanning tree.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .sb { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .nl { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .w  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .region { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+  </style>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+
+  <text class="t" x="60" y="58">The cut property: the cheapest crossing edge is safe</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- cut line -->
+  <line x1="600" y1="110" x2="600" y2="500" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="10 8"/>
+  <text class="s" x="600" y="128" text-anchor="middle" fill="#8b5cf6">the cut</text>
+
+  <!-- region labels -->
+  <text class="region" x="130" y="150">S</text>
+  <text class="region" x="990" y="150">V − S</text>
+
+  <!-- internal edges, S side -->
+  <line x1="280" y1="200" x2="220" y2="360" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="s" x="222" y="280">2</text>
+  <line x1="220" y1="360" x2="370" y2="470" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="s" x="272" y="408">1</text>
+
+  <!-- internal edges, right side -->
+  <line x1="920" y1="210" x2="980" y2="380" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="s" x="965" y="295">4</text>
+  <line x1="980" y1="380" x2="830" y2="480" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="s" x="920" y="425">2</text>
+
+  <!-- crossing edges -->
+  <line x1="280" y1="200" x2="920" y2="210" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="w" x="465" y="190">8</text>
+  <line x1="370" y1="470" x2="830" y2="480" stroke="#9ca3af" stroke-width="2.5"/>
+  <text class="w" x="465" y="458">6</text>
+  <line x1="220" y1="360" x2="980" y2="380" stroke="#0ea5e9" stroke-width="5"/>
+
+  <!-- weight pill on the cheapest crossing edge -->
+  <rect x="570" y="348" width="60" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="w" x="600" y="379" text-anchor="middle">3</text>
+  <rect x="448" y="402" width="304" height="30" fill="#ffffff"/>
+  <text class="sb" x="600" y="423" text-anchor="middle">cheapest crossing edge — safe</text>
+
+  <!-- nodes: S side (green) -->
+  <circle cx="280" cy="200" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="280" y="209" text-anchor="middle">A</text>
+  <circle cx="220" cy="360" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="220" y="369" text-anchor="middle">B</text>
+  <circle cx="370" cy="470" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="370" y="479" text-anchor="middle">C</text>
+
+  <!-- nodes: V−S side (amber) -->
+  <circle cx="920" cy="210" r="32" fill="#fef3c7" stroke="#fcd34d" stroke-width="3"/>
+  <text class="nl" x="920" y="219" text-anchor="middle">D</text>
+  <circle cx="980" cy="380" r="32" fill="#fef3c7" stroke="#fcd34d" stroke-width="3"/>
+  <text class="nl" x="980" y="389" text-anchor="middle">E</text>
+  <circle cx="830" cy="480" r="32" fill="#fef3c7" stroke="#fcd34d" stroke-width="3"/>
+  <text class="nl" x="830" y="489" text-anchor="middle">F</text>
+
+  <!-- caption -->
+  <line x1="60" y1="528" x2="1140" y2="528" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="b" x="60" y="566">Exchange argument: add the cheapest crossing edge e — a cycle forms; the cycle re-crosses the cut at some f with w(f) ≥ w(e).</text>
+  <text class="m" x="60" y="600">Swap f out, keep e: still spanning, never heavier. So the cheapest crossing edge of any cut belongs to some MST.</text>
+</svg>

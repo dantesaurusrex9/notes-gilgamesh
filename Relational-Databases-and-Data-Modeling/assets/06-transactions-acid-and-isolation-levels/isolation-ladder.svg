@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Isolation ladder: which anomaly each level permits</title>
+  <desc id="desc">Matrix of four isolation levels against five anomalies. Green cells mean prevented, red cells mean possible.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .ok { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #166534; }
+    .bad { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #991b1b; }
+  </style>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text x="40" y="60" class="t">Isolation levels vs anomalies</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- column headers -->
+  <text x="420" y="130" class="h">Dirty read</text>
+  <text x="560" y="130" class="h">Non-repeat.</text>
+  <text x="710" y="130" class="h">Phantom</text>
+  <text x="850" y="130" class="h">Lost update</text>
+  <text x="1000" y="130" class="h">Write skew</text>
+
+  <!-- rows -->
+  <!-- READ UNCOMMITTED -->
+  <text x="40" y="195" class="b">READ UNCOMMITTED</text>
+  <rect x="410" y="160" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="430" y="195" class="bad">possible</text>
+  <rect x="550" y="160" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="570" y="195" class="bad">possible</text>
+  <rect x="690" y="160" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="710" y="195" class="bad">possible</text>
+  <rect x="830" y="160" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="850" y="195" class="bad">possible</text>
+  <rect x="970" y="160" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="990" y="195" class="bad">possible</text>
+
+  <!-- READ COMMITTED -->
+  <text x="40" y="275" class="b">READ COMMITTED</text>
+  <rect x="410" y="240" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="425" y="275" class="ok">prevented</text>
+  <rect x="550" y="240" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="570" y="275" class="bad">possible</text>
+  <rect x="690" y="240" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="710" y="275" class="bad">possible</text>
+  <rect x="830" y="240" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="850" y="275" class="bad">possible</text>
+  <rect x="970" y="240" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="990" y="275" class="bad">possible</text>
+
+  <!-- REPEATABLE READ -->
+  <text x="40" y="355" class="b">REPEATABLE READ</text>
+  <text x="40" y="382" class="h">(snapshot isolation)</text>
+  <rect x="410" y="320" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="425" y="355" class="ok">prevented</text>
+  <rect x="550" y="320" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="565" y="355" class="ok">prevented</text>
+  <rect x="690" y="320" width="120" height="56" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/><text x="710" y="355" class="h">varies*</text>
+  <rect x="830" y="320" width="120" height="56" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/><text x="850" y="355" class="h">varies*</text>
+  <rect x="970" y="320" width="120" height="56" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/><text x="990" y="355" class="bad">possible</text>
+
+  <!-- SERIALIZABLE -->
+  <text x="40" y="435" class="b">SERIALIZABLE</text>
+  <rect x="410" y="400" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="425" y="435" class="ok">prevented</text>
+  <rect x="550" y="400" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="565" y="435" class="ok">prevented</text>
+  <rect x="690" y="400" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="705" y="435" class="ok">prevented</text>
+  <rect x="830" y="400" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="845" y="435" class="ok">prevented</text>
+  <rect x="970" y="400" width="120" height="56" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><text x="985" y="435" class="ok">prevented</text>
+
+  <rect x="40" y="500" width="1120" height="90" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="60" y="535" class="b">* Engine-dependent: PostgreSQL REPEATABLE READ (true snapshot isolation) blocks phantoms and</text>
+  <text x="60" y="565" class="b">aborts lost updates; MySQL InnoDB REPEATABLE READ permits both in common patterns.</text>
+</svg>

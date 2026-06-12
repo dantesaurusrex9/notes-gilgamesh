@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Join types as region diagrams</title>
+  <desc id="desc">Six two-circle diagrams: INNER keeps the overlap, LEFT keeps all of A, RIGHT keeps all of B, FULL OUTER keeps everything, anti-join keeps A minus the overlap, CROSS pairs every row with every row.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .keep { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .drop { fill: #ffffff; stroke: #e5e7eb; stroke-width: 3; }
+  </style>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Join types — what survives</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="b" x="40" y="116">Green = rows kept. A = customers (left table), B = orders (right table). Unmatched side gets NULL padding.</text>
+
+  <!-- INNER -->
+  <g>
+    <circle class="drop" cx="155" cy="230" r="70"/>
+    <circle class="drop" cx="245" cy="230" r="70"/>
+    <path class="keep" d="M 200 176.4 A 70 70 0 0 1 200 283.6 A 70 70 0 0 1 200 176.4 Z"/>
+    <text class="s" x="120" y="236" text-anchor="middle">A</text>
+    <text class="s" x="280" y="236" text-anchor="middle">B</text>
+    <text class="c" x="200" y="335" text-anchor="middle">INNER JOIN</text>
+    <text class="s" x="200" y="362" text-anchor="middle">matches only</text>
+  </g>
+
+  <!-- LEFT -->
+  <g>
+    <circle class="keep" cx="555" cy="230" r="70"/>
+    <circle class="drop" cx="645" cy="230" r="70"/>
+    <path class="keep" d="M 600 176.4 A 70 70 0 0 1 600 283.6 A 70 70 0 0 1 600 176.4 Z"/>
+    <text class="s" x="520" y="236" text-anchor="middle">A</text>
+    <text class="s" x="680" y="236" text-anchor="middle">B</text>
+    <text class="c" x="600" y="335" text-anchor="middle">LEFT JOIN</text>
+    <text class="s" x="600" y="362" text-anchor="middle">all of A, NULLs for no match</text>
+  </g>
+
+  <!-- RIGHT -->
+  <g>
+    <circle class="drop" cx="955" cy="230" r="70"/>
+    <circle class="keep" cx="1045" cy="230" r="70"/>
+    <path class="keep" d="M 1000 176.4 A 70 70 0 0 1 1000 283.6 A 70 70 0 0 1 1000 176.4 Z"/>
+    <text class="s" x="920" y="236" text-anchor="middle">A</text>
+    <text class="s" x="1080" y="236" text-anchor="middle">B</text>
+    <text class="c" x="1000" y="335" text-anchor="middle">RIGHT JOIN</text>
+    <text class="s" x="1000" y="362" text-anchor="middle">LEFT with tables flipped</text>
+  </g>
+
+  <!-- FULL OUTER -->
+  <g>
+    <circle class="keep" cx="155" cy="470" r="70"/>
+    <circle class="keep" cx="245" cy="470" r="70"/>
+    <text class="s" x="120" y="476" text-anchor="middle">A</text>
+    <text class="s" x="280" y="476" text-anchor="middle">B</text>
+    <text class="c" x="200" y="575" text-anchor="middle">FULL OUTER</text>
+    <text class="s" x="200" y="602" text-anchor="middle">everything, padded both ways</text>
+  </g>
+
+  <!-- ANTI -->
+  <g>
+    <circle class="keep" cx="555" cy="470" r="70"/>
+    <circle class="drop" cx="645" cy="470" r="70"/>
+    <path d="M 600 416.4 A 70 70 0 0 1 600 523.6 A 70 70 0 0 1 600 416.4 Z" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+    <text class="s" x="520" y="476" text-anchor="middle">A</text>
+    <text class="s" x="680" y="476" text-anchor="middle">B</text>
+    <text class="c" x="600" y="575" text-anchor="middle">ANTI JOIN</text>
+    <text class="s" x="600" y="602" text-anchor="middle">A with NO match (NOT EXISTS)</text>
+  </g>
+
+  <!-- CROSS -->
+  <g>
+    <rect class="keep" x="905" y="410" width="40" height="40" rx="6"/>
+    <rect class="keep" x="955" y="410" width="40" height="40" rx="6"/>
+    <rect class="keep" x="1005" y="410" width="40" height="40" rx="6"/>
+    <rect class="keep" x="905" y="460" width="40" height="40" rx="6"/>
+    <rect class="keep" x="955" y="460" width="40" height="40" rx="6"/>
+    <rect class="keep" x="1005" y="460" width="40" height="40" rx="6"/>
+    <text class="s" x="975" y="530" text-anchor="middle">every A x every B</text>
+    <text class="c" x="975" y="575" text-anchor="middle">CROSS JOIN</text>
+    <text class="s" x="975" y="602" text-anchor="middle">|A| x |B| rows, no ON</text>
+  </g>
+</svg>

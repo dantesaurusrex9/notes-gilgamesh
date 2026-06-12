@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">The four-phase system design framework</title>
+  <desc id="desc">Four boxes in a row: phase 1 requirements, phase 2 estimation, phase 3 high-level design, phase 4 deep dives, with arrows between them and a dashed loop-back arrow from phase 4 to phase 1.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .head  { font: 700 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .loop  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="600" fill="#ffffff"/>
+  <text class="title" x="40" y="56">The four-phase system design framework</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Phase 1: Requirements -->
+  <rect x="24" y="110" width="264" height="290" rx="12" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="head"  x="156" y="150" text-anchor="middle">1 · Requirements</text>
+  <text class="muted" x="156" y="180" text-anchor="middle">≈ 5–8 of 45 min</text>
+  <text class="small" x="48" y="222">Functional: features</text>
+  <text class="small" x="48" y="252">NFRs: scale, latency,</text>
+  <text class="small" x="48" y="282">consistency, uptime,</text>
+  <text class="small" x="48" y="312">durability targets</text>
+  <text class="small" x="48" y="354">→ a written list</text>
+
+  <!-- Phase 2: Estimation -->
+  <rect x="320" y="110" width="264" height="290" rx="12" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="head"  x="452" y="150" text-anchor="middle">2 · Estimation</text>
+  <text class="muted" x="452" y="180" text-anchor="middle">≈ 5 of 45 min</text>
+  <text class="small" x="344" y="222">Write, read, peak QPS</text>
+  <text class="small" x="344" y="252">Storage + bandwidth</text>
+  <text class="small" x="344" y="282">Round aggressively</text>
+  <text class="small" x="344" y="354">→ 4–6 numbers</text>
+
+  <!-- Phase 3: High-level design -->
+  <rect x="616" y="110" width="264" height="290" rx="12" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="head"  x="748" y="150" text-anchor="middle">3 · High-level design</text>
+  <text class="muted" x="748" y="180" text-anchor="middle">≈ 10–15 of 45 min</text>
+  <text class="small" x="640" y="222">Boxes and arrows</text>
+  <text class="small" x="640" y="252">API sketch</text>
+  <text class="small" x="640" y="282">Read path, write path</text>
+  <text class="small" x="640" y="354">→ one diagram</text>
+
+  <!-- Phase 4: Deep dives -->
+  <rect x="912" y="110" width="264" height="290" rx="12" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="head"  x="1044" y="150" text-anchor="middle">4 · Deep dives</text>
+  <text class="muted" x="1044" y="180" text-anchor="middle">≈ 15–20 of 45 min</text>
+  <text class="small" x="936" y="222">Follow the bottleneck</text>
+  <text class="small" x="936" y="252">Shard, cache, queue</text>
+  <text class="small" x="936" y="282">Failure modes</text>
+  <text class="small" x="936" y="354">→ 1–2 deep areas</text>
+
+  <!-- forward arrows -->
+  <line x1="291" y1="255" x2="312" y2="255" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <line x1="587" y1="255" x2="608" y2="255" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <line x1="883" y1="255" x2="904" y2="255" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+
+  <!-- loop-back arrow -->
+  <path d="M 1044 402 L 1044 455 L 156 455 L 156 412"
+        fill="none" stroke="#6b7280" stroke-width="2.5" stroke-dasharray="8 6"
+        marker-end="url(#arrowGray)"/>
+  <text class="loop" x="600" y="487" text-anchor="middle">A deep dive that breaks an assumption sends you back to phase 1</text>
+
+  <line x1="40" y1="515" x2="1160" y2="515" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="600" y="555" text-anchor="middle">Drive each phase aloud: assumption → justification → tradeoff.</text>
+</svg>

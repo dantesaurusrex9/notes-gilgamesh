@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Linear probing after a collision</title>
+  <desc id="desc">An 8-slot open-addressing table. Inserting key 26 whose home slot 2 is occupied: the probe walks right through occupied slots 2, 3, 4 and places 26 in free slot 5, forming a primary cluster.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arrowSky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+
+  <text class="title" x="60" y="58">Linear probing: walk right until a free slot</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="muted" x="60" y="118">m = 8 — slots 2, 3, 4 already hold 10, 18, 11 — inserting key 26, home slot = 26 mod 8 = 2</text>
+
+  <!-- insert label and first probe (vertical) -->
+  <text class="code" x="380" y="160" text-anchor="middle">insert 26</text>
+  <line x1="380" y1="172" x2="380" y2="250" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowSky)"/>
+  <text class="small" x="394" y="216">1 &#10007;</text>
+
+  <!-- probe arcs -->
+  <path d="M 380 250 Q 440 196 500 250" fill="none" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowSky)"/>
+  <text class="small" x="440" y="190" text-anchor="middle">2 &#10007;</text>
+  <path d="M 500 250 Q 560 196 620 250" fill="none" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowSky)"/>
+  <text class="small" x="560" y="190" text-anchor="middle">3 &#10007;</text>
+  <path d="M 620 250 Q 680 196 740 250" fill="none" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowSky)"/>
+  <text class="small" x="680" y="190" text-anchor="middle">4 &#10003;</text>
+
+  <!-- slot array -->
+  <rect x="80"  y="260" width="120" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="200" y="260" width="120" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="320" y="260" width="120" height="70" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="440" y="260" width="120" height="70" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="560" y="260" width="120" height="70" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="680" y="260" width="120" height="70" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="800" y="260" width="120" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="920" y="260" width="120" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text class="body" x="380" y="304" text-anchor="middle">10</text>
+  <text class="body" x="500" y="304" text-anchor="middle">18</text>
+  <text class="body" x="620" y="304" text-anchor="middle">11</text>
+  <text class="body" x="740" y="304" text-anchor="middle">26</text>
+
+  <!-- index labels -->
+  <text class="small" x="140" y="360" text-anchor="middle">0</text>
+  <text class="small" x="260" y="360" text-anchor="middle">1</text>
+  <text class="small" x="380" y="360" text-anchor="middle">2</text>
+  <text class="small" x="500" y="360" text-anchor="middle">3</text>
+  <text class="small" x="620" y="360" text-anchor="middle">4</text>
+  <text class="small" x="740" y="360" text-anchor="middle">5</text>
+  <text class="small" x="860" y="360" text-anchor="middle">6</text>
+  <text class="small" x="980" y="360" text-anchor="middle">7</text>
+
+  <!-- primary cluster bar -->
+  <rect x="320" y="382" width="480" height="12" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="small" x="560" y="424" text-anchor="middle">primary cluster: slots 2&#8211;5 form one run — any key with home slot 2&#8211;5 must now probe to slot 6</text>
+
+  <!-- tombstone note -->
+  <text class="small" x="80" y="466">Deletion cannot simply empty slot 3 — lookups for 11 and 26 would stop early at the hole and miss them.</text>
+  <text class="small" x="80" y="492">Open addressing marks deleted slots with a tombstone instead (CPython calls it DKIX_DUMMY).</text>
+
+  <!-- legend -->
+  <rect x="80" y="512" width="20" height="20" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="small" x="110" y="528">occupied — probe steps over it</text>
+  <rect x="420" y="512" width="20" height="20" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="small" x="450" y="528">free — key 26 placed here</text>
+</svg>

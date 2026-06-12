@@ -1,7 +1,7 @@
 ---
 title: "19 - Profiling, Tracing, PGO, and Runtime Tuning"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [golang, programming-languages, profiling, pgo, runtime]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go performance work starts with profiles, not guesses. Use benchmarks, `pprof`, execution traces, runtime metrics, GC settings, container-aware `GOMAXPROCS`, and profile-guided optimization when the workload is representative.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/19-profiling-tracing-pgo-and-runtime-tuning/real-world-example.svg)
 
 This benchmark records allocations for two formatting approaches. The output tells you whether the optimization mattered.
 
@@ -39,6 +41,8 @@ go test -bench=. -benchmem ./...
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/19-profiling-tracing-pgo-and-runtime-tuning/vocabulary.svg)
+
 **pprof**: Go's profile format and analysis tool for CPU, heap, goroutine, mutex, and block profiles.
 
 ---
@@ -63,11 +67,15 @@ go test -bench=. -benchmem ./...
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/19-profiling-tracing-pgo-and-runtime-tuning/intuition.svg)
+
 Go gives you a production-grade profiler in the standard toolchain. Use it. If CPU is hot, take a CPU profile. If memory grows, take heap profiles over time. If goroutines stall, use traces and goroutine dumps. If GC dominates, inspect allocation rate and live heap.
 
 Runtime tuning should come after code-level evidence. A better algorithm, less allocation, or fixed goroutine leak beats tweaking `GOGC`.
 
 ## pprof
+
+![Visual diagram: pprof](./assets/19-profiling-tracing-pgo-and-runtime-tuning/pprof.svg)
 
 Expose pprof in trusted environments or capture profiles directly in code.
 
@@ -90,6 +98,8 @@ web
 
 ## Execution Tracing
 
+![Visual diagram: Execution Tracing](./assets/19-profiling-tracing-pgo-and-runtime-tuning/execution-tracing.svg)
+
 Use `go test -trace` or `runtime/trace` when the question is scheduler behavior, blocking, or goroutine timing.
 
 ```bash
@@ -98,6 +108,8 @@ go tool trace trace.out
 ```
 
 ## PGO
+
+![Visual diagram: PGO](./assets/19-profiling-tracing-pgo-and-runtime-tuning/pgo.svg)
 
 Go's PGO consumes CPU pprof profiles. The official guidance is to use representative production profiles; unrepresentative profiles can produce little or no gain.
 
@@ -108,6 +120,8 @@ go build -pgo=cpu.pprof -o myapp ./cmd/myapp
 As of Go 1.22, Go's docs report benchmark gains around 2 to 14 percent for representative programs, with future improvements expected.
 
 ## Runtime Tuning
+
+![Visual diagram: Runtime Tuning](./assets/19-profiling-tracing-pgo-and-runtime-tuning/runtime-tuning.svg)
 
 Use runtime knobs deliberately:
 
@@ -121,6 +135,8 @@ Go 1.25 changed default `GOMAXPROCS` behavior on Linux to consider cgroup CPU ba
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/19-profiling-tracing-pgo-and-runtime-tuning/pitfalls.svg)
+
 - **Profiling non-representative input**: Optimizing a toy path can hurt the real workload.
 - **Heap profile confusion**: Allocated bytes and live bytes answer different questions.
 - **Tuning before fixing allocations**: GC knobs cannot fix a needless allocation storm.
@@ -128,6 +144,8 @@ Go 1.25 changed default `GOMAXPROCS` behavior on Linux to consider cgroup CPU ba
 - **Forgetting container limits**: Runtime behavior depends on CPU and memory limits.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/19-profiling-tracing-pgo-and-runtime-tuning/exercises.svg)
 
 1. Add a benchmark and compare `allocs/op`.
 2. Capture a CPU profile and identify the hottest function.

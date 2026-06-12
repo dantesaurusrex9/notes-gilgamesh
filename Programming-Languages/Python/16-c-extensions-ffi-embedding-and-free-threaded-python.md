@@ -1,7 +1,7 @@
 ---
 title: "16 - C Extensions, FFI, Embedding, and Free-Threaded Python"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [python, programming-languages, c-api, ffi, free-threading]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python becomes systems-adjacent through extension modules, CFFI/ctypes, embedding, and native libraries. The cost is ownership: reference counts, ABI compatibility, GIL assumptions, and free-threaded safety become your problem.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/real-world-example.svg)
 
 This example calls a C standard-library function through `ctypes`. It is small, but it shows the boundary: Python must declare argument and return types because the C function cannot describe them dynamically.
 
@@ -32,6 +34,8 @@ print(libc.strlen(b"python"))
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/vocabulary.svg)
 
 **Extension module**: A native module loaded by Python, commonly written in C, C++, Rust, or Cython.
 
@@ -61,11 +65,15 @@ print(libc.strlen(b"python"))
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/intuition.svg)
+
 Python extension work is not normal Python with different syntax. It is manual resource management with Python object semantics. You have to know whether every object reference is borrowed or owned, whether a function can set an exception, and whether your native code is safe under CPython's current threading model.
 
 Use native boundaries when they buy something real: calling an existing system library, speeding up a hot loop, sharing memory with NumPy, or embedding a scripting layer. Do not cross the boundary just because Python feels slow. Measure first.
 
 ## Choosing an Interop Path
+
+![Visual diagram: Choosing an Interop Path](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/choosing-an-interop-path.svg)
 
 | Need | Good starting point |
 | :--- | :--- |
@@ -77,6 +85,8 @@ Use native boundaries when they buy something real: calling an existing system l
 | Host Python inside an app | embedding API |
 
 ## Reference Counting in C
+
+![Visual diagram: Reference Counting in C](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/reference-counting-in-c.svg)
 
 Every C extension bug is either a crash, leak, or corrupted invariant waiting to happen. The first rule is knowing ownership.
 
@@ -95,6 +105,8 @@ Py_DECREF(name);  // release ownership
 
 ## Stable ABI and Limited API
 
+![Visual diagram: Stable ABI and Limited API](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/stable-abi-and-limited-api.svg)
+
 The Limited API exposes a subset of Python's C API. Extensions using it can target the Stable ABI and avoid rebuilding for every supported Python minor version. The tradeoff is that some fast macros and implementation details are unavailable.
 
 ```text
@@ -103,6 +115,8 @@ Stable ABI     -> binary-level compatibility promise
 ```
 
 ## Free-Threaded Python
+
+![Visual diagram: Free-Threaded Python](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/free-threaded-python.svg)
 
 Python 3.14 officially supports free-threaded builds. That does not mean every package is automatically safe. Extensions may re-enable the GIL, and code that accidentally relied on the GIL as a process-wide lock may race.
 
@@ -122,6 +136,8 @@ For Python code, this makes old assumptions weaker:
 
 ## Embedding Python
 
+![Visual diagram: Embedding Python](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/embedding-python.svg)
+
 Embedding means another program owns process startup and initializes Python as a component. Common uses include scripting inside applications, plugins, test runners, scientific tools, and game engines.
 
 Embedding concerns:
@@ -135,6 +151,8 @@ Embedding concerns:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/pitfalls.svg)
+
 - **Reference leaks**: Missing `Py_DECREF` keeps objects alive.
 - **Borrowed-reference misuse**: Decrementing something you do not own can crash.
 - **ABI lock-in**: Using private CPython internals ties you to implementation versions.
@@ -142,6 +160,8 @@ Embedding concerns:
 - **ctypes type mistakes**: Wrong `argtypes` or `restype` can corrupt memory.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/16-c-extensions-ffi-embedding-and-free-threaded-python/exercises.svg)
 
 1. Call `strlen` or another simple C function with `ctypes`.
 2. Explain the difference between new and borrowed references.

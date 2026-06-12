@@ -1,7 +1,7 @@
 ---
 title: "17 - Testing, Debugging, Profiling, and Reliability"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [python, programming-languages, testing, debugging, profiling]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python mastery includes proving behavior, not just writing code. Use `pytest` or `unittest`, deterministic fakes, `unittest.mock` at boundaries, `cProfile` for CPU, `tracemalloc` for memory, `faulthandler` for hard crashes, and coverage as a guide rather than a score.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/17-testing-debugging-profiling-and-reliability/real-world-example.svg)
 
 This example tests retry behavior without sleeping or calling the network. The fake client makes the failure deterministic.
 
@@ -61,6 +63,8 @@ python -m unittest discover
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/17-testing-debugging-profiling-and-reliability/vocabulary.svg)
+
 **Fixture**: Test setup data or dependencies.
 
 ---
@@ -85,11 +89,15 @@ python -m unittest discover
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/17-testing-debugging-profiling-and-reliability/intuition.svg)
+
 Python makes behavior easy to change at runtime. That flexibility makes tests powerful and dangerous. You can patch anything, but patching too much means you test implementation trivia instead of contract behavior.
 
 The strongest Python tests are boring: pure functions, fake IO, deterministic clocks, small fixtures, and direct assertions. Use mocks when the interaction itself is the behavior, such as "this queue publish call happened once with this payload."
 
 ## Testing Strategy
+
+![Visual diagram: Testing Strategy](./assets/17-testing-debugging-profiling-and-reliability/testing-strategy.svg)
 
 Use layers:
 
@@ -103,6 +111,8 @@ Use layers:
 
 ## `unittest.mock`
 
+![Visual diagram: unittest.mock](./assets/17-testing-debugging-profiling-and-reliability/unittest-mock.svg)
+
 Patch where the object is looked up, not where it was originally defined. This is the most common mocking mistake.
 
 ```python
@@ -115,6 +125,8 @@ publisher.publish.assert_called_once_with("user.created", {"id": "u-1"})
 ```
 
 ## CPU Profiling
+
+![Visual diagram: CPU Profiling](./assets/17-testing-debugging-profiling-and-reliability/cpu-profiling.svg)
 
 Use `cProfile` when code is slow and you do not know why.
 
@@ -136,6 +148,8 @@ pstats.Stats(profile).sort_stats("cumtime").print_stats(10)
 
 ## Memory Profiling
 
+![Visual diagram: Memory Profiling](./assets/17-testing-debugging-profiling-and-reliability/memory-profiling.svg)
+
 Use `tracemalloc` to compare allocation snapshots by source line.
 
 ```python
@@ -153,6 +167,8 @@ for stat in after.compare_to(before, "lineno")[:5]:
 
 ## Hard-Crash Debugging
 
+![Visual diagram: Hard-Crash Debugging](./assets/17-testing-debugging-profiling-and-reliability/hard-crash-debugging.svg)
+
 `faulthandler` is useful when native extensions, segmentation faults, deadlocks, or timeouts make normal tracebacks unavailable.
 
 ```bash
@@ -161,6 +177,8 @@ python -X faulthandler -m pytest
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/17-testing-debugging-profiling-and-reliability/pitfalls.svg)
+
 - **Patching the wrong namespace**: Patch the name your code uses.
 - **Sleeping in tests**: Replace clocks and timers with fakes.
 - **Coverage worship**: 100 percent line coverage can still miss important behavior.
@@ -168,6 +186,8 @@ python -X faulthandler -m pytest
 - **Ignoring flaky tests**: A flaky test is a production signal, not a nuisance.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/17-testing-debugging-profiling-and-reliability/exercises.svg)
 
 1. Write one test with a fake dependency and one with `Mock`.
 2. Add a property-style test for a parser.

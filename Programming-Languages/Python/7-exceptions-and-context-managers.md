@@ -1,7 +1,7 @@
 ---
 title: "7 - Exceptions and Context Managers"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python's exception system is a class hierarchy rooted at `BaseException`; handling, re-raising, and chaining exceptions are all first-class language operations. Context managers formalise the acquire-use-release pattern via `__enter__` / `__exit__`, making resource safety composable and concise. Python 3.11 added Exception Groups and `except*` for structured handling of concurrent errors from `asyncio.TaskGroup`.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/7-exceptions-and-context-managers/vocabulary.svg)
 
 **`BaseException`**: Root of the exception hierarchy. Direct subclasses: `SystemExit`, `KeyboardInterrupt`, `GeneratorExit`, `Exception`. Never catch `BaseException` unless you intend to catch process-termination signals too.
 
@@ -64,11 +66,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/7-exceptions-and-context-managers/intuition.svg)
+
 Exceptions in Python are not just error signals — they are objects that carry a full call stack, can be chained to show cause-and-effect, and can be caught, transformed, and re-raised in a structured way. The exception hierarchy is a class tree, and catching an exception type also catches all its subclasses — just like `isinstance`.
 
 Context managers express the "bracket" pattern: "do setup, run user code, do teardown regardless of what happened." This is the same guarantee as RAII in C++ or `defer` in Go, but expressed through the `with` keyword. The generator-based form (`@contextlib.contextmanager`) makes writing context managers as easy as writing a function with a `try/finally` block.
 
 ## Exception Hierarchy
+
+![Visual diagram: Exception Hierarchy](./assets/7-exceptions-and-context-managers/exception-hierarchy.svg)
 
 ```mermaid
 flowchart TD
@@ -90,6 +96,8 @@ flowchart TD
 The key practical rules: catch `Exception` (not `BaseException`) unless you have a reason to intercept `SystemExit` / `KeyboardInterrupt`. Never catch `BaseException` in a library — only in top-level application entry points. Never use bare `except:` — always name the exception type.
 
 ## `try / except / else / finally`
+
+![Visual diagram: try / except / else / finally](./assets/7-exceptions-and-context-managers/try-except-else-finally.svg)
 
 Each clause has a distinct semantics. `else` is the least-known and the most useful for separating "success path" from "exception path".
 
@@ -127,6 +135,8 @@ def load_config(path: Path) -> dict[str, object]:
 
 ## Exception Chaining
 
+![Visual diagram: Exception Chaining](./assets/7-exceptions-and-context-managers/exception-chaining.svg)
+
 `raise NewExc from original` sets `NewExc.__cause__ = original`, creating an explicit chain. This preserves the full diagnostic context while re-raising as a more appropriate exception type.
 
 ```python
@@ -158,6 +168,8 @@ To suppress the chain entirely (hide an irrelevant internal exception): `raise N
 
 ## Custom Exceptions
 
+![Visual diagram: Custom Exceptions](./assets/7-exceptions-and-context-managers/custom-exceptions.svg)
+
 Custom exception classes should be shallow hierarchies inheriting from `Exception`. Include attributes for structured error data.
 
 ```python
@@ -187,6 +199,8 @@ except ValidationError as exc:
 ```
 
 ## Exception Groups and `except*` (Python 3.11+)
+
+![Visual diagram: Exception Groups and except* (Python 3.11+)](./assets/7-exceptions-and-context-managers/exception-groups-and-except-python-3-11.svg)
 
 `asyncio.TaskGroup` (and manual code) can raise `ExceptionGroup` when multiple concurrent operations fail. `except*` handles sub-exceptions by type without consuming the group entirely.
 
@@ -218,6 +232,8 @@ asyncio.run(run())
 ```
 
 ## Context Managers
+
+![Visual diagram: Context Managers](./assets/7-exceptions-and-context-managers/context-managers.svg)
 
 ### The Protocol: `__enter__` and `__exit__`
 
@@ -313,6 +329,8 @@ def merge_files(input_paths: list[Path], output_path: Path) -> None:
 
 ## Real-world Example
 
+![Visual diagram: Real-world Example](./assets/7-exceptions-and-context-managers/real-world-example.svg)
+
 A database connection context manager with retry logic and exception chaining — a realistic pattern from a production service.
 
 ```python
@@ -374,6 +392,8 @@ except QueryError as exc:
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/7-exceptions-and-context-managers/in-practice.svg)
+
 **Never catch and silently swallow.** `except Exception: pass` is one of the worst patterns in Python. If you genuinely want to suppress, use `contextlib.suppress(SpecificExceptionType)` — it names the exception type you are suppressing, making the intent explicit and auditable.
 
 **`finally` vs `__exit__`.** For one-off cleanup tied to a single resource, `try/finally` in the function body is fine. For reusable cleanup patterns, a context manager is cleaner and composable. Prefer context managers for anything that appears in more than one place.
@@ -385,6 +405,8 @@ except QueryError as exc:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/7-exceptions-and-context-managers/pitfalls.svg)
+
 - **"Bare `except:` is safe as a catch-all."** — No. Bare `except:` catches `SystemExit`, `KeyboardInterrupt`, and `GeneratorExit`. It will catch Ctrl+C in a loop, making the program appear hung. Always use `except Exception:` for general catches.
 - **"`raise` inside `finally` replaces the original exception."** — Yes, and silently. If your `finally` block raises, the original exception from `try` is lost. Use `contextlib.suppress` in `finally` if you want to log and discard secondary errors.
 - **"Context managers are only for file I/O."** — They are for any acquire-use-release pattern: database connections, locks, temporary directories, monkey-patching, profiling spans, GUI dialogs, GPU streams, etc.
@@ -392,6 +414,8 @@ except QueryError as exc:
 - **"Exception groups require all tasks to fail."** — No. `asyncio.TaskGroup` raises an `ExceptionGroup` as soon as *any* task fails; it cancels the remaining tasks. The group may contain exceptions from one or multiple failed tasks.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/7-exceptions-and-context-managers/exercises.svg)
 
 ### Exercise 1 — `else` clause semantics
 

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">URL shortener full architecture</title>
+  <desc id="desc">Clients hit a load balancer, stateless app servers read through a Redis cache to a sharded database, a key generation service feeds writes, and click events flow to an async analytics pipeline.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .edge { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .pedge { stroke: #8b5cf6; stroke-width: 3; fill: none; stroke-dasharray: 8 6; }
+  </style>
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arp" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="640" fill="#ffffff"/>
+  <text x="40" y="58" class="t">URL shortener — full architecture</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <rect x="40" y="160" width="180" height="80" rx="10" class="box"/>
+  <text x="130" y="195" class="b" text-anchor="middle">Clients</text>
+  <text x="130" y="225" class="m" text-anchor="middle">browsers, apps</text>
+
+  <rect x="300" y="160" width="200" height="80" rx="10" class="box"/>
+  <text x="400" y="195" class="b" text-anchor="middle">Load balancer</text>
+  <text x="400" y="225" class="m" text-anchor="middle">L7, TLS terminate</text>
+
+  <rect x="580" y="140" width="220" height="120" rx="10" class="green"/>
+  <text x="690" y="180" class="b" text-anchor="middle">App servers</text>
+  <text x="690" y="210" class="m" text-anchor="middle">stateless, N replicas</text>
+  <text x="690" y="238" class="m" text-anchor="middle">shorten + redirect</text>
+
+  <rect x="900" y="120" width="260" height="80" rx="10" class="amber"/>
+  <text x="1030" y="155" class="b" text-anchor="middle">Redis cache</text>
+  <text x="1030" y="185" class="m" text-anchor="middle">hot 20% of codes</text>
+
+  <rect x="900" y="250" width="260" height="90" rx="10" class="amber"/>
+  <text x="1030" y="287" class="b" text-anchor="middle">Database (sharded)</text>
+  <text x="1030" y="318" class="m" text-anchor="middle">code → long URL, expiry</text>
+
+  <rect x="580" y="380" width="220" height="90" rx="10" class="green"/>
+  <text x="690" y="417" class="b" text-anchor="middle">Key Generation</text>
+  <text x="690" y="447" class="m" text-anchor="middle">pre-generated base62</text>
+
+  <rect x="900" y="470" width="260" height="90" rx="10" class="amber"/>
+  <text x="1030" y="507" class="b" text-anchor="middle">Analytics pipeline</text>
+  <text x="1030" y="538" class="m" text-anchor="middle">queue → workers → OLAP</text>
+
+  <line x1="220" y1="200" x2="292" y2="200" class="edge" marker-end="url(#ar)"/>
+  <line x1="500" y1="200" x2="572" y2="200" class="edge" marker-end="url(#ar)"/>
+  <line x1="800" y1="175" x2="892" y2="162" class="edge" marker-end="url(#ar)"/>
+  <line x1="800" y1="230" x2="892" y2="285" class="edge" marker-end="url(#ar)"/>
+  <line x1="690" y1="372" x2="690" y2="268" class="edge" marker-end="url(#ar)"/>
+  <line x1="800" y1="450" x2="892" y2="500" class="pedge" marker-end="url(#arp)"/>
+
+  <text x="846" y="150" class="m" text-anchor="middle">read path</text>
+  <text x="846" y="282" class="m" text-anchor="middle">write + miss</text>
+  <text x="660" y="320" class="m">keys</text>
+  <text x="830" y="492" class="m" text-anchor="middle">click events (async)</text>
+
+  <text x="40" y="600" class="c">GET /a1B2c3  →  cache hit ≈ 1 ms, miss ≈ 10 ms</text>
+</svg>

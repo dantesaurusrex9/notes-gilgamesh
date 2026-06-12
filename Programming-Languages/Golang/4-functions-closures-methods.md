@@ -1,7 +1,7 @@
 ---
 title: "4 - Functions, Closures, and Methods"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, functions, closures, methods, defer]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go functions are first-class values, support multiple return values, and use `defer` for deterministic cleanup in LIFO order. Closures capture variables by reference — not by value — which is both their power and their primary footgun. Methods are functions with a receiver; the choice between value receiver and pointer receiver determines whether the method can mutate the receiver and whether the type satisfies an interface, making it one of the most consequential decisions in Go API design.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/4-functions-closures-methods/vocabulary.svg)
 
 **Multiple return values**: A Go function can return more than one value. The idiomatic pattern is to return `(result, error)`.
 
@@ -67,6 +69,8 @@ func (r ReceiverType) MethodName(params) returnTypes { ... }
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/4-functions-closures-methods/intuition.svg)
+
 Functions in Go are values — you can store them in variables, pass them to functions, return them from functions, put them in maps. This is first-class functions, the same model as Python or JavaScript, but with static typing. Closures are the natural extension: when a function literal references a variable from an outer scope, it "closes over" that variable, holding a reference to it.
 
 The receiver syntax for methods is just syntactic sugar for "the first parameter has a special name and is written before the function name." A method `(p *Point) Scale(f float64)` is semantically identical to `Scale(p *Point, f float64)` — the compiler rewrites one to the other. This means there is no hidden `this` or `self` — the receiver is explicit, typed, and can have any name you choose.
@@ -74,6 +78,8 @@ The receiver syntax for methods is just syntactic sugar for "the first parameter
 `defer` is the single most useful feature for resource cleanup. Instead of a complex `try/finally` or `RAII` destructor, you write `defer f.Close()` immediately after opening the file, and the close is guaranteed to run regardless of which `return` or `panic` path the function takes.
 
 ## Multiple Return Values
+
+![Visual diagram: Multiple Return Values](./assets/4-functions-closures-methods/multiple-return-values.svg)
 
 Go encourages returning errors as ordinary values alongside results, rather than using exceptions. The `(T, error)` pattern appears in virtually every function that can fail.
 
@@ -117,6 +123,8 @@ The `_` blank identifier discards a return value you do not need. Never use `_` 
 
 ## Variadic Functions
 
+![Visual diagram: Variadic Functions](./assets/4-functions-closures-methods/variadic-functions.svg)
+
 A variadic parameter `...T` collects all trailing arguments into a `[]T`. The caller can pass individual values or spread a slice with `...`.
 
 ```go
@@ -138,6 +146,8 @@ fmt.Println(Sum(nums...))           // 15 — spread slice
 `fmt.Println` itself is variadic: `func Println(a ...any) (n int, err error)`.
 
 ## `defer` — Guaranteed Cleanup in LIFO Order
+
+![Visual diagram: defer - Guaranteed Cleanup in LIFO Order](./assets/4-functions-closures-methods/defer-guaranteed-cleanup-in-lifo-order.svg)
 
 `defer` evaluates its arguments immediately but delays the call until the enclosing function returns (normally or via panic). Multiple defers stack in LIFO order.
 
@@ -209,6 +219,8 @@ func lifoDemo() {
 
 ## Closures
 
+![Visual diagram: Closures](./assets/4-functions-closures-methods/closures.svg)
+
 A closure is a function that references variables from outside its own body. The function "closes over" those variables — it holds a reference, not a copy.
 
 ```go
@@ -254,6 +266,8 @@ for i := 0; i < 3; i++ {
 > Go 1.22 (February 2024) changed for-loop variable semantics so each iteration gets its own copy of the loop variable. If your module's `go` directive in `go.mod` is `go 1.22` or later, the old footgun no longer applies. For modules still on older go lines, the `i := i` fix is required.
 
 ## Methods — Value vs Pointer Receivers
+
+![Visual diagram: Methods - Value vs Pointer Receivers](./assets/4-functions-closures-methods/methods-value-vs-pointer-receivers.svg)
 
 A method is a function declared with a receiver. The receiver is the type the method is "on." The receiver name is idiomatic (usually one or two letters matching the type name), not `this` or `self`.
 
@@ -314,6 +328,8 @@ var s Stringer = &Counter{}  // *Counter has String() — OK
 
 ## Real-world Example
 
+![Visual diagram: Real-world Example](./assets/4-functions-closures-methods/real-world-example.svg)
+
 A middleware pattern using closures and function values — the bread-and-butter of Go HTTP servers:
 
 ```go
@@ -359,6 +375,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/4-functions-closures-methods/in-practice.svg)
+
 `defer` has non-zero overhead — each deferred call allocates a "defer record" on the goroutine stack (though the compiler optimises away some of these in Go 1.14+). In hot loops (thousands of calls per second), avoiding defer and calling cleanup explicitly can reduce allocations. Profile first (`pprof`) before eliminating defers for performance — readability is usually the more important variable.
 
 Closures that capture large variables keep those variables alive for the closure's lifetime. A background goroutine that closes over a large request object will keep that request's memory alive until the goroutine exits. Prefer passing values as explicit parameters to goroutines rather than capturing them by closure when the lifetime matters.
@@ -368,6 +386,8 @@ Closures that capture large variables keep those variables alive for the closure
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/4-functions-closures-methods/pitfalls.svg)
+
 - **"Deferred arguments are captured at call time."** — The arguments are evaluated immediately; only the call is deferred. `defer f(x)` captures the current value of `x`. Use a closure if you want the deferred call to see `x`'s value at return time.
 - **"A closure captures values, not variables."** — Closures capture variables (the storage location). If you modify the variable after creating the closure, the closure sees the modification.
 - **"Value receivers can implement any interface."** — Value receivers methods are in the method set of `T`. Pointer receiver methods are in the method set of `*T` only. If the interface requires a pointer-receiver method, only `*T` (not `T`) satisfies it.
@@ -375,6 +395,8 @@ Closures that capture large variables keep those variables alive for the closure
 - **"Named return values always improve clarity."** — Named returns are useful when the function is complex or when you use defer to modify them on error. For simple functions, they add confusion by introducing extra variables. Use them deliberately.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/4-functions-closures-methods/exercises.svg)
 
 ### Exercise 1 — Code output: What does this function return?
 

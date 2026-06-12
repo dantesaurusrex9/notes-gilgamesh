@@ -1,7 +1,7 @@
 ---
 title: "16 - Toolchain, Modules, Builds, and Release Engineering"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [golang, programming-languages, toolchain, modules, builds]
 aliases: []
 ---
@@ -14,6 +14,8 @@ aliases: []
 
 ## Real-World Example
 
+![Visual diagram: Real-World Example](./assets/16-toolchain-modules-builds-and-release-engineering/real-world-example.svg)
+
 This command sequence builds a reproducible release binary and then inspects the embedded build info.
 
 ```bash
@@ -24,6 +26,8 @@ go version -m dist/myapp
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/16-toolchain-modules-builds-and-release-engineering/vocabulary.svg)
 
 **Module**: A versioned collection of packages rooted at a `go.mod` file.
 
@@ -53,11 +57,15 @@ go version -m dist/myapp
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/16-toolchain-modules-builds-and-release-engineering/intuition.svg)
+
 Go's compiler is fast because packages are explicit boundaries. When package A imports package B, the compiler reads B's compiled export data, not all of B's source and transitive dependencies. That is why import cycles are illegal: they would destroy independent compilation.
 
 Modules solve versioning. Workspaces solve local multi-module development. Release engineering ties both to a binary you can inspect, reproduce, and deploy.
 
 ## Compiler Pipeline
+
+![Visual diagram: Compiler Pipeline](./assets/16-toolchain-modules-builds-and-release-engineering/compiler-pipeline.svg)
 
 The simplified path is:
 
@@ -81,6 +89,8 @@ go tool compile -h
 
 ## Modules and `go.sum`
 
+![Visual diagram: Modules and go.sum](./assets/16-toolchain-modules-builds-and-release-engineering/modules-and-go-sum.svg)
+
 `go.mod` declares module path, Go version, dependencies, and replacement directives. `go.sum` records cryptographic hashes for module downloads.
 
 ```go
@@ -101,6 +111,8 @@ go list -m all
 
 ## Workspaces
 
+![Visual diagram: Workspaces](./assets/16-toolchain-modules-builds-and-release-engineering/workspaces.svg)
+
 Use `go.work` when developing multiple modules together. Do not rely on it for release builds; released modules need real versions or explicit module requirements.
 
 ```bash
@@ -111,6 +123,8 @@ go work sync
 
 ## Cross-Compilation
 
+![Visual diagram: Cross-Compilation](./assets/16-toolchain-modules-builds-and-release-engineering/cross-compilation.svg)
+
 Go's cross-compilation is simple when CGO is off. With CGO on, you need a C cross-compiler and platform libraries.
 
 ```bash
@@ -119,6 +133,8 @@ GOOS=darwin GOARCH=arm64 go build -o dist/myapp-darwin-arm64 ./cmd/myapp
 ```
 
 ## Build Metadata
+
+![Visual diagram: Build Metadata](./assets/16-toolchain-modules-builds-and-release-engineering/build-metadata.svg)
 
 Modern Go binaries can include module and VCS metadata. Inspect it with:
 
@@ -131,6 +147,8 @@ Go 1.25 added JSON output for `go version -m`, making it easier to integrate bin
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/16-toolchain-modules-builds-and-release-engineering/pitfalls.svg)
+
 - **Committing `go.work` accidentally**: It may make local paths affect other developers or CI.
 - **Using `replace` in release modules**: Local replacements do not describe a real dependency graph.
 - **CGO surprise**: `CGO_ENABLED=1` can make binaries depend on system libraries.
@@ -138,6 +156,8 @@ Go 1.25 added JSON output for `go version -m`, making it easier to integrate bin
 - **Import cycles**: They are design feedback that package boundaries are wrong.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/16-toolchain-modules-builds-and-release-engineering/exercises.svg)
 
 1. Build the same program for Linux and macOS.
 2. Run `go version -m` on a binary and explain every field.

@@ -1,7 +1,7 @@
 ---
 title: "4 - Functions, Closures, Decorators"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** In Python, functions are first-class objects — they can be passed, returned, stored in containers, and have attributes. Closures bind free variables from an enclosing scope into the function object, enabling stateful callbacks and factory functions. Decorators are functions that take a function and return a (usually enhanced) function, implemented with syntactic sugar via `@`; `functools.wraps` preserves the original function's metadata through the wrapping.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/4-functions-closures-decorators/vocabulary.svg)
 
 **First-class function**: A function that can be treated as a value — assigned to a variable, passed as an argument, returned from another function, stored in a data structure. Python functions are first-class objects of type `function`.
 
@@ -64,11 +66,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/4-functions-closures-decorators/intuition.svg)
+
 A function definition in Python creates a function object and binds it to a name. The function object carries the compiled bytecode (`__code__`), default values (`__defaults__`), the global namespace it was defined in (`__globals__`), and if it is a closure, the captured cell objects (`__closure__`). Nothing about this is special-cased — functions are objects just like lists and integers.
 
 Closures solve the "how do I make a function that remembers something?" problem without requiring a class. A closure is a lightweight object with one method and some state. Decorators solve the "how do I add behaviour to a function without modifying its body?" problem — logging, timing, authentication, retry, caching — all expressed as wrappers.
 
 ## Default Arguments
+
+![Visual diagram: Default Arguments](./assets/4-functions-closures-decorators/default-arguments.svg)
 
 ### The Mutable Default Trap (Redux)
 
@@ -111,6 +117,8 @@ def cached_fib(n: int, _cache: dict[int, int] = {}) -> int:
 
 ## `*args`, `**kwargs`, and Parameter Kinds
 
+![Visual diagram: *args, kwargs, and Parameter Kinds](./assets/4-functions-closures-decorators/args-kwargs-and-parameter-kinds.svg)
+
 Python's parameter syntax is rich. All five kinds can appear in one signature, in a specific order.
 
 ```python
@@ -141,6 +149,8 @@ print(add(**kwargs))  # >>> 6
 ```
 
 ## Closures and `nonlocal`
+
+![Visual diagram: Closures and nonlocal](./assets/4-functions-closures-decorators/closures-and-nonlocal.svg)
 
 ### Reading a Free Variable
 
@@ -191,6 +201,8 @@ print(get())  # >>> 3
 > Without `nonlocal count`, the line `count += 1` inside `increment` is compiled as "load local `count`, add 1, store local `count`." Because Python sees an assignment to `count` anywhere in the function body, it marks `count` as local for the entire function. The load then fails with `UnboundLocalError: local variable 'count' referenced before assignment` — even though a `count` in the enclosing scope exists. This is one of the most confusing error messages for Python newcomers.
 
 ## Decorators
+
+![Visual diagram: Decorators](./assets/4-functions-closures-decorators/decorators.svg)
 
 ### The Core Pattern
 
@@ -306,6 +318,8 @@ print(greet("World"))  # >>> <b><i>Hello, World</i></b>
 
 ## Real-world Example
 
+![Visual diagram: Real-world Example](./assets/4-functions-closures-decorators/real-world-example.svg)
+
 A production-grade logging decorator with parameterisation, `functools.wraps`, and type safety — the kind used in a FastAPI service to instrument handler functions.
 
 ```python
@@ -366,6 +380,8 @@ The use of `ParamSpec` (PEP 612, Python 3.10+) preserves the full type signature
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/4-functions-closures-decorators/in-practice.svg)
+
 **`functools.lru_cache` and `functools.cache`** are the most-used decorators in the standard library. `cache` (Python 3.9+) is `lru_cache(maxsize=None)`. They use a dictionary keyed on the function arguments, so all arguments must be hashable.
 
 **`functools.partial`** is a factory for pre-filling arguments. `partial(sorted, key=str.lower)` returns a new callable with `key` already bound. Use it to adapt function signatures for APIs that expect a specific arity.
@@ -377,6 +393,8 @@ The use of `ParamSpec` (PEP 612, Python 3.10+) preserves the full type signature
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/4-functions-closures-decorators/pitfalls.svg)
+
 - **"Decorators run at call time."** — No. Decorators run at *definition* time (when the `def` or `class` statement is executed, not when the function is called). `@lru_cache` attaches the cache at definition time; `@app.route("/")` registers the route at import time.
 - **"Forgetting `functools.wraps` is cosmetic."** — It is not. Missing `functools.wraps` breaks `help()`, doctests, pytest output, logging, tracebacks, and any introspection that relies on `__name__` or `__doc__`. It also breaks decorator stacking with certain frameworks.
 - **"`*args` captures keyword arguments."** — No. `*args` captures only extra *positional* arguments. `**kwargs` captures extra keyword arguments. `def f(*args): print(args); f(x=1)` raises `TypeError`.
@@ -384,6 +402,8 @@ The use of `ParamSpec` (PEP 612, Python 3.10+) preserves the full type signature
 - **"You can define the inner function before the outer returns."** — You can define it, but the closure only captures variables that are *in scope at definition time* in the outer function. Variables defined *after* the closure definition are not captured.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/4-functions-closures-decorators/exercises.svg)
 
 ### Exercise 1 — Closure trap
 

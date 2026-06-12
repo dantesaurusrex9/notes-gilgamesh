@@ -1,7 +1,7 @@
 ---
 title: "12 - Building Production Services in Go"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, production, http, graceful-shutdown, observability, pprof, slog, opentelemetry]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** A production Go HTTP service is assembled from stdlib primitives — `net/http`, `context`, `log/slog`, `os/signal` — plus a small set of de-facto standard observability libraries: Prometheus for metrics, OpenTelemetry for distributed tracing, and `net/http/pprof` for on-demand profiling. The patterns in this note (graceful shutdown, structured logging with request context, middleware chains, pprof endpoints, connection pool tuning) are present in nearly every serious Go service at companies that run Go at scale.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/12-building-production-services/vocabulary.svg)
 
 **Graceful shutdown**: Stopping an HTTP server without dropping in-flight requests. The server stops accepting new connections, waits for existing handlers to complete (up to a deadline), then exits.
 
@@ -48,11 +50,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/12-building-production-services/intuition.svg)
+
 A production Go HTTP service is architecturally simple: an `http.Server` with a `ServeMux` (or a third-party router for complex routing), wrapped in a middleware chain, with observability (logs, metrics, traces) wired at the middleware layer rather than scattered through business logic. The `context.Context` carries the request's identity through every layer, enabling cancellation, tracing, and structured logging that automatically includes the request ID.
 
 Graceful shutdown is the most common operational gap between tutorial services and production ones. Without it, a rolling deploy terminates in-flight requests mid-flight. With it, the server drains existing requests within a deadline before exiting, making zero-downtime deploys possible.
 
 ## Project Layout
+
+![Visual diagram: Project Layout](./assets/12-building-production-services/project-layout.svg)
 
 A conventional Go service layout for a medium-sized service:
 
@@ -75,6 +81,8 @@ myservice/
 `internal/` is enforced by the Go toolchain — packages under `internal/` cannot be imported by packages outside the module. This makes `internal/` safe for private APIs.
 
 ## Graceful Shutdown
+
+![Visual diagram: Graceful Shutdown](./assets/12-building-production-services/graceful-shutdown.svg)
 
 The standard graceful shutdown pattern uses `signal.NotifyContext` to listen for SIGTERM/SIGINT and `http.Server.Shutdown` to drain:
 
@@ -140,6 +148,8 @@ func main() {
 > Always set `ReadTimeout`, `WriteTimeout`, and `IdleTimeout` on `http.Server`. The zero values mean no timeout — a slow or malicious client can hold connections forever, exhausting file descriptors and goroutines. `ReadTimeout` covers reading the request headers and body; `WriteTimeout` covers writing the response; `IdleTimeout` covers keep-alive connections between requests.
 
 ## Middleware
+
+![Visual diagram: Middleware](./assets/12-building-production-services/middleware.svg)
 
 Middleware in Go is a function `func(http.Handler) http.Handler`. Middleware chains are built by wrapping the inner handler with each middleware in order.
 
@@ -230,6 +240,8 @@ handler := middleware.Chain(
 
 ## Structured Logging with `log/slog`
 
+![Visual diagram: Structured Logging with log/slog](./assets/12-building-production-services/structured-logging-with-log-slog.svg)
+
 `log/slog` (Go 1.21) is the standard structured logger. The JSON handler produces machine-readable output suitable for log aggregation systems (Loki, Elasticsearch, Splunk).
 
 ```go
@@ -256,6 +268,8 @@ Log output:
 ```
 
 ## Metrics with Prometheus
+
+![Visual diagram: Metrics with Prometheus](./assets/12-building-production-services/metrics-with-prometheus.svg)
 
 The Prometheus Go client (`github.com/prometheus/client_golang`) registers metrics and exposes them at `/metrics`. Use `promauto` for auto-registering metrics without managing a registry.
 
@@ -299,6 +313,8 @@ mux.Handle("/metrics", promhttp.Handler())
 
 ## Profiling with `pprof`
 
+![Visual diagram: Profiling with pprof](./assets/12-building-production-services/profiling-with-pprof.svg)
+
 Import `net/http/pprof` with a blank import to auto-register the profiling endpoints. In production, expose them on a **separate internal port** so they are not publicly accessible.
 
 ```go
@@ -331,6 +347,8 @@ go tool pprof http://localhost:6060/debug/pprof/block
 
 ## Configuration Management
 
+![Visual diagram: Configuration Management](./assets/12-building-production-services/configuration-management.svg)
+
 Configuration should come from environment variables (12-factor app style) or a config file. Avoid reading configuration from command-line flags for services (they don't work well with `docker run`). The `os.Getenv` pattern is simple and testable.
 
 ```go
@@ -361,6 +379,8 @@ func envOrDefault(key, dflt string) string {
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/12-building-production-services/real-world-example.svg)
 
 A complete minimal production-ready service skeleton in one file:
 
@@ -465,6 +485,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/12-building-production-services/in-practice.svg)
+
 **Container resource limits.** Set `GOMAXPROCS` to match the container's CPU limit, not the host's full CPU count. In a container with 2 CPUs, `GOMAXPROCS=2`. The `go.uber.org/automaxprocs` library does this automatically by reading `/proc/self/cgroup`. Without this, a Go service in a 2-CPU container may spawn 64 OS threads (on a 64-core host), overwhelming the scheduler.
 
 **Connection pool tuning for `database/sql`.**
@@ -493,6 +515,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/12-building-production-services/pitfalls.svg)
+
 - **"I'll add observability later."** — Observability is much harder to retrofit than to build in. Add `log/slog`, Prometheus metrics, and pprof from the first commit. The cost is minimal; the benefit in debugging is enormous.
 - **"My handler is fast; timeouts don't matter."** — Your handler calls a database, which calls a cloud endpoint, which gets rate-limited at 3 AM during a deploy. Without context timeouts at each layer, one slow downstream call can back-pressure all goroutines to a halt. Use `context.WithTimeout` at every I/O boundary.
 - **"I'll handle SIGTERM later."** — Kubernetes sends SIGTERM before SIGKILL when rolling a deploy. Without graceful shutdown, every deploy drops some requests. This is silent in low-traffic environments and catastrophic at scale.
@@ -500,6 +524,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 - **"`pprof` is dev-only."** — Production pprof profiles (on an internal port) are the single most powerful tool for debugging CPU and memory issues in a running service. Enable it always; protect it with network controls.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/12-building-production-services/exercises.svg)
 
 ### Exercise 1 — Implementation: Write a middleware that adds a `X-Request-ID` header
 

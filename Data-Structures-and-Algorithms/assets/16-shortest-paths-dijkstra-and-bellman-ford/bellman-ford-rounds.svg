@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">Bellman-Ford rounds: paths using at most i edges become final</title>
+  <desc id="desc">A four-node graph with one negative edge, and a table of distance arrays after each relaxation round. After round 1 all one-edge paths are final, after round 2 all two-edge paths, after round 3 all three-edge paths. Round 4 changes nothing.</desc>
+  <rect width="1200" height="700" fill="#ffffff"/>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .nl { font: 700 30px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .v { font: 700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .w { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .neg { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b91c1c; }
+    .edge { stroke: #6b7280; stroke-width: 2.5; fill: none; }
+    .node { fill: #ffffff; stroke: #6b7280; stroke-width: 3; }
+    .plain { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .changed { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">Bellman-Ford: after round i, ≤ i-edge paths are final</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- graph -->
+  <circle class="node" cx="180" cy="170" r="34"/>
+  <text class="nl" x="180" y="181" text-anchor="middle">A</text>
+  <circle class="node" cx="460" cy="170" r="34"/>
+  <text class="nl" x="460" y="181" text-anchor="middle">B</text>
+  <circle class="node" cx="740" cy="170" r="34"/>
+  <text class="nl" x="740" y="181" text-anchor="middle">C</text>
+  <circle class="node" cx="1020" cy="170" r="34"/>
+  <text class="nl" x="1020" y="181" text-anchor="middle">D</text>
+
+  <line class="edge" x1="216" y1="170" x2="424" y2="170" marker-end="url(#arr3)"/>
+  <text class="w" x="320" y="152" text-anchor="middle">1</text>
+  <line class="edge" x1="496" y1="170" x2="704" y2="170" marker-end="url(#arr3)"/>
+  <text class="neg" x="600" y="152" text-anchor="middle">−2</text>
+  <line class="edge" x1="776" y1="170" x2="984" y2="170" marker-end="url(#arr3)"/>
+  <text class="w" x="880" y="152" text-anchor="middle">3</text>
+  <path class="edge" d="M 206 196 Q 460 300 712 196" marker-end="url(#arr3)"/>
+  <text class="w" x="460" y="276" text-anchor="middle">4</text>
+
+  <text class="s" x="60" y="312">source = A · edge scan order per round: (C→D, B→C, A→C, A→B) — a deliberately bad order, so progress takes the full V−1 rounds</text>
+
+  <!-- table headers -->
+  <text class="v" x="370" y="362" text-anchor="middle">A</text>
+  <text class="v" x="530" y="362" text-anchor="middle">B</text>
+  <text class="v" x="690" y="362" text-anchor="middle">C</text>
+  <text class="v" x="850" y="362" text-anchor="middle">D</text>
+
+  <!-- init row -->
+  <text class="b" x="60" y="412">init</text>
+  <rect class="changed" x="300" y="378" width="140" height="52" rx="8"/>
+  <text class="v" x="370" y="412" text-anchor="middle">0</text>
+  <rect class="plain" x="460" y="378" width="140" height="52" rx="8"/>
+  <text class="v" x="530" y="412" text-anchor="middle">∞</text>
+  <rect class="plain" x="620" y="378" width="140" height="52" rx="8"/>
+  <text class="v" x="690" y="412" text-anchor="middle">∞</text>
+  <rect class="plain" x="780" y="378" width="140" height="52" rx="8"/>
+  <text class="v" x="850" y="412" text-anchor="middle">∞</text>
+  <text class="s" x="940" y="412">source only</text>
+
+  <!-- round 1 -->
+  <text class="b" x="60" y="482">round 1</text>
+  <rect class="plain" x="300" y="448" width="140" height="52" rx="8"/>
+  <text class="v" x="370" y="482" text-anchor="middle">0</text>
+  <rect class="changed" x="460" y="448" width="140" height="52" rx="8"/>
+  <text class="v" x="530" y="482" text-anchor="middle">1</text>
+  <rect class="changed" x="620" y="448" width="140" height="52" rx="8"/>
+  <text class="v" x="690" y="482" text-anchor="middle">4</text>
+  <rect class="plain" x="780" y="448" width="140" height="52" rx="8"/>
+  <text class="v" x="850" y="482" text-anchor="middle">∞</text>
+  <text class="s" x="940" y="482">≤ 1-edge paths final</text>
+
+  <!-- round 2 -->
+  <text class="b" x="60" y="552">round 2</text>
+  <rect class="plain" x="300" y="518" width="140" height="52" rx="8"/>
+  <text class="v" x="370" y="552" text-anchor="middle">0</text>
+  <rect class="plain" x="460" y="518" width="140" height="52" rx="8"/>
+  <text class="v" x="530" y="552" text-anchor="middle">1</text>
+  <rect class="changed" x="620" y="518" width="140" height="52" rx="8"/>
+  <text class="v" x="690" y="552" text-anchor="middle">−1</text>
+  <rect class="changed" x="780" y="518" width="140" height="52" rx="8"/>
+  <text class="v" x="850" y="552" text-anchor="middle">7</text>
+  <text class="s" x="940" y="552">≤ 2-edge paths final</text>
+
+  <!-- round 3 -->
+  <text class="b" x="60" y="622">round 3</text>
+  <rect class="plain" x="300" y="588" width="140" height="52" rx="8"/>
+  <text class="v" x="370" y="622" text-anchor="middle">0</text>
+  <rect class="plain" x="460" y="588" width="140" height="52" rx="8"/>
+  <text class="v" x="530" y="622" text-anchor="middle">1</text>
+  <rect class="plain" x="620" y="588" width="140" height="52" rx="8"/>
+  <text class="v" x="690" y="622" text-anchor="middle">−1</text>
+  <rect class="changed" x="780" y="588" width="140" height="52" rx="8"/>
+  <text class="v" x="850" y="622" text-anchor="middle">2</text>
+  <text class="s" x="940" y="622">≤ 3-edge paths final</text>
+
+  <text class="m" x="60" y="676">Round 4 changes nothing → early exit. An improving V-th round would prove a reachable negative cycle.</text>
+</svg>

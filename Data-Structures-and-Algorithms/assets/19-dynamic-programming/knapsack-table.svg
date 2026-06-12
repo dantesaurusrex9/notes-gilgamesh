@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">0/1 knapsack table mid-fill, computing dp[3][4]</title>
+  <desc id="desc">A dynamic programming table with rows for items and columns for capacities 0 through 7. Rows 0 to 2 are complete. The current cell dp[3][4] is computed from two cells in the previous row: dp[2][4] for skipping item C and dp[2][0] plus value 6 for taking it.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .n  { font: 700 20px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+    .lb { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .lp { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8b5cf6; }
+    .cell { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .g  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .h  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/></marker>
+    <marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/></marker>
+  </defs>
+  <rect width="1200" height="640" fill="#ffffff"/>
+
+  <text class="t" x="60" y="52">0/1 knapsack table mid-fill: dp[3][4]</text>
+  <line x1="60" y1="72" x2="1140" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text class="c" x="60" y="116">dp[i][w] = max( dp[i-1][w] ,  dp[i-1][w - w_i] + v_i )</text>
+
+  <!-- column headers -->
+  <text class="s" x="305" y="158" text-anchor="middle">w=0</text>
+  <text class="s" x="415" y="158" text-anchor="middle">w=1</text>
+  <text class="s" x="525" y="158" text-anchor="middle">w=2</text>
+  <text class="s" x="635" y="158" text-anchor="middle">w=3</text>
+  <text class="s" x="745" y="158" text-anchor="middle">w=4</text>
+  <text class="s" x="855" y="158" text-anchor="middle">w=5</text>
+  <text class="s" x="965" y="158" text-anchor="middle">w=6</text>
+  <text class="s" x="1075" y="158" text-anchor="middle">w=7</text>
+
+  <!-- row labels -->
+  <text class="s" x="238" y="205" text-anchor="end">i=0 — no items</text>
+  <text class="s" x="238" y="261" text-anchor="end">i=1 — A (w=1, v=1)</text>
+  <text class="s" x="238" y="317" text-anchor="end">i=2 — B (w=3, v=4)</text>
+  <text class="s" x="238" y="373" text-anchor="end">i=3 — C (w=4, v=6)</text>
+  <text class="s" x="238" y="429" text-anchor="end">i=4 — D (w=5, v=7)</text>
+
+  <!-- row i=0 -->
+  <rect class="cell" x="250" y="170" width="110" height="56"/><rect class="cell" x="360" y="170" width="110" height="56"/><rect class="cell" x="470" y="170" width="110" height="56"/><rect class="cell" x="580" y="170" width="110" height="56"/><rect class="cell" x="690" y="170" width="110" height="56"/><rect class="cell" x="800" y="170" width="110" height="56"/><rect class="cell" x="910" y="170" width="110" height="56"/><rect class="cell" x="1020" y="170" width="110" height="56"/>
+  <text class="n" x="305" y="205" text-anchor="middle">0</text><text class="n" x="415" y="205" text-anchor="middle">0</text><text class="n" x="525" y="205" text-anchor="middle">0</text><text class="n" x="635" y="205" text-anchor="middle">0</text><text class="n" x="745" y="205" text-anchor="middle">0</text><text class="n" x="855" y="205" text-anchor="middle">0</text><text class="n" x="965" y="205" text-anchor="middle">0</text><text class="n" x="1075" y="205" text-anchor="middle">0</text>
+
+  <!-- row i=1 -->
+  <rect class="cell" x="250" y="226" width="110" height="56"/><rect class="cell" x="360" y="226" width="110" height="56"/><rect class="cell" x="470" y="226" width="110" height="56"/><rect class="cell" x="580" y="226" width="110" height="56"/><rect class="cell" x="690" y="226" width="110" height="56"/><rect class="cell" x="800" y="226" width="110" height="56"/><rect class="cell" x="910" y="226" width="110" height="56"/><rect class="cell" x="1020" y="226" width="110" height="56"/>
+  <text class="n" x="305" y="261" text-anchor="middle">0</text><text class="n" x="415" y="261" text-anchor="middle">1</text><text class="n" x="525" y="261" text-anchor="middle">1</text><text class="n" x="635" y="261" text-anchor="middle">1</text><text class="n" x="745" y="261" text-anchor="middle">1</text><text class="n" x="855" y="261" text-anchor="middle">1</text><text class="n" x="965" y="261" text-anchor="middle">1</text><text class="n" x="1075" y="261" text-anchor="middle">1</text>
+
+  <!-- row i=2 -->
+  <rect class="g" x="250" y="282" width="110" height="56"/><rect class="cell" x="360" y="282" width="110" height="56"/><rect class="cell" x="470" y="282" width="110" height="56"/><rect class="cell" x="580" y="282" width="110" height="56"/><rect class="g" x="690" y="282" width="110" height="56"/><rect class="cell" x="800" y="282" width="110" height="56"/><rect class="cell" x="910" y="282" width="110" height="56"/><rect class="cell" x="1020" y="282" width="110" height="56"/>
+  <text class="n" x="305" y="317" text-anchor="middle">0</text><text class="n" x="415" y="317" text-anchor="middle">1</text><text class="n" x="525" y="317" text-anchor="middle">1</text><text class="n" x="635" y="317" text-anchor="middle">4</text><text class="n" x="745" y="317" text-anchor="middle">5</text><text class="n" x="855" y="317" text-anchor="middle">5</text><text class="n" x="965" y="317" text-anchor="middle">5</text><text class="n" x="1075" y="317" text-anchor="middle">5</text>
+
+  <!-- row i=3 -->
+  <rect class="cell" x="250" y="338" width="110" height="56"/><rect class="cell" x="360" y="338" width="110" height="56"/><rect class="cell" x="470" y="338" width="110" height="56"/><rect class="cell" x="580" y="338" width="110" height="56"/><rect class="h" x="690" y="338" width="110" height="56"/><rect class="cell" x="800" y="338" width="110" height="56"/><rect class="cell" x="910" y="338" width="110" height="56"/><rect class="cell" x="1020" y="338" width="110" height="56"/>
+  <text class="n" x="305" y="373" text-anchor="middle">0</text><text class="n" x="415" y="373" text-anchor="middle">1</text><text class="n" x="525" y="373" text-anchor="middle">1</text><text class="n" x="635" y="373" text-anchor="middle">4</text><text class="n" x="745" y="373" text-anchor="middle">?</text>
+
+  <!-- row i=4 (untouched) -->
+  <rect class="cell" x="250" y="394" width="110" height="56"/><rect class="cell" x="360" y="394" width="110" height="56"/><rect class="cell" x="470" y="394" width="110" height="56"/><rect class="cell" x="580" y="394" width="110" height="56"/><rect class="cell" x="690" y="394" width="110" height="56"/><rect class="cell" x="800" y="394" width="110" height="56"/><rect class="cell" x="910" y="394" width="110" height="56"/><rect class="cell" x="1020" y="394" width="110" height="56"/>
+
+  <!-- arrows: skip (vertical, blue) and take (diagonal, purple) -->
+  <line x1="745" y1="326" x2="745" y2="352" stroke="#0ea5e9" stroke-width="3" marker-end="url(#ab)"/>
+  <text class="lb" x="812" y="334">skip: 5</text>
+  <line x1="358" y1="330" x2="696" y2="360" stroke="#8b5cf6" stroke-width="3" marker-end="url(#ap)"/>
+
+  <!-- legend and caption -->
+  <text class="lb" x="60" y="520">blue arrow — skip C: dp[2][4] = 5</text>
+  <text class="lp" x="60" y="552">purple arrow — take C: dp[2][0] + 6 = 6</text>
+  <rect class="g" x="700" y="504" width="22" height="22" rx="4"/>
+  <text class="s" x="732" y="521">solved cells read from row i−1</text>
+  <rect class="h" x="700" y="538" width="22" height="22" rx="4"/>
+  <text class="s" x="732" y="555">current cell dp[3][4]</text>
+  <text class="b" x="60" y="600">dp[3][4] = max(5, 6) = 6 — write it, move one cell right. Empty cells are future work.</text>
+</svg>

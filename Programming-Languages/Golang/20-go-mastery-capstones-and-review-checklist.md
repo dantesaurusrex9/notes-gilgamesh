@@ -1,7 +1,7 @@
 ---
 title: "20 - Go Mastery Capstones and Review Checklist"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [golang, programming-languages, mastery, capstone]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go mastery means connecting simple syntax to production systems: packages, interfaces, memory, concurrency, testing, profiling, release binaries, and operational behavior. Build capstones that force every layer to work together.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/20-go-mastery-capstones-and-review-checklist/real-world-example.svg)
 
 This small domain model is a capstone seed. It can power a CLI, HTTP service, worker, or library without depending on a framework.
 
@@ -46,6 +48,8 @@ func (j *Job) Start() error {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/20-go-mastery-capstones-and-review-checklist/vocabulary.svg)
+
 **Capstone**: A project that proves several skills at once.
 
 ---
@@ -62,11 +66,15 @@ func (j *Job) Start() error {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/20-go-mastery-capstones-and-review-checklist/intuition.svg)
+
 Go's simplicity can hide depth. The syntax is small, but the hard parts are design boundaries, goroutine lifetimes, memory pressure, interface size, package structure, and release discipline.
 
 The goal is not to write clever Go. The goal is to write Go that another engineer can debug at 3 AM with logs, profiles, tests, and a clear package graph.
 
 ## Capstone 1: CLI Tool
+
+![Visual diagram: Capstone 1: CLI Tool](./assets/20-go-mastery-capstones-and-review-checklist/capstone-1-cli-tool.svg)
 
 Build a CLI that reads, validates, transforms, and writes data.
 
@@ -87,6 +95,8 @@ Concepts proven:
 - Cross-compilation.
 
 ## Capstone 2: HTTP Service
+
+![Visual diagram: Capstone 2: HTTP Service](./assets/20-go-mastery-capstones-and-review-checklist/capstone-2-http-service.svg)
 
 Build a service with graceful shutdown and observability.
 
@@ -110,6 +120,8 @@ Concepts proven:
 
 ## Capstone 3: Concurrent Worker Pool
 
+![Visual diagram: Capstone 3: Concurrent Worker Pool](./assets/20-go-mastery-capstones-and-review-checklist/capstone-3-concurrent-worker-pool.svg)
+
 Build a worker pool that processes jobs with cancellation and backpressure.
 
 Requirements:
@@ -131,6 +143,8 @@ Concepts proven:
 
 ## Capstone 4: Low-Level Boundary
 
+![Visual diagram: Capstone 4: Low-Level Boundary](./assets/20-go-mastery-capstones-and-review-checklist/capstone-4-low-level-boundary.svg)
+
 Build a safe wrapper around an unsafe or cgo operation.
 
 Requirements:
@@ -150,6 +164,8 @@ Concepts proven:
 
 ## Review Checklist
 
+![Visual diagram: Review Checklist](./assets/20-go-mastery-capstones-and-review-checklist/review-checklist.svg)
+
 Use this checklist when reviewing Go:
 
 - Is the package boundary small and coherent?
@@ -168,6 +184,8 @@ Use this checklist when reviewing Go:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/20-go-mastery-capstones-and-review-checklist/pitfalls.svg)
+
 - **Goroutine leaks**: A goroutine without cancellation is a memory leak with a stack.
 - **Huge interfaces**: Small interfaces compose; large interfaces freeze design.
 - **Panics for normal errors**: Return errors for expected failures.
@@ -175,6 +193,8 @@ Use this checklist when reviewing Go:
 - **No profiling path**: If you cannot profile it, you cannot operate it confidently.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/20-go-mastery-capstones-and-review-checklist/exercises.svg)
 
 1. Pick one capstone and write its acceptance checklist.
 2. Add a fuzz target to a parser.

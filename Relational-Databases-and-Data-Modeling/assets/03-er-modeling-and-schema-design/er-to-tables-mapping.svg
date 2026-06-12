@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">Mapping ER constructs to tables</title>
+  <desc id="desc">Three mapping rules shown side by side: a one-to-many relationship becomes a foreign key on the many side, a many-to-many relationship becomes a junction table, and a one-to-one relationship becomes a foreign key plus UNIQUE on the optional side.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .ent { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .tbl { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .jnc { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .ln { stroke: #6b7280; stroke-width: 2.5; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="700" fill="#ffffff"/>
+  <text x="60" y="70" class="t">The three mechanical mapping rules</text>
+  <line x1="60" y1="95" x2="1140" y2="95" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Column 1: 1:N -->
+  <text x="80" y="150" class="h">RULE 1 — 1:N → FK on the many side</text>
+  <rect x="80" y="175" width="280" height="56" rx="8" class="ent"/>
+  <text x="220" y="211" class="b" text-anchor="middle">CUSTOMER</text>
+  <rect x="80" y="285" width="280" height="56" rx="8" class="ent"/>
+  <text x="220" y="321" class="b" text-anchor="middle">ORDER</text>
+  <line x1="220" y1="231" x2="220" y2="285" class="ln"/>
+  <text x="240" y="266" class="h">1 : N</text>
+  <line x1="220" y1="365" x2="220" y2="415" class="ln" marker-end="url(#arr)"/>
+  <rect x="80" y="430" width="280" height="120" rx="8" class="tbl"/>
+  <text x="100" y="468" class="c">orders(</text>
+  <text x="120" y="500" class="c">id PK,</text>
+  <text x="120" y="532" class="c">customer_id FK)</text>
+  <text x="80" y="600" class="h">Each order points at its</text>
+  <text x="80" y="626" class="h">one customer. Never the</text>
+  <text x="80" y="652" class="h">reverse.</text>
+
+  <!-- Column 2: M:N -->
+  <text x="460" y="150" class="h">RULE 2 — M:N → junction table</text>
+  <rect x="460" y="175" width="280" height="56" rx="8" class="ent"/>
+  <text x="600" y="211" class="b" text-anchor="middle">ORDER</text>
+  <rect x="460" y="285" width="280" height="56" rx="8" class="ent"/>
+  <text x="600" y="321" class="b" text-anchor="middle">PRODUCT</text>
+  <line x1="600" y1="231" x2="600" y2="285" class="ln"/>
+  <text x="620" y="266" class="h">M : N</text>
+  <line x1="600" y1="365" x2="600" y2="415" class="ln" marker-end="url(#arr)"/>
+  <rect x="460" y="430" width="280" height="152" rx="8" class="jnc"/>
+  <text x="480" y="468" class="c">order_items(</text>
+  <text x="500" y="500" class="c">order_id FK,</text>
+  <text x="500" y="532" class="c">product_id FK,</text>
+  <text x="500" y="564" class="c">PK(both))</text>
+  <text x="460" y="626" class="h">Junction row = one line</text>
+  <text x="460" y="652" class="h">on the receipt.</text>
+
+  <!-- Column 3: 1:1 -->
+  <text x="840" y="150" class="h">RULE 3 — 1:1 → FK + UNIQUE</text>
+  <rect x="840" y="175" width="280" height="56" rx="8" class="ent"/>
+  <text x="980" y="211" class="b" text-anchor="middle">CUSTOMER</text>
+  <rect x="840" y="285" width="280" height="56" rx="8" class="ent"/>
+  <text x="980" y="321" class="b" text-anchor="middle">LOYALTY_CARD</text>
+  <line x1="980" y1="231" x2="980" y2="285" class="ln"/>
+  <text x="1000" y="266" class="h">1 : 0..1</text>
+  <line x1="980" y1="365" x2="980" y2="415" class="ln" marker-end="url(#arr)"/>
+  <rect x="840" y="430" width="280" height="120" rx="8" class="tbl"/>
+  <text x="860" y="468" class="c">loyalty_cards(</text>
+  <text x="880" y="500" class="c">customer_id</text>
+  <text x="880" y="532" class="c">FK UNIQUE)</text>
+  <text x="840" y="600" class="h">FK lives on the optional</text>
+  <text x="840" y="626" class="h">side; UNIQUE enforces</text>
+  <text x="840" y="652" class="h">"at most one".</text>
+</svg>

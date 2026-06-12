@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-labelledby="title desc">
+  <title id="title">Vertical versus horizontal scaling cost curves</title>
+  <desc id="desc">A line chart. The x axis is capacity in server-equivalents from 0 to 32. The y axis is relative cost. The vertical-scaling curve rises superlinearly and hits a hardware ceiling. The horizontal-scaling line rises gently and linearly after a small fixed overhead for the load balancer.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .hair { stroke: #e5e7eb; stroke-width: 2; }
+    .axis { stroke: #4b5563; stroke-width: 2; }
+    .vline { stroke: #8b5cf6; stroke-width: 4; fill: none; }
+    .hline { stroke: #0ea5e9; stroke-width: 4; fill: none; }
+    .ceil { stroke: #fca5a5; stroke-width: 3; stroke-dasharray: 8 8; }
+  </style>
+  <rect x="0" y="0" width="1200" height="520" fill="#ffffff"/>
+  <text class="t" x="60" y="56">Cost of capacity: one bigger box vs. more boxes</text>
+  <line class="hair" x1="60" y1="76" x2="1140" y2="76"/>
+
+  <!-- gridlines -->
+  <line class="hair" x1="160" y1="360" x2="1120" y2="360"/>
+  <line class="hair" x1="160" y1="280" x2="1120" y2="280"/>
+  <line class="hair" x1="160" y1="200" x2="1120" y2="200"/>
+  <line class="hair" x1="160" y1="120" x2="1120" y2="120"/>
+
+  <!-- axes -->
+  <line class="axis" x1="160" y1="120" x2="160" y2="440"/>
+  <line class="axis" x1="160" y1="440" x2="1120" y2="440"/>
+
+  <!-- y labels -->
+  <text class="s" x="148" y="447" text-anchor="end">0</text>
+  <text class="s" x="148" y="367" text-anchor="end">50</text>
+  <text class="s" x="148" y="287" text-anchor="end">100</text>
+  <text class="s" x="148" y="207" text-anchor="end">150</text>
+  <text class="s" x="148" y="127" text-anchor="end">200</text>
+  <text class="m" x="60" y="100">relative $</text>
+
+  <!-- x ticks -->
+  <text class="s" x="160" y="470" text-anchor="middle">0</text>
+  <text class="s" x="400" y="470" text-anchor="middle">8</text>
+  <text class="s" x="640" y="470" text-anchor="middle">16</text>
+  <text class="s" x="880" y="470" text-anchor="middle">24</text>
+  <text class="s" x="1120" y="470" text-anchor="middle">32</text>
+  <text class="m" x="640" y="504" text-anchor="middle">capacity (server-equivalents)</text>
+
+  <!-- hardware ceiling -->
+  <line class="ceil" x1="1090" y1="120" x2="1090" y2="440"/>
+  <text class="s" x="1078" y="142" text-anchor="end" fill="#b91c1c">largest box you can buy</text>
+
+  <!-- vertical scaling curve: cost = c^1.5 -->
+  <polyline class="vline" points="190.0,438.4 220.0,435.5 250.0,431.7 280.0,427.2 310.0,422.1 340.0,416.5 370.0,410.4 400.0,403.8 430.0,396.8 460.0,389.4 490.0,381.6 520.0,373.5 550.0,365.0 580.0,356.2 610.0,347.0 640.0,337.6 670.0,327.9 700.0,317.8 730.0,307.5 760.0,296.9 790.0,286.0 820.0,274.9 850.0,263.5 880.0,251.9 910.0,240.0 940.0,227.9 970.0,215.5 1000.0,202.9 1030.0,190.1 1060.0,177.1 1090.0,163.8"/>
+
+  <!-- horizontal scaling line: cost = 1.15c + 3 -->
+  <polyline class="hline" points="190.0,433.4 220.0,431.5 250.0,429.7 280.0,427.8 310.0,426.0 340.0,424.2 370.0,422.3 400.0,420.5 430.0,418.6 460.0,416.8 490.0,415.0 520.0,413.1 550.0,411.3 580.0,409.4 610.0,407.6 640.0,405.8 670.0,403.9 700.0,402.1 730.0,400.2 760.0,398.4 790.0,396.6 820.0,394.7 850.0,392.9 880.0,391.0 910.0,389.2 940.0,387.4 970.0,385.5 1000.0,383.7 1030.0,381.8 1060.0,380.0 1090.0,378.2 1120.0,376.3"/>
+
+  <!-- legend -->
+  <line class="vline" x1="700" y1="155" x2="760" y2="155"/>
+  <text class="b" x="772" y="163">vertical: bigger machine, superlinear $</text>
+  <line class="hline" x1="700" y1="195" x2="760" y2="195"/>
+  <text class="b" x="772" y="203">horizontal: more machines, ~linear $</text>
+
+  <!-- annotation -->
+  <text class="s" x="320" y="340">same capacity, very different bill</text>
+  <line class="hair" x1="430" y1="350" x2="490" y2="392" stroke="#9ca3af"/>
+</svg>

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-labelledby="title desc">
+  <title id="title">Python list vs array module: pointers vs raw values</title>
+  <desc id="desc">Top: a PyListObject header pointing at a contiguous block of eight PyObject pointer slots; the first four slots point at int objects scattered around the heap. Bottom: an array('q') storing six raw 8-byte integers inline with no pointers.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .label { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .codes { font: 700 18px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .hdr   { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .slot  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .free  { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .obj   { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cell  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+    .arrow { stroke: #8b5cf6; stroke-width: 2.5; fill: none; }
+    .arrow2 { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="tri" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b5cf6"/>
+    </marker>
+    <marker id="tri2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="720" fill="#ffffff"/>
+  <text x="60" y="70" class="title">Python list vs array module: pointers vs raw values</text>
+  <line x1="60" y1="92" x2="1140" y2="92" class="rule"/>
+
+  <text x="80" y="140" class="label">list &#8212; contiguous pointers, scattered objects</text>
+
+  <!-- PyListObject header -->
+  <rect x="80" y="165" width="270" height="130" class="hdr"/>
+  <text x="100" y="200" class="codes">PyListObject</text>
+  <text x="100" y="230" class="codes">ob_size   = 4</text>
+  <text x="100" y="260" class="codes">allocated = 8</text>
+  <text x="100" y="290" class="codes">ob_item &#8594;</text>
+  <line x1="355" y1="230" x2="415" y2="230" class="arrow2" marker-end="url(#tri2)"/>
+
+  <!-- ob_item pointer slots (8) -->
+  <rect x="425" y="190" width="85" height="70" class="slot"/>
+  <rect x="518" y="190" width="85" height="70" class="slot"/>
+  <rect x="611" y="190" width="85" height="70" class="slot"/>
+  <rect x="704" y="190" width="85" height="70" class="slot"/>
+  <rect x="797" y="190" width="85" height="70" class="free"/>
+  <rect x="890" y="190" width="85" height="70" class="free"/>
+  <rect x="983" y="190" width="85" height="70" class="free"/>
+  <rect x="1076" y="190" width="85" height="70" class="free"/>
+  <text x="467" y="234" class="codes" text-anchor="middle">ptr</text>
+  <text x="560" y="234" class="codes" text-anchor="middle">ptr</text>
+  <text x="653" y="234" class="codes" text-anchor="middle">ptr</text>
+  <text x="746" y="234" class="codes" text-anchor="middle">ptr</text>
+  <text x="467" y="285" class="small" text-anchor="middle">0</text>
+  <text x="560" y="285" class="small" text-anchor="middle">1</text>
+  <text x="653" y="285" class="small" text-anchor="middle">2</text>
+  <text x="746" y="285" class="small" text-anchor="middle">3</text>
+  <text x="839" y="285" class="small" text-anchor="middle">free</text>
+  <text x="932" y="285" class="small" text-anchor="middle">free</text>
+  <text x="1025" y="285" class="small" text-anchor="middle">free</text>
+  <text x="1118" y="285" class="small" text-anchor="middle">free</text>
+
+  <!-- scattered int objects on the heap -->
+  <line x1="467" y1="262" x2="265" y2="358" class="arrow" marker-end="url(#tri)"/>
+  <line x1="560" y1="262" x2="555" y2="418" class="arrow" marker-end="url(#tri)"/>
+  <line x1="653" y1="262" x2="790" y2="348" class="arrow" marker-end="url(#tri)"/>
+  <line x1="746" y1="262" x2="1010" y2="418" class="arrow" marker-end="url(#tri)"/>
+
+  <rect x="170" y="362" width="190" height="80" class="obj"/>
+  <text x="265" y="395" class="small" text-anchor="middle">PyLongObject</text>
+  <text x="265" y="428" class="codes" text-anchor="middle">10</text>
+
+  <rect x="460" y="422" width="190" height="80" class="obj"/>
+  <text x="555" y="455" class="small" text-anchor="middle">PyLongObject</text>
+  <text x="555" y="488" class="codes" text-anchor="middle">20</text>
+
+  <rect x="700" y="352" width="190" height="80" class="obj"/>
+  <text x="795" y="385" class="small" text-anchor="middle">PyLongObject</text>
+  <text x="795" y="418" class="codes" text-anchor="middle">30</text>
+
+  <rect x="920" y="422" width="190" height="80" class="obj"/>
+  <text x="1015" y="455" class="small" text-anchor="middle">PyLongObject</text>
+  <text x="1015" y="488" class="codes" text-anchor="middle">40</text>
+
+  <text x="80" y="545" class="muted">Every element access dereferences a pointer; the int objects can live anywhere on the heap.</text>
+
+  <!-- array('q') section -->
+  <text x="80" y="595" class="label">array('q') &#8212; raw 8-byte values stored inline</text>
+  <rect x="80"  y="612" width="120" height="80" class="cell"/>
+  <rect x="210" y="612" width="120" height="80" class="cell"/>
+  <rect x="340" y="612" width="120" height="80" class="cell"/>
+  <rect x="470" y="612" width="120" height="80" class="cell"/>
+  <rect x="600" y="612" width="120" height="80" class="cell"/>
+  <rect x="730" y="612" width="120" height="80" class="cell"/>
+  <text x="140" y="662" class="body" text-anchor="middle">10</text>
+  <text x="270" y="662" class="body" text-anchor="middle">20</text>
+  <text x="400" y="662" class="body" text-anchor="middle">30</text>
+  <text x="530" y="662" class="body" text-anchor="middle">40</text>
+  <text x="660" y="662" class="body" text-anchor="middle">50</text>
+  <text x="790" y="662" class="body" text-anchor="middle">60</text>
+  <text x="880" y="662" class="small">stride 8 B &#8212; one 64 B cache line holds 8 values</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="title desc">
+  <title id="title">Memoized fib(5): the tree collapses to a chain</title>
+  <desc id="desc">Six green boxes fib(5) through fib(0) in a row. Solid blue arrows show the calls that are actually computed; dashed amber arcs below show cache hits where fib(5) reuses fib(3), fib(4) reuses fib(2), and fib(3) reuses fib(1). A caption compares 9 total calls against 15 naive calls.</desc>
+  <rect width="1200" height="540" fill="#ffffff"/>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .node  { font: 700 22px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+  </style>
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fcd34d"/>
+    </marker>
+  </defs>
+
+  <text class="title" x="40" y="56">Memoized fib(5): the tree collapses to a chain</text>
+  <line x1="40" y1="74" x2="1160" y2="74" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- fib(2) also computes fib(0): arc over the top -->
+  <path d="M 705 146 Q 890 40 1075 146" fill="none" stroke="#0ea5e9" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <text class="small" x="890" y="78" text-anchor="middle">fib(2) also calls fib(0)</text>
+
+  <!-- computed-call arrows along the row -->
+  <g stroke="#0ea5e9" stroke-width="2.5">
+    <line x1="187" y1="172" x2="259" y2="172" marker-end="url(#arrowBlue)"/>
+    <line x1="377" y1="172" x2="449" y2="172" marker-end="url(#arrowBlue)"/>
+    <line x1="567" y1="172" x2="639" y2="172" marker-end="url(#arrowBlue)"/>
+    <line x1="757" y1="172" x2="829" y2="172" marker-end="url(#arrowBlue)"/>
+  </g>
+  <text class="small" x="223" y="160" text-anchor="middle">calls</text>
+
+  <!-- cache-hit arcs below -->
+  <g fill="none" stroke="#fcd34d" stroke-width="3" stroke-dasharray="10 7">
+    <path d="M 130 196 Q 320 300 510 196" marker-end="url(#arrowAmber)"/>
+    <path d="M 320 196 Q 510 370 700 196" marker-end="url(#arrowAmber)"/>
+    <path d="M 510 196 Q 700 440 890 196" marker-end="url(#arrowAmber)"/>
+  </g>
+  <text class="small" x="600" y="388" text-anchor="middle">dashed = cache hit: answer returned in O(1), no subtree re-walked</text>
+
+  <!-- nodes -->
+  <g fill="#dcfce7" stroke="#86efac" stroke-width="2">
+    <rect x="75"   y="150" width="110" height="44" rx="8"/>
+    <rect x="265"  y="150" width="110" height="44" rx="8"/>
+    <rect x="455"  y="150" width="110" height="44" rx="8"/>
+    <rect x="645"  y="150" width="110" height="44" rx="8"/>
+    <rect x="835"  y="150" width="110" height="44" rx="8"/>
+    <rect x="1025" y="150" width="110" height="44" rx="8"/>
+  </g>
+  <text class="node" x="130"  y="180" text-anchor="middle">fib(5)</text>
+  <text class="node" x="320"  y="180" text-anchor="middle">fib(4)</text>
+  <text class="node" x="510"  y="180" text-anchor="middle">fib(3)</text>
+  <text class="node" x="700"  y="180" text-anchor="middle">fib(2)</text>
+  <text class="node" x="890"  y="180" text-anchor="middle">fib(1)</text>
+  <text class="node" x="1080" y="180" text-anchor="middle">fib(0)</text>
+
+  <!-- stats -->
+  <line x1="40" y1="416" x2="1160" y2="416" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="80" y="460">9 calls total = 6 computed (green boxes) + 3 cache hits (dashed) — the naive tree made 15.</text>
+  <text class="body" x="80" y="500">fib(40): 41 computed values instead of ≈ 331,160,281 calls. Time O(n), cache space O(n).</text>
+</svg>

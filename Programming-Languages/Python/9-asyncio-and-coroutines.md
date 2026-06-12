@@ -1,7 +1,7 @@
 ---
 title: "9 - asyncio and Coroutines"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** `asyncio` is a single-threaded concurrency model built on an event loop that multiplexes I/O-bound work by suspending coroutines at `await` points. Coroutines (`async def` functions) are cooperative: they yield control explicitly. `asyncio.TaskGroup` (Python 3.11+) is the structured concurrency primitive; `asyncio.gather` is the older equivalent. The model gives you I/O throughput comparable to hundreds of threads with the overhead of one.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/9-asyncio-and-coroutines/vocabulary.svg)
 
 **Coroutine**: An `async def` function. Calling it returns a coroutine object; it does not execute until awaited or wrapped in a `Task`. Coroutines are awaitables.
 
@@ -68,11 +70,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/9-asyncio-and-coroutines/intuition.svg)
+
 Imagine a single chef (the event loop) managing multiple orders (coroutines). The chef can only do one thing at a time, but each time an order requires waiting — for the oven to preheat, for a delivery to arrive — the chef sets a timer and starts another order. When the timer fires, the chef returns to the waiting order. No order is truly parallel, but all orders make progress.
 
 This is cooperative multitasking: each coroutine is responsible for yielding control by using `await`. If a coroutine runs CPU-bound Python code without ever awaiting, it blocks the entire event loop — equivalent to the chef getting stuck peeling potatoes while everything else burns. `asyncio` is for I/O-bound work where the "waiting" dominates.
 
 ## The Event Loop Architecture
+
+![Visual diagram: The Event Loop Architecture](./assets/9-asyncio-and-coroutines/the-event-loop-architecture.svg)
 
 ```mermaid
 flowchart TD
@@ -89,6 +95,8 @@ flowchart TD
 The loop runs one coroutine at a time. Each `await` is a suspension point where the event loop can switch to another coroutine. I/O events are multiplexed via the OS selector (epoll on Linux, kqueue on macOS). The loop processes the ready queue between I/O polls.
 
 ## `async def`, `await`, and Tasks
+
+![Visual diagram: async def, await, and Tasks](./assets/9-asyncio-and-coroutines/async-def-await-and-tasks.svg)
 
 ### Coroutines vs Tasks
 
@@ -175,6 +183,8 @@ asyncio.run(main())
 
 ## Cancellation
 
+![Visual diagram: Cancellation](./assets/9-asyncio-and-coroutines/cancellation.svg)
+
 Cancellation sends `CancelledError` to the coroutine at its next `await`. The coroutine can catch it for cleanup, but must re-raise or the task is not considered cancelled.
 
 ```python
@@ -212,6 +222,8 @@ asyncio.run(main())
 
 ## Async Iterators and Context Managers
 
+![Visual diagram: Async Iterators and Context Managers](./assets/9-asyncio-and-coroutines/async-iterators-and-context-managers.svg)
+
 `async for` and `async with` work with objects that return coroutines from `__anext__`/`__aenter__`/`__aexit__`.
 
 ```python
@@ -235,6 +247,8 @@ asyncio.run(main())
 ```
 
 ## Mixing Blocking and Async Code
+
+![Visual diagram: Mixing Blocking and Async Code](./assets/9-asyncio-and-coroutines/mixing-blocking-and-async-code.svg)
 
 Blocking calls (legacy DB drivers, CPU-bound computation, `requests`, file I/O without `aiofiles`) must be run in an executor to avoid blocking the event loop.
 
@@ -265,6 +279,8 @@ asyncio.run(main())
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/9-asyncio-and-coroutines/real-world-example.svg)
 
 An async HTTP fanout with rate limiting, timeout, and structured error handling — the kind of pattern used in a microservice that aggregates multiple upstream APIs.
 
@@ -333,6 +349,8 @@ if __name__ == "__main__":
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/9-asyncio-and-coroutines/in-practice.svg)
+
 **`asyncio.run()` is the correct entry point.** It creates a new event loop, runs the coroutine, closes the loop. Never call `loop.run_until_complete` and `loop.close` manually in application code.
 
 **Debug mode exposes slow callbacks.** Set `PYTHONASYNCIODEBUG=1` or `asyncio.run(main(), debug=True)`. The event loop warns about callbacks that take more than 100ms — a sign that blocking code is on the event loop thread.
@@ -344,6 +362,8 @@ if __name__ == "__main__":
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/9-asyncio-and-coroutines/pitfalls.svg)
+
 - **"asyncio is faster than threads for all I/O."** — For very short-lived I/O (e.g. Redis GET in a tight loop), thread-switching overhead is negligible and threads may perform similarly. For high-concurrency, long-wait I/O (1000+ simultaneous HTTP requests), asyncio wins significantly.
 - **"Calling `asyncio.run` inside an existing event loop."** — This raises `RuntimeError: This event loop is already running`. In Jupyter notebooks (which run their own event loop), use `nest_asyncio.apply()` or `await` directly.
 - **"Swallowing `CancelledError`."** — Breaks structured cancellation and causes tasks that awaited the cancellation to hang forever. Always re-raise.
@@ -351,6 +371,8 @@ if __name__ == "__main__":
 - **"Thread-safety in async code."** — Asyncio is single-threaded within the event loop. You do not need locks for shared state among coroutines — only between coroutines and actual threads (e.g. callbacks from `run_in_executor`). Use `asyncio.Lock` for mutual exclusion between coroutines.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/9-asyncio-and-coroutines/exercises.svg)
 
 ### Exercise 1 — Sequential vs concurrent
 

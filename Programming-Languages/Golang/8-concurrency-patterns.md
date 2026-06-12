@@ -1,7 +1,7 @@
 ---
 title: "8 - Concurrency Patterns and the Race Detector"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, concurrency, mutex, sync, context, race-detector]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's `sync` package provides Mutex, RWMutex, WaitGroup, Once, and Pool for shared-state concurrency; the `sync/atomic` package provides lock-free primitives for single-word reads and writes. `context` propagates cancellation, deadlines, and request-scoped values across goroutine trees. The race detector (`go test -race`) instruments all memory accesses at compile time and reports data races at runtime — it is the single most effective tool for finding concurrency bugs, and it should run in every CI pipeline.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/8-concurrency-patterns/vocabulary.svg)
 
 **`sync.Mutex`**: A mutual exclusion lock. `Lock()` acquires; `Unlock()` releases. At most one goroutine holds the lock at a time. Not re-entrant (a goroutine that calls `Lock` twice deadlocks).
 
@@ -52,11 +54,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/8-concurrency-patterns/intuition.svg)
+
 Go channels are perfect for communicating values between goroutines. But many programs need *shared state* — a cache, a counter, a rate limiter, a connection pool — where multiple goroutines read and write the same data structure. For these cases, traditional locks are the right tool. The `sync` package provides them in a minimal, idiomatic form.
 
 `context` solves a different problem: when a tree of goroutines is doing work on behalf of a request, how do you tell them all to stop? Passing a channel for cancellation works, but you also need deadlines and request metadata. `context.Context` unifies all three under one interface, and its cancellation signal propagates automatically to every child context.
 
 ## `sync.Mutex` and `sync.RWMutex`
+
+![Visual diagram: sync.Mutex and sync.RWMutex](./assets/8-concurrency-patterns/sync-mutex-and-sync-rwmutex.svg)
 
 ### Mutex — Exclusive Locking
 
@@ -140,6 +146,8 @@ func (c *Cache) Set(key, value string) {
 
 ## `sync.WaitGroup`
 
+![Visual diagram: sync.WaitGroup](./assets/8-concurrency-patterns/sync-waitgroup.svg)
+
 `WaitGroup` is the standard way to wait for a batch of goroutines to finish. The pattern is always `Add` before launching the goroutine, `Done` (via `defer`) inside the goroutine, and `Wait` after all goroutines have been launched.
 
 ```go
@@ -158,6 +166,8 @@ wg.Wait()
 > Call `wg.Add(1)` BEFORE launching the goroutine, not inside it. If you call `Add` inside the goroutine, `Wait` might return before `Add` is ever called, making the WaitGroup useless. Also, `Add` must not be called concurrently with `Wait` if the counter is at zero — that is a race.
 
 ## `sync.Once`
+
+![Visual diagram: sync.Once](./assets/8-concurrency-patterns/sync-once.svg)
 
 `Once` is the idiomatic Go singleton / lazy-init pattern. The function passed to `Do` runs exactly once, even if multiple goroutines call `Do` concurrently.
 
@@ -184,6 +194,8 @@ func InitDB(dsn string) {
 > If the function passed to `Once.Do` panics, the `Once` is considered done — future calls to `Do` will not call the function again. The panic propagates to the calling goroutine. If you need retry semantics on failure, `sync.Once` is not the right tool; use a mutex with a separate `initialized bool` flag.
 
 ## `sync/atomic`
+
+![Visual diagram: sync/atomic](./assets/8-concurrency-patterns/sync-atomic.svg)
 
 Atomic operations are lock-free and operate on a single memory word. They are useful for high-frequency counters and flags where a full mutex would cause contention.
 
@@ -215,6 +227,8 @@ fmt.Println(count.Load())  // 1
 > Atomic operations are NOT a substitute for a mutex when you need to update multiple related values atomically. `atomic.AddInt64(&a, 1); atomic.AddInt64(&b, 1)` is not an atomic transaction — another goroutine can observe `a` incremented but `b` not yet incremented. Use a mutex when invariants span multiple variables.
 
 ## `context.Context`
+
+![Visual diagram: context.Context](./assets/8-concurrency-patterns/context-context.svg)
 
 `context.Context` is the mechanism for propagating cancellation, deadlines, and request-scoped values through a call tree. Pass `ctx` as the first argument to every function that may block on I/O.
 
@@ -307,6 +321,8 @@ Use an unexported type (`contextKey`) for the key to prevent collisions between 
 
 ## The Race Detector
 
+![Visual diagram: The Race Detector](./assets/8-concurrency-patterns/the-race-detector.svg)
+
 The race detector is enabled by passing `-race` to `go build`, `go run`, or `go test`. It instruments every memory access (read and write) and records the goroutine that performed it along with the logical clock (happens-before relationship). When two accesses to the same memory location are unordered (no synchronisation between them) and at least one is a write, it reports a race.
 
 ```bash
@@ -355,6 +371,8 @@ for !done {}  // spin-read of done — race
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/8-concurrency-patterns/real-world-example.svg)
 
 A rate limiter using a token bucket implemented with atomics and a ticker goroutine:
 
@@ -427,6 +445,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/8-concurrency-patterns/in-practice.svg)
+
 **Prefer channels for ownership transfer; prefer mutexes for shared state.** When a goroutine passes a value to another and stops using it, a channel is clean. When multiple goroutines need concurrent access to a cache or counter, a mutex is simpler.
 
 **`sync.Pool` reduces GC pressure.** For short-lived objects allocated at high frequency (request buffers, JSON encoders), putting them in a `Pool` and `Get`ting them instead of allocating reduces the number of objects the GC must scan. The pool is per-P (per scheduler processor), so there is minimal contention.
@@ -452,6 +472,8 @@ func handleRequest(data []byte) {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/8-concurrency-patterns/pitfalls.svg)
+
 - **"Mutexes are slow; use atomics everywhere."** — Atomics are fast for single variables. For invariants across multiple variables, atomics cannot help. Use the right tool for the scope of the invariant.
 - **"`sync.WaitGroup` can be called from anywhere."** — `Add` must be called before `Wait` when the counter is at zero. Calling `Add` after `Wait` returns (or races with its return) is a data race.
 - **"Context values are a map — use them for all configuration."** — Context values are for request-scoped data that must cross API boundaries (trace IDs, auth tokens). Function parameters should be explicit for non-request-scoped config. Overloading context with configuration couples your functions to context in a way that makes them hard to test.
@@ -459,6 +481,8 @@ func handleRequest(data []byte) {
 - **"A goroutine reading a variable set before it was launched does not need synchronisation."** — This is a "happens-before" question. The Go memory model guarantees the goroutine creation (the `go` statement) happens before the goroutine's first execution. Variables written before `go f()` are visible inside `f`. But concurrent reads/writes after the goroutine starts still require synchronisation.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/8-concurrency-patterns/exercises.svg)
 
 ### Exercise 1 — Bug finding: Find the data race
 

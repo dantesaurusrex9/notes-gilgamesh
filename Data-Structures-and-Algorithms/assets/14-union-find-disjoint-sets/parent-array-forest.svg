@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">One parent array stores a whole forest of disjoint sets</title>
+  <desc id="desc">A seven-cell array parent equals 0 0 0 3 3 5 5, with root cells in green, drawn above the three trees it encodes: a tree rooted at 0 with children 1 and 2, a tree rooted at 3 with child 4, and a tree rooted at 5 with child 6. Arrows show child-to-parent pointers.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .nodetxt { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; text-anchor: middle; }
+    .mid { text-anchor: middle; }
+    .endt { text-anchor: end; }
+    .rootcell { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .childcell { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .edge { stroke: #4b5563; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+  <text class="title" x="60" y="56">One array stores the whole forest</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="code" x="60" y="118">parent = [0, 0, 0, 3, 3, 5, 5]</text>
+  <text class="muted" x="540" y="118">three disjoint sets, zero node objects</text>
+
+  <!-- array cells -->
+  <text class="code endt" x="200" y="196">parent</text>
+  <rect class="rootcell"  x="215" y="150" width="110" height="70"/>
+  <rect class="childcell" x="325" y="150" width="110" height="70"/>
+  <rect class="childcell" x="435" y="150" width="110" height="70"/>
+  <rect class="rootcell"  x="545" y="150" width="110" height="70"/>
+  <rect class="childcell" x="655" y="150" width="110" height="70"/>
+  <rect class="rootcell"  x="765" y="150" width="110" height="70"/>
+  <rect class="childcell" x="875" y="150" width="110" height="70"/>
+  <text class="nodetxt" x="270" y="196">0</text>
+  <text class="nodetxt" x="380" y="196">0</text>
+  <text class="nodetxt" x="490" y="196">0</text>
+  <text class="nodetxt" x="600" y="196">3</text>
+  <text class="nodetxt" x="710" y="196">3</text>
+  <text class="nodetxt" x="820" y="196">5</text>
+  <text class="nodetxt" x="930" y="196">5</text>
+  <text class="small endt" x="200" y="252">index</text>
+  <text class="small mid" x="270" y="252">0</text>
+  <text class="small mid" x="380" y="252">1</text>
+  <text class="small mid" x="490" y="252">2</text>
+  <text class="small mid" x="600" y="252">3</text>
+  <text class="small mid" x="710" y="252">4</text>
+  <text class="small mid" x="820" y="252">5</text>
+  <text class="small mid" x="930" y="252">6</text>
+
+  <!-- legend -->
+  <rect class="rootcell" x="215" y="284" width="26" height="26"/>
+  <text class="body" x="256" y="305">parent[i] == i &#8594; root, the set&#8217;s representative</text>
+  <rect class="childcell" x="215" y="322" width="26" height="26"/>
+  <text class="body" x="256" y="343">points at its parent &#8594; follow pointers upward to find the root</text>
+
+  <!-- forest -->
+  <text class="body" x="60" y="398">The forest these pointers encode (arrows = parent pointers):</text>
+  <text class="small mid" x="320" y="420">{0, 1, 2}</text>
+  <text class="small mid" x="660" y="420">{3, 4}</text>
+  <text class="small mid" x="940" y="420">{5, 6}</text>
+
+  <!-- tree 1: root 0, children 1 and 2 -->
+  <line class="edge" x1="258" y1="553" x2="299" y2="492" marker-end="url(#arrow)"/>
+  <line class="edge" x1="382" y1="553" x2="341" y2="492" marker-end="url(#arrow)"/>
+  <circle cx="320" cy="460" r="30" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="240" cy="580" r="30" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <circle cx="400" cy="580" r="30" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <text class="nodetxt" x="320" y="469">0</text>
+  <text class="nodetxt" x="240" y="589">1</text>
+  <text class="nodetxt" x="400" y="589">2</text>
+
+  <!-- tree 2: root 3, child 4 -->
+  <line class="edge" x1="660" y1="548" x2="660" y2="498" marker-end="url(#arrow)"/>
+  <circle cx="660" cy="460" r="30" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="660" cy="580" r="30" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <text class="nodetxt" x="660" y="469">3</text>
+  <text class="nodetxt" x="660" y="589">4</text>
+
+  <!-- tree 3: root 5, child 6 -->
+  <line class="edge" x1="940" y1="548" x2="940" y2="498" marker-end="url(#arrow)"/>
+  <circle cx="940" cy="460" r="30" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <circle cx="940" cy="580" r="30" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <text class="nodetxt" x="940" y="469">5</text>
+  <text class="nodetxt" x="940" y="589">6</text>
+</svg>

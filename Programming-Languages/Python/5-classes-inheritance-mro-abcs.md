@@ -1,7 +1,7 @@
 ---
 title: "5 - Classes, Inheritance, MRO, ABCs"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python classes are objects (instances of `type`) and are constructed by `__new__` before `__init__` populates them. Multiple inheritance is resolved via the C3 linearisation algorithm (MRO), which `super()` traverses automatically. Abstract Base Classes enforce interface contracts at subclass definition time; `dataclasses` and `__slots__` are the two principal tools for lean, well-typed data-holding classes.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/5-classes-inheritance-mro-abcs/vocabulary.svg)
 
 **`type`**: The metaclass of all classes. `type(MyClass)` returns `type`. You can create classes dynamically with `type("ClassName", (bases,), namespace)`.
 
@@ -68,11 +70,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/5-classes-inheritance-mro-abcs/intuition.svg)
+
 A Python class is a namespace (a dict) with some special dunder methods, wrapped in a `type` object. When you define `class Foo(Bar, Baz):`, Python calls `type.__new__(type, "Foo", (Bar, Baz), namespace)` to create the class object. When you call `Foo(args)`, Python calls `Foo.__call__(args)`, which calls `Foo.__new__(Foo, args)` to allocate, then `Foo.__init__(instance, args)` to populate.
 
 Multiple inheritance's MRO problem — which parent's method wins when two parents both define the same name — is solved by C3 once and for all at class definition time. `super()` does not mean "the parent class"; it means "the next class in the current MRO." Understanding this distinction is what makes cooperative multiple inheritance work correctly.
 
 ## Classes and Instances
+
+![Visual diagram: Classes and Instances](./assets/5-classes-inheritance-mro-abcs/classes-and-instances.svg)
 
 ### `__new__` vs `__init__`
 
@@ -170,6 +176,8 @@ print(Config.validate_port(80))  # >>> True
 
 ## Inheritance and MRO
 
+![Visual diagram: Inheritance and MRO](./assets/5-classes-inheritance-mro-abcs/inheritance-and-mro.svg)
+
 ### C3 Linearisation
 
 Python computes the MRO using the C3 algorithm. The rule: a class appears before its parents; among multiple parents, left-to-right order is preserved; the result must be consistent (no class appears after one of its subclasses).
@@ -242,6 +250,8 @@ Model().save()
 
 ## Abstract Base Classes
 
+![Visual diagram: Abstract Base Classes](./assets/5-classes-inheritance-mro-abcs/abstract-base-classes.svg)
+
 ABCs document and enforce interfaces. A class inheriting from `abc.ABC` and marking methods with `@abc.abstractmethod` cannot be instantiated unless all abstract methods are overridden.
 
 ```python
@@ -289,6 +299,8 @@ print(store.get_or_default("y", 0))  # >>> 0
 ```
 
 ## `dataclasses` and `__slots__`
+
+![Visual diagram: dataclasses and __slots__](./assets/5-classes-inheritance-mro-abcs/dataclasses-and-slots.svg)
 
 ### `@dataclass`
 
@@ -357,6 +369,8 @@ print(sys.getsizeof(s))                               # >>> ~56 bytes
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/5-classes-inheritance-mro-abcs/real-world-example.svg)
 
 A complete class hierarchy for a machine-learning experiment: an abstract `Trainer`, a concrete `SupervisedTrainer`, and a `LoggingMixin` — demonstrating MRO, ABCs, `super()`, properties, and `dataclass`.
 
@@ -439,6 +453,8 @@ trainer.train()
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/5-classes-inheritance-mro-abcs/in-practice.svg)
+
 **`super()` with arguments.** In Python 2 you had to write `super(MyClass, self).method()`. In Python 3, `super()` with no arguments is almost always correct — it uses `__class__` and the first method argument automatically. Use `super(Class, proxy)` only when you need to start MRO lookup from a specific point.
 
 **`__slots__` and inheritance.** A subclass of a `__slots__` class that does *not* define its own `__slots__` gets a `__dict__` anyway. For `__slots__` to eliminate `__dict__` throughout the hierarchy, every class in the hierarchy must declare `__slots__`.
@@ -450,6 +466,8 @@ trainer.train()
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/5-classes-inheritance-mro-abcs/pitfalls.svg)
+
 - **"`super()` calls the parent class."** — No. It calls the next class in the *MRO*. In a diamond hierarchy `D(B, C)`, `B.super()` calls `C`, not `A`. This is exactly what cooperative MI requires, but it means `super()` is more powerful (and more subtle) than "parent".
 - **"ABCs are only useful as interfaces."** — ABCs can also contain concrete methods (mix of abstract and concrete). `collections.abc.MutableSequence` provides `append`, `clear`, `reverse`, etc. for free if you implement `__getitem__`, `__setitem__`, `__delitem__`, `__len__`, and `insert`. ABCs enable the template method pattern.
 - **"`__slots__` prevents inheritance."** — It does not. It prevents *dynamic attribute addition* and eliminates `__dict__`. Inheritance works; just remember that each class in the hierarchy needs its own `__slots__` declaration.
@@ -457,6 +475,8 @@ trainer.train()
 - **"`__init__` is called before `__new__`."** — Reversed. `__new__` allocates the instance first; `__init__` receives the already-allocated instance. `__init__` is never called at all if `__new__` returns something that is not an instance of `cls`.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/5-classes-inheritance-mro-abcs/exercises.svg)
 
 ### Exercise 1 — Trace the MRO
 

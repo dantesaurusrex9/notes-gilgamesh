@@ -1,7 +1,7 @@
 ---
 title: "06 - Memory, ARC, Value Semantics, and Copy-on-Write"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, memory, arc]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift memory mastery starts with one split: structs and enums are values, classes are references managed by ARC. ARC automatically manages class lifetimes, but retain cycles, closure captures, unsafe pointers, and accidental copies are still your responsibility.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/06-memory-arc-value-semantics-and-copy-on-write/real-world-example.svg)
 
 This example shows a classic retain cycle. `ViewModel` strongly owns a closure, and the closure strongly captures `self`. The fixed version captures `self` weakly.
 
@@ -43,6 +45,8 @@ final class ViewModel {
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/06-memory-arc-value-semantics-and-copy-on-write/vocabulary.svg)
 
 **ARC**: Automatic Reference Counting. Swift's normal memory-management system for class instances.
 
@@ -76,11 +80,15 @@ final class ViewModel {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/06-memory-arc-value-semantics-and-copy-on-write/intuition.svg)
+
 ARC is not a tracing garbage collector. It does not periodically walk the heap to discover unreachable cycles. It increments and decrements reference counts as strong references are created and removed. When the strong count reaches zero, the object is deallocated.
 
 That deterministic model is fast and predictable, but cycles do not break themselves. If object A strongly owns B and B strongly owns A, both reference counts stay above zero. You must design one side as `weak` or `unowned`, or break the relationship manually.
 
 ## Value Types and Reference Types
+
+![Visual diagram: Value Types and Reference Types](./assets/06-memory-arc-value-semantics-and-copy-on-write/value-types-and-reference-types.svg)
 
 Structs and enums give you value semantics. Classes give you reference identity. The difference is visible when you mutate one copy.
 
@@ -111,6 +119,8 @@ print(y.count) // 2
 
 ## Weak Versus Unowned
 
+![Visual diagram: Weak Versus Unowned](./assets/06-memory-arc-value-semantics-and-copy-on-write/weak-versus-unowned.svg)
+
 Use `weak` when the referenced object may disappear first. Use `unowned` only when the referenced object must outlive the reference by design.
 
 ```swift
@@ -126,6 +136,8 @@ final class Child {
 The parent owns the child. The child points back without owning the parent.
 
 ## Copy-on-Write Collections
+
+![Visual diagram: Copy-on-Write Collections](./assets/06-memory-arc-value-semantics-and-copy-on-write/copy-on-write-collections.svg)
 
 Swift arrays, dictionaries, and sets are value types with optimized shared storage. Assigning an array usually copies a small wrapper, not every element. Mutating one copy may trigger storage separation.
 
@@ -144,6 +156,8 @@ print(second) // [1, 2, 3, 4]
 
 ## Exclusivity and Memory Safety
 
+![Visual diagram: Exclusivity and Memory Safety](./assets/06-memory-arc-value-semantics-and-copy-on-write/exclusivity-and-memory-safety.svg)
+
 Swift enforces exclusive access to mutable memory. You cannot safely mutate the same storage through two overlapping paths. This is why some code that "looks fine" in a dynamic language is rejected by the compiler.
 
 ```swift
@@ -159,6 +173,8 @@ print(score)
 `inout` makes mutation explicit at the call site. The compiler uses this explicitness to reject overlapping mutations.
 
 ## Unsafe APIs
+
+![Visual diagram: Unsafe APIs](./assets/06-memory-arc-value-semantics-and-copy-on-write/unsafe-apis.svg)
 
 Unsafe pointer APIs exist for C interop, performance experiments, and systems code. They are not the normal path. When you use them, you own lifetime, alignment, initialization, and deinitialization rules.
 
@@ -176,6 +192,8 @@ numbers.withUnsafeBufferPointer { buffer in
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/06-memory-arc-value-semantics-and-copy-on-write/pitfalls.svg)
+
 - **Retain cycles in closures**: Stored closures and async callbacks often capture `self`.
 - **Overusing `unowned`**: If the object can disappear first, `unowned` can crash. Prefer `weak` unless the lifetime relation is strict.
 - **Assuming value types are always stack-only**: Value semantics are not a promise about physical stack allocation. Large or escaping values may use heap storage.
@@ -183,6 +201,8 @@ numbers.withUnsafeBufferPointer { buffer in
 - **Using unsafe pointers as an optimization guess**: Profile first. Unsafe code can be slower and less correct if it fights optimizer assumptions.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/06-memory-arc-value-semantics-and-copy-on-write/exercises.svg)
 
 1. Create two classes with strong references to each other and prove `deinit` does not run.
 2. Fix the cycle with `weak`.

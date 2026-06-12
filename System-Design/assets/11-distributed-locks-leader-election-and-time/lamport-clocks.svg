@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Lamport clocks across two processes</title>
+  <desc id="desc">Two horizontal process timelines. Process A has a local event a1 with timestamp 1 and a send event a2 with timestamp 2. Process B has a local event b1 with timestamp 1 and a receive event b2 with timestamp 3, computed as the maximum of its local clock 1 and the message timestamp 2, plus one. The message arrow carries timestamp 2 from A to B. Events a1 and b1 share timestamp 1 because they are concurrent.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .lane  { stroke: #e5e7eb; stroke-width: 2; }
+    .good  { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .hl    { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2.5; }
+    .mid   { text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arrPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="title" x="40" y="58">Lamport clocks: receive sets t = max(local, msg) + 1</text>
+  <line class="lane" x1="40" y1="80" x2="1160" y2="80"/>
+
+  <!-- process lines -->
+  <line class="lane" x1="170" y1="210" x2="1130" y2="210"/>
+  <line class="lane" x1="170" y1="410" x2="1130" y2="410"/>
+  <text class="body" x="40" y="218">Process A</text>
+  <text class="body" x="40" y="418">Process B</text>
+  <text class="small" x="1066" y="198">time</text>
+
+  <!-- A events -->
+  <text class="small mid" x="320" y="158">a1: local event</text>
+  <circle class="good" cx="320" cy="210" r="28"/>
+  <text class="code mid" x="320" y="219">1</text>
+
+  <text class="small mid" x="600" y="158">a2: send m</text>
+  <circle class="hl" cx="600" cy="210" r="28"/>
+  <text class="code mid" x="600" y="219">2</text>
+
+  <!-- B events -->
+  <circle class="good" cx="420" cy="410" r="28"/>
+  <text class="code mid" x="420" y="419">1</text>
+  <text class="small mid" x="420" y="466">b1: local event</text>
+
+  <circle class="hl" cx="840" cy="410" r="28"/>
+  <text class="code mid" x="840" y="419">3</text>
+  <text class="small mid" x="840" y="466">b2: receive m</text>
+
+  <!-- message arrow -->
+  <line x1="620" y1="232" x2="818" y2="388" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arrPurple)"/>
+  <text class="small" x="742" y="298">m carries ts = 2</text>
+
+  <!-- merge rule annotation -->
+  <text class="code mid" x="840" y="504">max(1, 2) + 1 = 3</text>
+
+  <!-- caption -->
+  <text class="muted" x="40" y="540">Causal chain a1 &#8594; a2 &#8594; b2 gets strictly increasing stamps; a1 and b1 both stamp 1 &#8212; concurrent.</text>
+</svg>

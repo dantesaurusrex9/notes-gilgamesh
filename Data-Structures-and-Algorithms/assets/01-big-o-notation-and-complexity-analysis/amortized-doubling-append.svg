@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Amortized analysis of dynamic array append with capacity doubling</title>
+  <desc id="desc">Nine append operations shown as cells. Most appends cost one write (green). Appends 2, 3, 5, and 9 trigger a resize that also copies every existing element (red), costing 1 plus 1, 1 plus 2, 1 plus 4, and 1 plus 8. The geometric copy costs sum to less than 2n, so the average cost per append stays constant.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .ok   { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .copy { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+  </style>
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="60" y="52">Dynamic array append: doubling amortizes to O(1)</text>
+  <line x1="60" y1="72" x2="1140" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- cost cells, one per append -->
+  <rect class="ok"   x="60"   y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="115"  y="184" text-anchor="middle">1</text>
+  <rect class="copy" x="180"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="235"  y="184" text-anchor="middle">1+1</text>
+  <rect class="copy" x="300"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="355"  y="184" text-anchor="middle">1+2</text>
+  <rect class="ok"   x="420"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="475"  y="184" text-anchor="middle">1</text>
+  <rect class="copy" x="540"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="595"  y="184" text-anchor="middle">1+4</text>
+  <rect class="ok"   x="660"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="715"  y="184" text-anchor="middle">1</text>
+  <rect class="ok"   x="780"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="835"  y="184" text-anchor="middle">1</text>
+  <rect class="ok"   x="900"  y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="955"  y="184" text-anchor="middle">1</text>
+  <rect class="copy" x="1020" y="130" width="110" height="90" rx="8"/>
+  <text class="c" x="1075" y="184" text-anchor="middle">1+8</text>
+
+  <!-- index labels -->
+  <text class="s" x="115"  y="250" text-anchor="middle">append #1</text>
+  <text class="s" x="235"  y="250" text-anchor="middle">append #2</text>
+  <text class="s" x="355"  y="250" text-anchor="middle">append #3</text>
+  <text class="s" x="475"  y="250" text-anchor="middle">append #4</text>
+  <text class="s" x="595"  y="250" text-anchor="middle">append #5</text>
+  <text class="s" x="715"  y="250" text-anchor="middle">append #6</text>
+  <text class="s" x="835"  y="250" text-anchor="middle">append #7</text>
+  <text class="s" x="955"  y="250" text-anchor="middle">append #8</text>
+  <text class="s" x="1075" y="250" text-anchor="middle">append #9</text>
+
+  <!-- capacity after each append -->
+  <text class="s" x="115"  y="280" text-anchor="middle" fill="#6b7280">cap 1</text>
+  <text class="s" x="235"  y="280" text-anchor="middle" fill="#6b7280">cap 2</text>
+  <text class="s" x="355"  y="280" text-anchor="middle" fill="#6b7280">cap 4</text>
+  <text class="s" x="475"  y="280" text-anchor="middle" fill="#6b7280">cap 4</text>
+  <text class="s" x="595"  y="280" text-anchor="middle" fill="#6b7280">cap 8</text>
+  <text class="s" x="715"  y="280" text-anchor="middle" fill="#6b7280">cap 8</text>
+  <text class="s" x="835"  y="280" text-anchor="middle" fill="#6b7280">cap 8</text>
+  <text class="s" x="955"  y="280" text-anchor="middle" fill="#6b7280">cap 8</text>
+  <text class="s" x="1075" y="280" text-anchor="middle" fill="#6b7280">cap 16</text>
+
+  <!-- legend -->
+  <rect class="ok" x="60" y="324" width="28" height="28" rx="6"/>
+  <text class="b" x="102" y="346">cheap append — write the new element, 1 op</text>
+  <rect class="copy" x="60" y="364" width="28" height="28" rx="6"/>
+  <text class="b" x="102" y="386">resize append — write + copy all existing elements into a 2× buffer</text>
+
+  <!-- total -->
+  <rect x="60" y="430" width="1080" height="92" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="b" x="600" y="468" text-anchor="middle">Total for n appends  =  n writes + (1 + 2 + 4 + ⋯) copies  &lt;  n + 2n  =  3n ops</text>
+  <text class="b" x="600" y="502" text-anchor="middle">⇒ average &lt; 3 ops per append = O(1) amortized, even though one append can cost O(n)</text>
+</svg>

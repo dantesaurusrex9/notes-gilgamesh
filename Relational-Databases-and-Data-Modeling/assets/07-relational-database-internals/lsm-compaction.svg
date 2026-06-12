@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">LSM tree: memtable, SSTable levels, and compaction</title>
+  <desc id="desc">Writes go into an in-memory memtable, flush to small L0 SSTables, and background compaction merges them into larger sorted runs at L1 and L2.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .mem { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .sst0 { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .sst1 { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .sst2 { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .comp { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="la" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="lc" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+  <text x="40" y="58" class="t">LSM tree: flush down, compact wider</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- memtable -->
+  <text x="60" y="148" class="s">RAM</text>
+  <rect x="160" y="115" width="320" height="60" rx="10" class="mem"/>
+  <text x="180" y="153" class="b">memtable (sorted, in memory)</text>
+  <text x="520" y="153" class="s">writes append to WAL + memtable: O(log n)</text>
+
+  <line x1="320" y1="175" x2="320" y2="225" class="arrow" marker-end="url(#la)"/>
+  <text x="335" y="210" class="s">flush when full (sequential write)</text>
+
+  <!-- L0 -->
+  <text x="60" y="278" class="s">L0</text>
+  <rect x="160" y="240" width="150" height="55" rx="8" class="sst0"/>
+  <text x="185" y="275" class="b">SST a</text>
+  <rect x="330" y="240" width="150" height="55" rx="8" class="sst0"/>
+  <text x="355" y="275" class="b">SST b</text>
+  <rect x="500" y="240" width="150" height="55" rx="8" class="sst0"/>
+  <text x="525" y="275" class="b">SST c</text>
+  <text x="680" y="275" class="s">small, overlapping key ranges — reads must check each</text>
+
+  <line x1="400" y1="295" x2="400" y2="345" class="comp" marker-end="url(#lc)"/>
+  <text x="415" y="330" class="s">compaction: merge-sort runs, drop overwritten keys</text>
+
+  <!-- L1 -->
+  <text x="60" y="398" class="s">L1</text>
+  <rect x="160" y="360" width="330" height="55" rx="8" class="sst1"/>
+  <text x="185" y="395" class="b">SST keys a–m</text>
+  <rect x="510" y="360" width="330" height="55" rx="8" class="sst1"/>
+  <text x="535" y="395" class="b">SST keys n–z</text>
+  <text x="870" y="395" class="s">non-overlapping, ~10x bigger</text>
+
+  <line x1="500" y1="415" x2="500" y2="465" class="comp" marker-end="url(#lc)"/>
+
+  <!-- L2 -->
+  <text x="60" y="518" class="s">L2</text>
+  <rect x="160" y="480" width="940" height="55" rx="8" class="sst2"/>
+  <text x="185" y="515" class="b">large sorted runs — oldest data, fewest duplicate versions</text>
+</svg>

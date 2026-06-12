@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">SCD Type 2: close the old row, insert the new row</title>
+  <desc id="desc">Before and after view of a dim_customer table when a customer moves segment. The old row gets valid_to set and is_current zero; a new versioned row is inserted with a new surrogate key.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cellH { fill: #f9fafb; stroke: #e5e7eb; stroke-width: 1.5; }
+    .cellOld { fill: #fee2e2; stroke: #fca5a5; stroke-width: 1.5; }
+    .cellNew { fill: #dcfce7; stroke: #86efac; stroke-width: 1.5; }
+    .cellPlain { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="56">SCD Type 2: close the old row, insert the new row</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <!-- BEFORE -->
+  <text class="b" x="40" y="124" font-weight="700">BEFORE — customer 42 is "Retail"</text>
+  <!-- header row -->
+  <g>
+    <rect class="cellH" x="40"  y="140" width="130" height="46"/>
+    <rect class="cellH" x="170" y="140" width="170" height="46"/>
+    <rect class="cellH" x="340" y="140" width="180" height="46"/>
+    <rect class="cellH" x="520" y="140" width="180" height="46"/>
+    <rect class="cellH" x="700" y="140" width="180" height="46"/>
+    <rect class="cellH" x="880" y="140" width="160" height="46"/>
+    <text class="s" x="105" y="169" text-anchor="middle">cust_key</text>
+    <text class="s" x="255" y="169" text-anchor="middle">customer_id</text>
+    <text class="s" x="430" y="169" text-anchor="middle">segment</text>
+    <text class="s" x="610" y="169" text-anchor="middle">valid_from</text>
+    <text class="s" x="790" y="169" text-anchor="middle">valid_to</text>
+    <text class="s" x="960" y="169" text-anchor="middle">is_current</text>
+  </g>
+  <g>
+    <rect class="cellPlain" x="40"  y="186" width="130" height="46"/>
+    <rect class="cellPlain" x="170" y="186" width="170" height="46"/>
+    <rect class="cellPlain" x="340" y="186" width="180" height="46"/>
+    <rect class="cellPlain" x="520" y="186" width="180" height="46"/>
+    <rect class="cellPlain" x="700" y="186" width="180" height="46"/>
+    <rect class="cellPlain" x="880" y="186" width="160" height="46"/>
+    <text class="c" x="105" y="216" text-anchor="middle">7</text>
+    <text class="b" x="255" y="216" text-anchor="middle">42</text>
+    <text class="b" x="430" y="216" text-anchor="middle">Retail</text>
+    <text class="b" x="610" y="216" text-anchor="middle">2024-01-01</text>
+    <text class="b" x="790" y="216" text-anchor="middle">9999-12-31</text>
+    <text class="b" x="960" y="216" text-anchor="middle">1</text>
+  </g>
+
+  <line x1="600" y1="252" x2="600" y2="296" stroke="#4b5563" stroke-width="2" marker-end="url(#arr2)"/>
+  <text class="s" x="620" y="280">update on 2026-06-11: segment → "Enterprise"</text>
+
+  <!-- AFTER -->
+  <text class="b" x="40" y="336" font-weight="700">AFTER — old row closed, new row current</text>
+  <g>
+    <rect class="cellH" x="40"  y="352" width="130" height="46"/>
+    <rect class="cellH" x="170" y="352" width="170" height="46"/>
+    <rect class="cellH" x="340" y="352" width="180" height="46"/>
+    <rect class="cellH" x="520" y="352" width="180" height="46"/>
+    <rect class="cellH" x="700" y="352" width="180" height="46"/>
+    <rect class="cellH" x="880" y="352" width="160" height="46"/>
+    <text class="s" x="105" y="381" text-anchor="middle">cust_key</text>
+    <text class="s" x="255" y="381" text-anchor="middle">customer_id</text>
+    <text class="s" x="430" y="381" text-anchor="middle">segment</text>
+    <text class="s" x="610" y="381" text-anchor="middle">valid_from</text>
+    <text class="s" x="790" y="381" text-anchor="middle">valid_to</text>
+    <text class="s" x="960" y="381" text-anchor="middle">is_current</text>
+  </g>
+  <!-- closed row (red) -->
+  <g>
+    <rect class="cellOld" x="40"  y="398" width="130" height="46"/>
+    <rect class="cellOld" x="170" y="398" width="170" height="46"/>
+    <rect class="cellOld" x="340" y="398" width="180" height="46"/>
+    <rect class="cellOld" x="520" y="398" width="180" height="46"/>
+    <rect class="cellOld" x="700" y="398" width="180" height="46"/>
+    <rect class="cellOld" x="880" y="398" width="160" height="46"/>
+    <text class="c" x="105" y="428" text-anchor="middle">7</text>
+    <text class="b" x="255" y="428" text-anchor="middle">42</text>
+    <text class="b" x="430" y="428" text-anchor="middle">Retail</text>
+    <text class="b" x="610" y="428" text-anchor="middle">2024-01-01</text>
+    <text class="b" x="790" y="428" text-anchor="middle">2026-06-10</text>
+    <text class="b" x="960" y="428" text-anchor="middle">0</text>
+  </g>
+  <!-- new row (green) -->
+  <g>
+    <rect class="cellNew" x="40"  y="444" width="130" height="46"/>
+    <rect class="cellNew" x="170" y="444" width="170" height="46"/>
+    <rect class="cellNew" x="340" y="444" width="180" height="46"/>
+    <rect class="cellNew" x="520" y="444" width="180" height="46"/>
+    <rect class="cellNew" x="700" y="444" width="180" height="46"/>
+    <rect class="cellNew" x="880" y="444" width="160" height="46"/>
+    <text class="c" x="105" y="474" text-anchor="middle">8</text>
+    <text class="b" x="255" y="474" text-anchor="middle">42</text>
+    <text class="b" x="430" y="474" text-anchor="middle">Enterprise</text>
+    <text class="b" x="610" y="474" text-anchor="middle">2026-06-11</text>
+    <text class="b" x="790" y="474" text-anchor="middle">9999-12-31</text>
+    <text class="b" x="960" y="474" text-anchor="middle">1</text>
+  </g>
+
+  <text class="m" x="40" y="534">Old facts keep cust_key 7 and report under "Retail" forever. New facts get cust_key 8. History is preserved, never overwritten.</text>
+</svg>

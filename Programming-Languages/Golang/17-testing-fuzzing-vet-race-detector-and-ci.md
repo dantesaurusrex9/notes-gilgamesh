@@ -1,7 +1,7 @@
 ---
 title: "17 - Testing, Fuzzing, Vet, Race Detector, and CI"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [golang, programming-languages, testing, fuzzing, ci]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's standard toolchain includes tests, benchmarks, examples, fuzzing, vet analyzers, coverage, and the race detector. A production Go engineer should make `go test ./...`, `go test -race`, fuzz targets, benchmarks, and `go vet` routine.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/17-testing-fuzzing-vet-race-detector-and-ci/real-world-example.svg)
 
 This fuzz test verifies that parsing never panics and that valid round-trips stay stable. Fuzzing explores edge cases humans miss.
 
@@ -51,6 +53,8 @@ go test -fuzz=FuzzSlug -fuzztime=30s ./...
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/17-testing-fuzzing-vet-race-detector-and-ci/vocabulary.svg)
+
 **Table test**: A test loop over named cases.
 
 ---
@@ -75,11 +79,15 @@ go test -fuzz=FuzzSlug -fuzztime=30s ./...
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/17-testing-fuzzing-vet-race-detector-and-ci/intuition.svg)
+
 Go tests are just Go code. That is the strength: no magic assertion framework is required. The risk is underusing the toolchain because it looks simple. Fuzzing, race detection, coverage, benchmarks, and vet all catch different classes of bugs.
 
 Use table tests for known behavior, fuzzing for unknown edge cases, benchmarks for measured performance, and race detection for shared-memory concurrency.
 
 ## Table Tests
+
+![Visual diagram: Table Tests](./assets/17-testing-fuzzing-vet-race-detector-and-ci/table-tests.svg)
 
 Table tests keep cases explicit and readable.
 
@@ -106,6 +114,8 @@ func TestSlug(t *testing.T) {
 
 ## Benchmarks
 
+![Visual diagram: Benchmarks](./assets/17-testing-fuzzing-vet-race-detector-and-ci/benchmarks.svg)
+
 Benchmarks should report allocations when performance matters.
 
 ```go
@@ -122,6 +132,8 @@ go test -bench=. -benchmem ./...
 
 ## Race Detector
 
+![Visual diagram: Race Detector](./assets/17-testing-fuzzing-vet-race-detector-and-ci/race-detector.svg)
+
 Run the race detector on concurrent packages and integration tests.
 
 ```bash
@@ -132,6 +144,8 @@ The race detector slows programs down, so it is a CI/test tool, not a production
 
 ## Vet and Go 1.25
 
+![Visual diagram: Vet and Go 1.25](./assets/17-testing-fuzzing-vet-race-detector-and-ci/vet-and-go-1-25.svg)
+
 `go vet` catches suspicious constructs. Go 1.25 added analyzers for misplaced `sync.WaitGroup.Add` calls and IPv6-unsafe host/port formatting.
 
 ```bash
@@ -139,6 +153,8 @@ go vet ./...
 ```
 
 ## CI Baseline
+
+![Visual diagram: CI Baseline](./assets/17-testing-fuzzing-vet-race-detector-and-ci/ci-baseline.svg)
 
 A strong Go CI path:
 
@@ -154,6 +170,8 @@ govulncheck ./...
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/17-testing-fuzzing-vet-race-detector-and-ci/pitfalls.svg)
+
 - **Loop variable capture**: Use modern Go semantics, but still understand closure capture in subtests and goroutines.
 - **Race detector skipped forever**: Race bugs are often invisible in normal tests.
 - **Benchmarks with dead-code elimination**: Ensure the result is used.
@@ -161,6 +179,8 @@ govulncheck ./...
 - **CI not checking `go mod tidy`**: Dependency drift becomes noise.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/17-testing-fuzzing-vet-race-detector-and-ci/exercises.svg)
 
 1. Add table tests for a parser.
 2. Add a fuzz target for the parser.

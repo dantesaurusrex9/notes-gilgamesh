@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Session cookies vs JWTs</title>
+  <desc id="desc">Left side shows a session cookie architecture where the server looks up state in a session store on every request. Right side shows a JWT architecture where the server verifies a signature locally with no store lookup.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .store { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .good { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; marker-end: url(#tri); }
+  </style>
+  <defs>
+    <marker id="tri" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Session cookie vs JWT: where does the state live?</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- left: sessions -->
+  <text class="h" x="60" y="124">Session cookie (stateful)</text>
+  <rect class="box" x="60" y="150" width="180" height="70" rx="10"/>
+  <text class="b" x="150" y="193" text-anchor="middle">Browser</text>
+  <text class="c" x="60" y="250">sid=a91f...</text>
+  <text class="s" x="60" y="276">opaque random id in cookie</text>
+
+  <rect class="box" x="350" y="150" width="180" height="70" rx="10"/>
+  <text class="b" x="440" y="193" text-anchor="middle">API server</text>
+  <path class="arrow" d="M240 185 L344 185"/>
+
+  <rect class="store" x="350" y="300" width="180" height="100" rx="10"/>
+  <text class="b" x="440" y="340" text-anchor="middle">Session store</text>
+  <text class="s" x="440" y="370" text-anchor="middle">Redis / DB</text>
+  <path class="arrow" d="M440 220 L440 294"/>
+  <text class="s" x="455" y="262">lookup on EVERY request</text>
+
+  <rect class="good" x="60" y="440" width="470" height="60" rx="10"/>
+  <text class="b" x="80" y="478">Revoke instantly: delete the row</text>
+  <rect class="bad" x="60" y="515" width="470" height="60" rx="10"/>
+  <text class="b" x="80" y="553">Store is a shared dependency + CSRF surface</text>
+
+  <!-- divider -->
+  <line x1="600" y1="100" x2="600" y2="590" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- right: jwt -->
+  <text class="h" x="640" y="124">JWT (stateless)</text>
+  <rect class="box" x="640" y="150" width="180" height="70" rx="10"/>
+  <text class="b" x="730" y="193" text-anchor="middle">Client</text>
+  <text class="c" x="640" y="250">eyJhbGci...sig</text>
+  <text class="s" x="640" y="276">signed claims inside the token</text>
+
+  <rect class="box" x="930" y="150" width="200" height="70" rx="10"/>
+  <text class="b" x="1030" y="193" text-anchor="middle">API server</text>
+  <path class="arrow" d="M820 185 L924 185"/>
+
+  <rect class="good" x="930" y="300" width="200" height="100" rx="10"/>
+  <text class="b" x="1030" y="340" text-anchor="middle">Verify sig</text>
+  <text class="s" x="1030" y="370" text-anchor="middle">local, no I/O</text>
+  <path class="arrow" d="M1030 220 L1030 294"/>
+
+  <rect class="good" x="640" y="440" width="490" height="60" rx="10"/>
+  <text class="b" x="660" y="478">No shared store; scales across services</text>
+  <rect class="bad" x="640" y="515" width="490" height="60" rx="10"/>
+  <text class="b" x="660" y="553">Cannot revoke before expiry: use short TTL</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Binary tree anatomy</title>
+  <desc id="desc">A six-node binary tree labeled with root, leaf, edge, depth levels 0 through 2, height, and the subtree rooted at node 2.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .val   { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; text-anchor: middle; }
+    .node  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .leaf  { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .edge  { stroke: #4b5563; stroke-width: 3; }
+    .guide { stroke: #e5e7eb; stroke-width: 2; stroke-dasharray: 8 8; }
+    .sub   { fill: none; stroke: #8b5cf6; stroke-width: 3; stroke-dasharray: 10 8; }
+    .ann   { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="640" fill="#ffffff"/>
+
+  <text x="40" y="56" class="title">Binary tree anatomy</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- depth guide lines -->
+  <line x1="150" y1="180" x2="970" y2="180" class="guide"/>
+  <line x1="150" y1="320" x2="970" y2="320" class="guide"/>
+  <line x1="150" y1="460" x2="970" y2="460" class="guide"/>
+  <text x="46" y="187" class="small">depth 0</text>
+  <text x="46" y="327" class="small">depth 1</text>
+  <text x="46" y="467" class="small">depth 2</text>
+
+  <!-- edges -->
+  <line x1="600" y1="180" x2="430" y2="320" class="edge"/>
+  <line x1="600" y1="180" x2="770" y2="320" class="edge"/>
+  <line x1="430" y1="320" x2="340" y2="460" class="edge"/>
+  <line x1="430" y1="320" x2="520" y2="460" class="edge"/>
+  <line x1="770" y1="320" x2="860" y2="460" class="edge"/>
+
+  <!-- subtree highlight around node 2 and its children -->
+  <rect x="284" y="264" width="292" height="252" rx="18" class="sub"/>
+  <text x="240" y="556" class="small" fill="#8b5cf6">subtree rooted at 2 (a tree itself)</text>
+
+  <!-- nodes -->
+  <circle cx="600" cy="180" r="36" class="node"/>
+  <text x="600" y="189" class="val">1</text>
+  <circle cx="430" cy="320" r="36" class="node"/>
+  <text x="430" y="329" class="val">2</text>
+  <circle cx="770" cy="320" r="36" class="node"/>
+  <text x="770" y="329" class="val">3</text>
+  <circle cx="340" cy="460" r="36" class="leaf"/>
+  <text x="340" y="469" class="val">4</text>
+  <circle cx="520" cy="460" r="36" class="leaf"/>
+  <text x="520" y="469" class="val">5</text>
+  <circle cx="860" cy="460" r="36" class="leaf"/>
+  <text x="860" y="469" class="val">6</text>
+
+  <!-- left / right child labels on root edges -->
+  <text x="478" y="240" class="small">left</text>
+  <text x="690" y="240" class="small">right</text>
+
+  <!-- root annotation -->
+  <text x="660" y="120" class="body">root — the one node with no parent</text>
+  <line x1="652" y1="126" x2="618" y2="152" class="ann" marker-end="url(#arr)"/>
+
+  <!-- leaf annotation -->
+  <text x="906" y="526" class="body" fill="#4b5563">leaf — no children</text>
+  <line x1="930" y1="500" x2="888" y2="478" class="ann" marker-end="url(#arr)"/>
+
+  <!-- edge annotation -->
+  <text x="912" y="404" class="body" fill="#4b5563">edge — parent→child link</text>
+  <line x1="906" y1="396" x2="826" y2="390" class="ann" marker-end="url(#arr)"/>
+
+  <!-- height bracket -->
+  <line x1="1000" y1="180" x2="1000" y2="460" class="ann" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <text x="1016" y="310" class="body">height = 2</text>
+  <text x="1016" y="340" class="small">(edges on the longest</text>
+  <text x="1016" y="362" class="small">root → leaf path)</text>
+
+  <!-- arity footer -->
+  <text x="40" y="608" class="muted">arity = max children per node. Binary tree: arity ≤ 2, and each child slot is named — left or right.</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Crow-foot notation legend</title>
+  <desc id="desc">Legend showing the four crow-foot endpoint symbols: exactly one, zero or one, one or many, zero or many, each drawn at the end of a relationship line with its meaning.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .line { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .sym { stroke: #111827; stroke-width: 3; fill: none; }
+    .symf { stroke: #111827; stroke-width: 3; fill: #ffffff; }
+  </style>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+  <text x="60" y="70" class="t">Crow-foot notation: how to read a line ending</text>
+  <line x1="60" y1="95" x2="1140" y2="95" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Row 1: exactly one -->
+  <line x1="80" y1="170" x2="330" y2="170" class="line"/>
+  <line x1="290" y1="150" x2="290" y2="190" class="sym"/>
+  <line x1="310" y1="150" x2="310" y2="190" class="sym"/>
+  <text x="380" y="162" class="b">Exactly one (mandatory one)</text>
+  <text x="380" y="194" class="m">Each row on this side relates to exactly one row.</text>
+  <text x="1000" y="178" class="c">||</text>
+
+  <!-- Row 2: zero or one -->
+  <line x1="80" y1="280" x2="330" y2="280" class="line"/>
+  <circle cx="270" cy="280" r="11" class="symf"/>
+  <line x1="305" y1="260" x2="305" y2="300" class="sym"/>
+  <text x="380" y="272" class="b">Zero or one (optional one)</text>
+  <text x="380" y="304" class="m">The relationship may be absent: participation is optional.</text>
+  <text x="1000" y="288" class="c">o|</text>
+
+  <!-- Row 3: one or many -->
+  <line x1="80" y1="390" x2="330" y2="390" class="line"/>
+  <line x1="295" y1="390" x2="330" y2="370" class="sym"/>
+  <line x1="295" y1="390" x2="330" y2="410" class="sym"/>
+  <line x1="295" y1="390" x2="330" y2="390" class="sym"/>
+  <line x1="278" y1="370" x2="278" y2="410" class="sym"/>
+  <text x="380" y="382" class="b">One or many (mandatory many)</text>
+  <text x="380" y="414" class="m">At least one related row must exist (the crow's foot).</text>
+  <text x="1000" y="398" class="c">|{</text>
+
+  <!-- Row 4: zero or many -->
+  <line x1="80" y1="500" x2="330" y2="500" class="line"/>
+  <line x1="295" y1="500" x2="330" y2="480" class="sym"/>
+  <line x1="295" y1="500" x2="330" y2="520" class="sym"/>
+  <line x1="295" y1="500" x2="330" y2="500" class="sym"/>
+  <circle cx="270" cy="500" r="11" class="symf"/>
+  <text x="380" y="492" class="b">Zero or many (optional many)</text>
+  <text x="380" y="524" class="m">Any number of related rows, including none at all.</text>
+  <text x="1000" y="508" class="c">o{</text>
+
+  <text x="60" y="585" class="s">Read each end independently: CUSTOMER ||--o{ ORDER means "one customer has zero or many orders; every order belongs to exactly one customer."</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "17 - SwiftUI State, Architecture, and App Patterns"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, swiftui, architecture]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** SwiftUI is a state-driven UI framework. You get predictable apps by keeping views small, state ownership clear, effects isolated, domain logic testable, and main-actor UI updates explicit.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/17-swiftui-state-architecture-and-app-patterns/real-world-example.svg)
 
 This example keeps the view declarative and moves behavior into a main-actor model. It is intentionally small: state ownership matters more than framework cleverness.
 
@@ -51,6 +53,8 @@ struct LoginView: View {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/17-swiftui-state-architecture-and-app-patterns/vocabulary.svg)
+
 **View**: A value that describes UI for a given state.
 
 ---
@@ -75,11 +79,15 @@ struct LoginView: View {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/17-swiftui-state-architecture-and-app-patterns/intuition.svg)
+
 SwiftUI views are not view controllers. They are descriptions. The framework repeatedly evaluates `body` and reconciles the result with the rendered UI. If you hide side effects in `body`, you fight the model.
 
 Architecture is about state ownership. Every piece of state should have one clear owner. Child views receive data and bindings, but they should not secretly create competing sources of truth.
 
 ## State Tools
+
+![Visual diagram: State Tools](./assets/17-swiftui-state-architecture-and-app-patterns/state-tools.svg)
 
 Use the smallest tool that matches ownership:
 
@@ -93,6 +101,8 @@ Use the smallest tool that matches ownership:
 | `@MainActor` | UI-facing model isolation |
 
 ## Keep Views Small
+
+![Visual diagram: Keep Views Small](./assets/17-swiftui-state-architecture-and-app-patterns/keep-views-small.svg)
 
 Split views by state and responsibility, not by every visual element.
 
@@ -108,6 +118,8 @@ struct ErrorBanner: View {
 ```
 
 ## Isolate Effects
+
+![Visual diagram: Isolate Effects](./assets/17-swiftui-state-architecture-and-app-patterns/isolate-effects.svg)
 
 Put network calls, persistence, analytics, and clocks behind dependencies. That keeps view models testable.
 
@@ -128,6 +140,8 @@ final class AuthModel: ObservableObject {
 
 ## Navigation and Lifecycle
 
+![Visual diagram: Navigation and Lifecycle](./assets/17-swiftui-state-architecture-and-app-patterns/navigation-and-lifecycle.svg)
+
 Treat navigation as state when flows become complex. Avoid scattering navigation booleans across unrelated views. Model screens, routes, and selected items with enums or typed IDs.
 
 ```swift
@@ -139,6 +153,8 @@ enum Route: Hashable {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/17-swiftui-state-architecture-and-app-patterns/pitfalls.svg)
+
 - **Side effects in `body`**: `body` can run often. Keep it pure.
 - **Multiple sources of truth**: If two objects own the same state, bugs follow.
 - **Massive view models**: Split by feature or workflow.
@@ -146,6 +162,8 @@ enum Route: Hashable {
 - **Testing only the view**: Put logic in plain Swift types and test that directly.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/17-swiftui-state-architecture-and-app-patterns/exercises.svg)
 
 1. Refactor a form so validation lives outside the view body.
 2. Replace two navigation booleans with one route enum.

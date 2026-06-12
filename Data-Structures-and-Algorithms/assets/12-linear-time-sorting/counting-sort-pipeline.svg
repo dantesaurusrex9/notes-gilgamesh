@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" width="1200" height="730" role="img" aria-labelledby="title desc">
+  <title id="title">Counting sort three-phase pipeline</title>
+  <desc id="desc">Four rows of arrays: the tagged input array, the histogram of counts per key, the exclusive prefix sums giving each key its starting slot, and the stably placed output where equal keys keep their input order.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .label { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cin   { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .ccnt  { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .cpre  { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .cout  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .edge  { stroke: #6b7280; stroke-width: 2; fill: none; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="730" fill="#ffffff"/>
+  <text class="title" x="40" y="52">Counting sort: histogram &#8594; prefix sums &#8594; placement</text>
+  <line class="rule" x1="40" y1="72" x2="1160" y2="72"/>
+
+  <!-- Row 0: input -->
+  <text class="label" x="40" y="138">Input A</text>
+  <text class="small" x="40" y="166">value &#183; tag (tag shows stability)</text>
+  <rect class="cin" x="520"  y="110" width="120" height="60"/>
+  <rect class="cin" x="640"  y="110" width="120" height="60"/>
+  <rect class="cin" x="760"  y="110" width="120" height="60"/>
+  <rect class="cin" x="880"  y="110" width="120" height="60"/>
+  <rect class="cin" x="1000" y="110" width="120" height="60"/>
+  <text class="code" x="580"  y="148" text-anchor="middle">4&#183;a</text>
+  <text class="code" x="700"  y="148" text-anchor="middle">1&#183;b</text>
+  <text class="code" x="820"  y="148" text-anchor="middle">3&#183;c</text>
+  <text class="code" x="940"  y="148" text-anchor="middle">4&#183;d</text>
+  <text class="code" x="1060" y="148" text-anchor="middle">3&#183;e</text>
+  <text class="small" x="580"  y="194" text-anchor="middle">i = 0</text>
+  <text class="small" x="700"  y="194" text-anchor="middle">i = 1</text>
+  <text class="small" x="820"  y="194" text-anchor="middle">i = 2</text>
+  <text class="small" x="940"  y="194" text-anchor="middle">i = 3</text>
+  <text class="small" x="1060" y="194" text-anchor="middle">i = 4</text>
+
+  <line class="edge" x1="820" y1="206" x2="820" y2="250" marker-end="url(#arr)"/>
+
+  <!-- Row 1: histogram -->
+  <text class="label" x="40" y="288">Phase 1 &#8212; count</text>
+  <text class="small" x="40" y="316">count[v] += 1, one pass &#8212; O(n)</text>
+  <rect class="ccnt" x="520"  y="260" width="120" height="60"/>
+  <rect class="ccnt" x="640"  y="260" width="120" height="60"/>
+  <rect class="ccnt" x="760"  y="260" width="120" height="60"/>
+  <rect class="ccnt" x="880"  y="260" width="120" height="60"/>
+  <rect class="ccnt" x="1000" y="260" width="120" height="60"/>
+  <text class="code" x="580"  y="298" text-anchor="middle">0</text>
+  <text class="code" x="700"  y="298" text-anchor="middle">1</text>
+  <text class="code" x="820"  y="298" text-anchor="middle">0</text>
+  <text class="code" x="940"  y="298" text-anchor="middle">2</text>
+  <text class="code" x="1060" y="298" text-anchor="middle">2</text>
+  <text class="small" x="580"  y="344" text-anchor="middle">key 0</text>
+  <text class="small" x="700"  y="344" text-anchor="middle">key 1</text>
+  <text class="small" x="820"  y="344" text-anchor="middle">key 2</text>
+  <text class="small" x="940"  y="344" text-anchor="middle">key 3</text>
+  <text class="small" x="1060" y="344" text-anchor="middle">key 4</text>
+
+  <line class="edge" x1="820" y1="356" x2="820" y2="400" marker-end="url(#arr)"/>
+
+  <!-- Row 2: prefix sums -->
+  <text class="label" x="40" y="438">Phase 2 &#8212; prefix sum</text>
+  <text class="small" x="40" y="466">start[v] = # keys &lt; v &#8212; O(k)</text>
+  <rect class="cpre" x="520"  y="410" width="120" height="60"/>
+  <rect class="cpre" x="640"  y="410" width="120" height="60"/>
+  <rect class="cpre" x="760"  y="410" width="120" height="60"/>
+  <rect class="cpre" x="880"  y="410" width="120" height="60"/>
+  <rect class="cpre" x="1000" y="410" width="120" height="60"/>
+  <text class="code" x="580"  y="448" text-anchor="middle">0</text>
+  <text class="code" x="700"  y="448" text-anchor="middle">0</text>
+  <text class="code" x="820"  y="448" text-anchor="middle">1</text>
+  <text class="code" x="940"  y="448" text-anchor="middle">1</text>
+  <text class="code" x="1060" y="448" text-anchor="middle">3</text>
+  <text class="small" x="580"  y="494" text-anchor="middle">key 0</text>
+  <text class="small" x="700"  y="494" text-anchor="middle">key 1</text>
+  <text class="small" x="820"  y="494" text-anchor="middle">key 2</text>
+  <text class="small" x="940"  y="494" text-anchor="middle">key 3</text>
+  <text class="small" x="1060" y="494" text-anchor="middle">key 4</text>
+
+  <line class="edge" x1="820" y1="506" x2="820" y2="550" marker-end="url(#arr)"/>
+
+  <!-- Row 3: placement -->
+  <text class="label" x="40" y="588">Phase 3 &#8212; placement</text>
+  <text class="small" x="40" y="616">out[start[v]] = v; start[v] += 1 &#8212; O(n)</text>
+  <rect class="cout" x="520"  y="560" width="120" height="60"/>
+  <rect class="cout" x="640"  y="560" width="120" height="60"/>
+  <rect class="cout" x="760"  y="560" width="120" height="60"/>
+  <rect class="cout" x="880"  y="560" width="120" height="60"/>
+  <rect class="cout" x="1000" y="560" width="120" height="60"/>
+  <text class="code" x="580"  y="598" text-anchor="middle">1&#183;b</text>
+  <text class="code" x="700"  y="598" text-anchor="middle">3&#183;c</text>
+  <text class="code" x="820"  y="598" text-anchor="middle">3&#183;e</text>
+  <text class="code" x="940"  y="598" text-anchor="middle">4&#183;a</text>
+  <text class="code" x="1060" y="598" text-anchor="middle">4&#183;d</text>
+  <text class="small" x="580"  y="644" text-anchor="middle">out 0</text>
+  <text class="small" x="700"  y="644" text-anchor="middle">out 1</text>
+  <text class="small" x="820"  y="644" text-anchor="middle">out 2</text>
+  <text class="small" x="940"  y="644" text-anchor="middle">out 3</text>
+  <text class="small" x="1060" y="644" text-anchor="middle">out 4</text>
+
+  <text class="body" x="600" y="700" text-anchor="middle">Stable: 3&#183;c stays before 3&#183;e, 4&#183;a before 4&#183;d &#8212; equal keys keep their input order.</text>
+</svg>

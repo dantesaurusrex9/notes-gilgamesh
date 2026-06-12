@@ -1,7 +1,7 @@
 ---
 title: "14 - Classes and Instances in Memory"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** A Python class is a `PyTypeObject` on the heap — itself a first-class object with a reference count and a type pointer (pointing to `type`). An instance is a separate `PyObject` whose `ob_type` points at that class object. Attribute lookup is a deterministic walk: instance `__dict__`, then the MRO chain's `__dict__` entries, with the descriptor protocol arbitrating precedence. `__slots__` replaces the per-instance `__dict__` with a fixed array of slot descriptors, cutting instance size by 4× or more. Every method call creates a transient bound method object on the heap.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/14-classes-and-instances-in-memory/vocabulary.svg)
 
 **PyTypeObject**: The C struct that represents a Python class (type) at runtime. Fields include `tp_name`, `tp_basicsize`, `tp_dict` (the class `__dict__`), `tp_mro` (the MRO tuple), `tp_base` (single base pointer), `tp_new`, `tp_init`, `tp_alloc`, `tp_dealloc`, `tp_getattro`.
 
@@ -68,11 +70,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/14-classes-and-instances-in-memory/intuition.svg)
+
 When you write `class Foo: ...`, you are asking CPython to allocate a `PyTypeObject` on the heap and populate it. That struct is itself a Python object — `type(Foo)` returns `type`, meaning the type object's own `ob_type` points at the built-in `type` type. The class object, the instance you later create, and the `type` built-in are all peers on the same heap.
 
 When you write `f = Foo()`, Python calls `Foo.__call__()`, which resolves to `type.__call__(Foo)`. That calls `Foo.__new__(Foo)` to allocate a fresh `tp_basicsize`-byte block and then `Foo.__init__(instance)` to fill it. The resulting object's `ob_type` is a pointer to `Foo`'s `PyTypeObject`. Attribute lookup is a deterministic cascade: instance dict first, then each class in the MRO in order, with descriptor protocol checks at each step.
 
 ## A Class is an Object
+
+![Visual diagram: A Class is an Object](./assets/14-classes-and-instances-in-memory/a-class-is-an-object.svg)
 
 The reflexive structure of Python's type system can be stated precisely. Every object's `ob_type` points to its type. For an instance `f = Foo()`, `ob_type` → `Foo`. For the class `Foo` itself, `ob_type` → `type`. For `type` itself, `ob_type` → `type` (it is its own type).
 
@@ -101,6 +107,8 @@ print(type(type) is type) # True — type is its own type
 ```
 
 ## How it Works
+
+![Visual diagram: How it Works](./assets/14-classes-and-instances-in-memory/how-it-works.svg)
 
 ### What `class Foo: ...` Actually Does
 
@@ -377,6 +385,8 @@ print(f"a is b: {a is b}")
 
 ## Inheritance Memory Picture
 
+![Visual diagram: Inheritance Memory Picture](./assets/14-classes-and-instances-in-memory/inheritance-memory-picture.svg)
+
 Each class object holds a `tp_base` pointer to its immediate base class and a `tp_mro` tuple spanning the full chain. Attribute lookup for an instance traverses the MRO tuple — a precomputed, in-memory list of type object pointers.
 
 **Figure:** Instance → class → parent → object chain.
@@ -389,6 +399,8 @@ flowchart TD
 ```
 
 ## `@dataclass` and `__slots__` — Python 3.10+
+
+![Visual diagram: @dataclass and __slots__ - Python 3.10+](./assets/14-classes-and-instances-in-memory/dataclass-and-slots-python-3-10.svg)
 
 Python 3.10 added `@dataclass(slots=True)`, which auto-generates a `__slots__` declaration from the field annotations. This is the recommended way to get both ergonomics and memory efficiency.
 
@@ -422,6 +434,8 @@ print(f"Ratio: {dict_total / slot_total:.1f}×")     # ~3.5×
 ```
 
 ## What a Metaclass Does
+
+![Visual diagram: What a Metaclass Does](./assets/14-classes-and-instances-in-memory/what-a-metaclass-does.svg)
 
 When you write `class Foo(Base, metaclass=Meta)`, Python resolves the metaclass to `Meta` and calls `Meta("Foo", (Base,), namespace)`. The default metaclass is `type`, so for most classes `type.__call__` → `type.__new__` → allocate `PyTypeObject` → `type.__init__` → populate it.
 
@@ -476,6 +490,8 @@ task.run()  # sending email
 > `__init_subclass__` (Python 3.6+) covers most use cases that previously required a custom metaclass. It is simpler, has no metaclass conflict risk, and is the idiomatic choice. Reserve custom metaclasses for cases where you need to control `tp_alloc`, `tp_basicsize`, or the class's own type object structure.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/14-classes-and-instances-in-memory/real-world-example.svg)
 
 A complete walkthrough: five-line class definition, five-line usage, with every object created labelled and measured.
 
@@ -578,6 +594,8 @@ tracemalloc.stop()
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/14-classes-and-instances-in-memory/in-practice.svg)
+
 **The per-instance `__dict__` is a real cost at scale.** A class with two attributes and no `__slots__` costs ~48 bytes for the instance + ~184 bytes for the `__dict__` = ~232 bytes. One million such instances = ~232 MB. The same class with `__slots__` costs ~56 bytes per instance = ~56 MB — a 4× reduction. For graph nodes, embedding records, event objects, or any other "many small instances" pattern, `__slots__` is not optional at scale.
 
 **Method lookup is not free.** Each `f.method` triggers the non-data descriptor protocol: walk the MRO, find the function in the class `__dict__`, call `function.__get__(f, type(f))`, allocate a `PyMethodObject`. CPython caches parts of this via an inline cache in the bytecode (`LOAD_ATTR` with specialised bytecode in 3.11+), but the cache is per-call-site, not per-object.
@@ -589,6 +607,8 @@ tracemalloc.stop()
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/14-classes-and-instances-in-memory/pitfalls.svg)
+
 - **"Class variables are isolated from instances."** — They are, until an instance *writes* to the same name. `f.x = 5` creates an entry in `f.__dict__["x"]`, shadowing the class variable `Foo.x`. Now `f.x` and `Foo.x` are independent. Other instances still see `Foo.x` if they have not written their own. Forgetting this produces mysterious state-sharing bugs where "changing `Foo.x` doesn't affect `f.x` anymore."
 - **"`f.method is f.method` should be True — same function."** — Each access creates a new `PyMethodObject`. The underlying function object is the same (`f.method.__func__ is f.method.__func__` is `True`), but the wrapper is freshly allocated. Checking `f.method is g.method` as a way to test "same method" is wrong; use `type(f).method is type(g).method` or `f.__class__.method is g.__class__.method`.
 - **"`__slots__` in the base class protects all subclasses."** — Only if every class in the MRO declares `__slots__`. One missing declaration re-introduces `__dict__`. The base class's slots are still efficient, but the subclass now also carries a `__dict__`, negating the savings for that subclass.
@@ -597,6 +617,8 @@ tracemalloc.stop()
 - **"`dataclass(frozen=True)` is deeply immutable."** — `frozen=True` prevents reassigning fields of the dataclass instance. Mutable objects stored in those fields remain mutable. `frozen` is a shallow guarantee.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/14-classes-and-instances-in-memory/exercises.svg)
 
 ### Exercise 1 — Class vs Instance Attributes
 

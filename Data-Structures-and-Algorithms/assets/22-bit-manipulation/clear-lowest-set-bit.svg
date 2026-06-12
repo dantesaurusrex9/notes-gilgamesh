@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">n &amp; (n − 1) clears the lowest set bit</title>
+  <desc id="desc">Three aligned 8-bit rows for n equals 40, n minus 1 equals 39, and their AND equals 32, showing that subtracting one flips the lowest set bit and every bit below it, so the AND erases exactly that bit.</desc>
+  <style>
+    .title  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body   { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .bodyb  { font: 600 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted  { font: 400 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code   { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .code20 { font: 700 20px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .code16 { font: 700 16px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .digit  { font: 700 28px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+  <text x="60" y="56" class="title">n &amp; (n − 1) clears the lowest set bit</text>
+  <line x1="60" y1="84" x2="1140" y2="84" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="722" y="118" width="90" height="342" fill="#dbeafe" opacity="0.45"/>
+  <text x="312" y="142" class="small" text-anchor="end">bit index</text>
+  <text x="375" y="142" class="small" text-anchor="middle">7</text>
+  <text x="473" y="142" class="small" text-anchor="middle">6</text>
+  <text x="571" y="142" class="small" text-anchor="middle">5</text>
+  <text x="669" y="142" class="small" text-anchor="middle">4</text>
+  <text x="767" y="142" class="small" text-anchor="middle">3</text>
+  <text x="865" y="142" class="small" text-anchor="middle">2</text>
+  <text x="963" y="142" class="small" text-anchor="middle">1</text>
+  <text x="1061" y="142" class="small" text-anchor="middle">0</text>
+  <text x="312" y="204" class="code20" text-anchor="end">n = 40</text>
+  <rect x="330" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="375" y="205" class="digit" text-anchor="middle">0</text>
+  <rect x="428" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="473" y="205" class="digit" text-anchor="middle">0</text>
+  <rect x="526" y="160" width="90" height="70" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="571" y="205" class="digit" text-anchor="middle">1</text>
+  <rect x="624" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="669" y="205" class="digit" text-anchor="middle">0</text>
+  <rect x="722" y="160" width="90" height="70" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="767" y="205" class="digit" text-anchor="middle">1</text>
+  <rect x="820" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="865" y="205" class="digit" text-anchor="middle">0</text>
+  <rect x="918" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="963" y="205" class="digit" text-anchor="middle">0</text>
+  <rect x="1016" y="160" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="1061" y="205" class="digit" text-anchor="middle">0</text>
+  <text x="335" y="259" class="small">subtract 1: the borrow flips bit 3 and every bit below it</text>
+  <text x="312" y="319" class="code20" text-anchor="end">n − 1 = 39</text>
+  <rect x="330" y="275" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="375" y="320" class="digit" text-anchor="middle">0</text>
+  <rect x="428" y="275" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="473" y="320" class="digit" text-anchor="middle">0</text>
+  <rect x="526" y="275" width="90" height="70" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="571" y="320" class="digit" text-anchor="middle">1</text>
+  <rect x="624" y="275" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="669" y="320" class="digit" text-anchor="middle">0</text>
+  <rect x="722" y="275" width="90" height="70" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="767" y="320" class="digit" text-anchor="middle">0</text>
+  <rect x="820" y="275" width="90" height="70" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="865" y="320" class="digit" text-anchor="middle">1</text>
+  <rect x="918" y="275" width="90" height="70" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="963" y="320" class="digit" text-anchor="middle">1</text>
+  <rect x="1016" y="275" width="90" height="70" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="1061" y="320" class="digit" text-anchor="middle">1</text>
+  <text x="335" y="374" class="small">AND keeps a bit only where both rows hold a 1 — bit 3 and below vanish</text>
+  <text x="312" y="434" class="code20" text-anchor="end">n &amp; (n−1) = 32</text>
+  <rect x="330" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="375" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="428" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="473" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="526" y="390" width="90" height="70" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="571" y="435" class="digit" text-anchor="middle">1</text>
+  <rect x="624" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="669" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="722" y="390" width="90" height="70" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="767" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="820" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="865" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="918" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="963" y="435" class="digit" text-anchor="middle">0</text>
+  <rect x="1016" y="390" width="90" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="1061" y="435" class="digit" text-anchor="middle">0</text>
+  <text x="767" y="482" class="small" text-anchor="middle">bit 3 = lowest set bit of n</text>
+  <text x="60" y="514" class="muted">Only bit 5 survives in every row. Loop  n &amp;= n − 1  until n is 0: it runs exactly once per set bit — popcount in O(k).</text>
+</svg>

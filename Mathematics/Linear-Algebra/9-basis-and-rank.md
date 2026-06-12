@@ -309,7 +309,7 @@ print("Standard basis is independent:", np.linalg.matrix_rank(I) == I.shape[1])
 ```
 
 > [!NOTE]
-> When the user says "what is the dimension of this subspace?" they almost always mean "compute the rank of the matrix whose columns span it." Dimension and rank become the same number for column spaces. The fact that ${\rm rank}$ is the *same* whether you take the column or row space is the deep theorem.
+> When the user says "what is the dimension of this subspace?" they almost always mean "compute the rank of the matrix whose columns span it." Dimension and rank become the same number for column spaces. The fact that rank is the *same* whether you take the column or row space is the deep theorem.
 
 ## In Practice
 

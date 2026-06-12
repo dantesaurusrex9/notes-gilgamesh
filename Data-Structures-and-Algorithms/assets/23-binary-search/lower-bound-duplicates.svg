@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Lower bound with duplicates</title>
+  <desc id="desc">A sorted array with duplicate target values showing lower bound returning the first matching index.</desc>
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .body { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .mono { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+      .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .tiny { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .value { font: 500 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .cell { fill: #fbf8ea; stroke: #b8b8aa; stroke-width: 1.5; }
+      .match { fill: #fce7f3; stroke: #f472b6; stroke-width: 2; }
+      .answer { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+      .line { stroke: #e5e7eb; stroke-width: 2; }
+      .arrow { stroke: #0ea5e9; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .answerFill { fill: #0ea5e9; }
+      .green { fill: #16a34a; }
+    </style>
+    <marker id="bluehead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="620"/>
+  <text class="title" x="64" y="78">Boundary Search With Duplicates</text>
+  <line class="line" x1="64" y1="106" x2="1136" y2="106"/>
+  <text class="body" x="64" y="162">Exact search can land on any duplicate. Lower bound asks for the first index where</text>
+  <text class="mono" x="64" y="209">nums[index] &gt;= target</text>
+  <text class="body" x="366" y="209">.</text>
+
+  <text class="small" x="562" y="273">target = 3</text>
+
+  <g transform="translate(325 320)">
+    <rect class="cell" x="0" y="0" width="110" height="74"/>
+    <rect class="answer" x="110" y="0" width="110" height="74"/>
+    <rect class="match" x="220" y="0" width="110" height="74"/>
+    <rect class="match" x="330" y="0" width="110" height="74"/>
+    <rect class="cell" x="440" y="0" width="110" height="74"/>
+
+    <text class="value" x="55" y="46" text-anchor="middle">1</text>
+    <text class="value" x="165" y="46" text-anchor="middle">3</text>
+    <text class="value" x="275" y="46" text-anchor="middle">3</text>
+    <text class="value" x="385" y="46" text-anchor="middle">3</text>
+    <text class="value" x="495" y="46" text-anchor="middle">8</text>
+
+    <text class="tiny" x="55" y="104" text-anchor="middle">0</text>
+    <text class="tiny" x="165" y="104" text-anchor="middle">1</text>
+    <text class="tiny" x="275" y="104" text-anchor="middle">2</text>
+    <text class="tiny" x="385" y="104" text-anchor="middle">3</text>
+    <text class="tiny" x="495" y="104" text-anchor="middle">4</text>
+
+    <polygon class="answerFill" points="165,-74 195,-24 135,-24"/>
+    <text class="small" x="165" y="-40" text-anchor="middle" fill="#ffffff">A</text>
+  </g>
+
+  <path class="arrow" d="M 600 284 C 558 292, 515 306, 490 335" marker-end="url(#bluehead)"/>
+  <text class="small" x="650" y="292">first value that satisfies the condition</text>
+  <text class="mono" x="366" y="520">lower_bound([1, 3, 3, 3, 8], 3) -&gt; 1</text>
+  <text class="body" x="64" y="576">The answer is a boundary, not just a matching value.</text>
+</svg>

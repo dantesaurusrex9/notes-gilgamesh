@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Stack push and pop with top pointer</title>
+  <desc id="desc">Three panels: a stack holding 3, 5, 8 before any operation; the same stack after push(7) adds a new top cell; and after pop() removes 7 again. A top pointer always tracks the most recently pushed cell; no other cell moves.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cell { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .red { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .blue { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .arr { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .ptr { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+
+  <text class="t" x="60" y="64">Stack: push and pop touch only the top</text>
+  <line class="rule" x1="60" y1="86" x2="1140" y2="86"/>
+
+  <!-- Panel 1: before -->
+  <rect class="green" x="140" y="300" width="180" height="70"/>
+  <text class="b" x="230" y="345" text-anchor="middle">8</text>
+  <rect class="cell" x="140" y="370" width="180" height="70"/>
+  <text class="b" x="230" y="415" text-anchor="middle">5</text>
+  <rect class="cell" x="140" y="440" width="180" height="70"/>
+  <text class="b" x="230" y="485" text-anchor="middle">3</text>
+  <text class="s" x="92" y="341" text-anchor="end">top</text>
+  <line class="ptr" x1="98" y1="335" x2="132" y2="335" marker-end="url(#ap)"/>
+  <text class="m" x="230" y="560" text-anchor="middle">before</text>
+
+  <!-- Panel 2: after push(7) -->
+  <line class="arr" x1="610" y1="140" x2="610" y2="222" marker-end="url(#ab)"/>
+  <text class="c" x="628" y="185">push(7)</text>
+  <rect class="blue" x="520" y="230" width="180" height="70"/>
+  <text class="b" x="610" y="275" text-anchor="middle">7</text>
+  <rect class="cell" x="520" y="300" width="180" height="70"/>
+  <text class="b" x="610" y="345" text-anchor="middle">8</text>
+  <rect class="cell" x="520" y="370" width="180" height="70"/>
+  <text class="b" x="610" y="415" text-anchor="middle">5</text>
+  <rect class="cell" x="520" y="440" width="180" height="70"/>
+  <text class="b" x="610" y="485" text-anchor="middle">3</text>
+  <text class="s" x="472" y="271" text-anchor="end">top</text>
+  <line class="ptr" x1="478" y1="265" x2="512" y2="265" marker-end="url(#ap)"/>
+  <text class="m" x="610" y="560" text-anchor="middle">after push(7) — O(1)</text>
+
+  <!-- Panel 3: after pop() -->
+  <line class="arr" x1="990" y1="200" x2="990" y2="118" marker-end="url(#ab)"/>
+  <text class="c" x="1008" y="165">pop() = 7</text>
+  <rect class="red" x="900" y="208" width="180" height="70"/>
+  <text class="b" x="990" y="253" text-anchor="middle">7</text>
+  <rect class="green" x="900" y="300" width="180" height="70"/>
+  <text class="b" x="990" y="345" text-anchor="middle">8</text>
+  <rect class="cell" x="900" y="370" width="180" height="70"/>
+  <text class="b" x="990" y="415" text-anchor="middle">5</text>
+  <rect class="cell" x="900" y="440" width="180" height="70"/>
+  <text class="b" x="990" y="485" text-anchor="middle">3</text>
+  <text class="s" x="852" y="341" text-anchor="end">top</text>
+  <line class="ptr" x1="858" y1="335" x2="892" y2="335" marker-end="url(#ap)"/>
+  <text class="m" x="990" y="560" text-anchor="middle">after pop() — O(1)</text>
+
+  <text class="m" x="600" y="612" text-anchor="middle">3, 5, 8 never move: both operations only read or write the top slot</text>
+</svg>

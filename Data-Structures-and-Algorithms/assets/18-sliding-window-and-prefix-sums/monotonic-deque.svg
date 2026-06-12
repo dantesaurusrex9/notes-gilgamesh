@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" role="img" aria-labelledby="title desc">
+  <title id="title">Monotonic deque trace for sliding-window maximum</title>
+  <desc id="desc">Eight rows show each step of scanning nums = 1, 3, -1, -3, 5, 3, 6, 7 with window size 3. Each row lists the incoming element, the values popped from the back because they are too small, the deque contents after the step with the front highlighted, and the window maximum emitted.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cellW { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .cellG { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cellR { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .cellB { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="760" fill="#ffffff"/>
+  <text class="t" x="60" y="56">Monotonic deque — sliding-window maximum trace</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="60" y="112">nums = [1, 3, -1, -3, 5, 3, 6, 7], k = 3 — deque stores indices; values decrease front → back</text>
+
+  <text class="s" x="60" y="146">step</text>
+  <text class="s" x="404" y="146" text-anchor="middle">popped (too small)</text>
+  <text class="s" x="734" y="146" text-anchor="middle">deque after (front = max)</text>
+  <text class="s" x="1022" y="146" text-anchor="middle">window max</text>
+  <line x1="60" y1="156" x2="1140" y2="156" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- row i=0 -->
+  <text class="b" x="60" y="202">i=0, x=1</text>
+  <text class="m" x="404" y="202" text-anchor="middle">—</text>
+  <rect class="cellB" x="600" y="168" width="84" height="56"/>
+  <text class="b" x="642" y="192" text-anchor="middle">1</text>
+  <text class="s" x="642" y="214" text-anchor="middle">i=0</text>
+  <text class="m" x="1022" y="202" text-anchor="middle">—</text>
+
+  <!-- row i=1 -->
+  <text class="b" x="60" y="272">i=1, x=3</text>
+  <rect class="cellR" x="270" y="238" width="84" height="56"/>
+  <text class="b" x="312" y="272" text-anchor="middle">1</text>
+  <rect class="cellB" x="600" y="238" width="84" height="56"/>
+  <text class="b" x="642" y="262" text-anchor="middle">3</text>
+  <text class="s" x="642" y="284" text-anchor="middle">i=1</text>
+  <text class="m" x="1022" y="272" text-anchor="middle">—</text>
+
+  <!-- row i=2 -->
+  <text class="b" x="60" y="342">i=2, x=-1</text>
+  <text class="m" x="404" y="342" text-anchor="middle">—</text>
+  <rect class="cellB" x="600" y="308" width="84" height="56"/>
+  <text class="b" x="642" y="332" text-anchor="middle">3</text>
+  <text class="s" x="642" y="354" text-anchor="middle">i=1</text>
+  <rect class="cellW" x="692" y="308" width="84" height="56"/>
+  <text class="b" x="734" y="332" text-anchor="middle">-1</text>
+  <text class="s" x="734" y="354" text-anchor="middle">i=2</text>
+  <rect class="cellG" x="980" y="308" width="84" height="56"/>
+  <text class="b" x="1022" y="342" text-anchor="middle">3</text>
+
+  <!-- row i=3 -->
+  <text class="b" x="60" y="412">i=3, x=-3</text>
+  <text class="m" x="404" y="412" text-anchor="middle">—</text>
+  <rect class="cellB" x="600" y="378" width="84" height="56"/>
+  <text class="b" x="642" y="402" text-anchor="middle">3</text>
+  <text class="s" x="642" y="424" text-anchor="middle">i=1</text>
+  <rect class="cellW" x="692" y="378" width="84" height="56"/>
+  <text class="b" x="734" y="402" text-anchor="middle">-1</text>
+  <text class="s" x="734" y="424" text-anchor="middle">i=2</text>
+  <rect class="cellW" x="784" y="378" width="84" height="56"/>
+  <text class="b" x="826" y="402" text-anchor="middle">-3</text>
+  <text class="s" x="826" y="424" text-anchor="middle">i=3</text>
+  <rect class="cellG" x="980" y="378" width="84" height="56"/>
+  <text class="b" x="1022" y="412" text-anchor="middle">3</text>
+
+  <!-- row i=4 -->
+  <text class="b" x="60" y="482">i=4, x=5</text>
+  <rect class="cellR" x="270" y="448" width="84" height="56"/>
+  <text class="b" x="312" y="482" text-anchor="middle">-3</text>
+  <rect class="cellR" x="362" y="448" width="84" height="56"/>
+  <text class="b" x="404" y="482" text-anchor="middle">-1</text>
+  <rect class="cellR" x="454" y="448" width="84" height="56"/>
+  <text class="b" x="496" y="482" text-anchor="middle">3</text>
+  <rect class="cellB" x="600" y="448" width="84" height="56"/>
+  <text class="b" x="642" y="472" text-anchor="middle">5</text>
+  <text class="s" x="642" y="494" text-anchor="middle">i=4</text>
+  <rect class="cellG" x="980" y="448" width="84" height="56"/>
+  <text class="b" x="1022" y="482" text-anchor="middle">5</text>
+
+  <!-- row i=5 -->
+  <text class="b" x="60" y="552">i=5, x=3</text>
+  <text class="m" x="404" y="552" text-anchor="middle">—</text>
+  <rect class="cellB" x="600" y="518" width="84" height="56"/>
+  <text class="b" x="642" y="542" text-anchor="middle">5</text>
+  <text class="s" x="642" y="564" text-anchor="middle">i=4</text>
+  <rect class="cellW" x="692" y="518" width="84" height="56"/>
+  <text class="b" x="734" y="542" text-anchor="middle">3</text>
+  <text class="s" x="734" y="564" text-anchor="middle">i=5</text>
+  <rect class="cellG" x="980" y="518" width="84" height="56"/>
+  <text class="b" x="1022" y="552" text-anchor="middle">5</text>
+
+  <!-- row i=6 -->
+  <text class="b" x="60" y="622">i=6, x=6</text>
+  <rect class="cellR" x="270" y="588" width="84" height="56"/>
+  <text class="b" x="312" y="622" text-anchor="middle">3</text>
+  <rect class="cellR" x="362" y="588" width="84" height="56"/>
+  <text class="b" x="404" y="622" text-anchor="middle">5</text>
+  <rect class="cellB" x="600" y="588" width="84" height="56"/>
+  <text class="b" x="642" y="612" text-anchor="middle">6</text>
+  <text class="s" x="642" y="634" text-anchor="middle">i=6</text>
+  <rect class="cellG" x="980" y="588" width="84" height="56"/>
+  <text class="b" x="1022" y="622" text-anchor="middle">6</text>
+
+  <!-- row i=7 -->
+  <text class="b" x="60" y="692">i=7, x=7</text>
+  <rect class="cellR" x="270" y="658" width="84" height="56"/>
+  <text class="b" x="312" y="692" text-anchor="middle">6</text>
+  <rect class="cellB" x="600" y="658" width="84" height="56"/>
+  <text class="b" x="642" y="682" text-anchor="middle">7</text>
+  <text class="s" x="642" y="704" text-anchor="middle">i=7</text>
+  <rect class="cellG" x="980" y="658" width="84" height="56"/>
+  <text class="b" x="1022" y="692" text-anchor="middle">7</text>
+
+  <text class="m" x="60" y="748">Each index is pushed exactly once and popped at most once → at most 2n deque operations total.</text>
+</svg>

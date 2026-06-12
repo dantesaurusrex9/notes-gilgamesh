@@ -1,7 +1,7 @@
 ---
 title: "19 - Python Mastery Capstones and Review Checklist"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [python, programming-languages, mastery, capstone]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** You master Python by connecting runtime internals to shipped software. Build a CLI, a package, an async service, a profiling lab, a native-boundary wrapper, and a testing harness; each project should force you to explain the object model, import system, memory behavior, concurrency, packaging, and deployment.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/19-python-mastery-capstones-and-review-checklist/real-world-example.svg)
 
 This small domain model is a capstone seed. It can become a CLI, service, package, or async worker without changing the core model.
 
@@ -41,6 +43,8 @@ class Job:
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/19-python-mastery-capstones-and-review-checklist/vocabulary.svg)
+
 **Capstone**: A project that forces multiple layers of knowledge to interact.
 
 ---
@@ -57,11 +61,15 @@ class Job:
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/19-python-mastery-capstones-and-review-checklist/intuition.svg)
+
 The difference between "knows Python" and "masters Python" is the ability to predict consequences. If you add a decorator, what object is created? If you add a closure, what does it capture? If you add a dependency, how is it resolved and shipped? If you add threads, what happens under the GIL or free-threaded build?
 
 Use these capstones to make the invisible layers visible.
 
 ## Capstone 1: CLI Package
+
+![Visual diagram: Capstone 1: CLI Package](./assets/19-python-mastery-capstones-and-review-checklist/capstone-1-cli-package.svg)
 
 Build a real CLI with `argparse` or Typer.
 
@@ -82,6 +90,8 @@ Concepts proven:
 - Testability.
 
 ## Capstone 2: Async Service
+
+![Visual diagram: Capstone 2: Async Service](./assets/19-python-mastery-capstones-and-review-checklist/capstone-2-async-service.svg)
 
 Build a small FastAPI or aiohttp service.
 
@@ -104,6 +114,8 @@ Concepts proven:
 
 ## Capstone 3: Runtime Lab
 
+![Visual diagram: Capstone 3: Runtime Lab](./assets/19-python-mastery-capstones-and-review-checklist/capstone-3-runtime-lab.svg)
+
 Create experiments that prove how Python works.
 
 Experiments:
@@ -124,6 +136,8 @@ Concepts proven:
 
 ## Capstone 4: Native Boundary
 
+![Visual diagram: Capstone 4: Native Boundary](./assets/19-python-mastery-capstones-and-review-checklist/capstone-4-native-boundary.svg)
+
 Wrap a small C function or native library.
 
 Requirements:
@@ -143,6 +157,8 @@ Concepts proven:
 
 ## Review Checklist
 
+![Visual diagram: Review Checklist](./assets/19-python-mastery-capstones-and-review-checklist/review-checklist.svg)
+
 Use this checklist when reading Python code:
 
 - Are mutable defaults avoided?
@@ -160,6 +176,8 @@ Use this checklist when reading Python code:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/19-python-mastery-capstones-and-review-checklist/pitfalls.svg)
+
 - **Only learning syntax**: Syntax is the smallest part of Python mastery.
 - **Treating CPython details as language guarantees**: Know which facts are CPython-specific.
 - **No clean packaging path**: A script is not a shipped product.
@@ -167,6 +185,8 @@ Use this checklist when reading Python code:
 - **No operational thinking**: Logs, config, timeouts, and rollbacks are part of correctness.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/19-python-mastery-capstones-and-review-checklist/exercises.svg)
 
 1. Pick one capstone and write its acceptance checklist.
 2. Add `dis` output to a runtime lab note and explain each surprising opcode.

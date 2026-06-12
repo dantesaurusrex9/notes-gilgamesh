@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="title desc">
+  <title id="title">URL shortener write path</title>
+  <desc id="desc">Four numbered steps: client POSTs a long URL, the app server pops the next code from a leased key-service batch in memory, inserts one row protected by a unique index, and responds 201 with the short URL.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .muted { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .codeS { font: 700 18px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .step  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+    .node  { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 1.5; }
+    .flow  { stroke: #4b5563; stroke-width: 2.5; fill: none; }
+    .dash  { stroke: #6b7280; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="540" fill="#ffffff"/>
+  <text x="40" y="60" class="title">Write path — POST /api/v1/urls</text>
+  <line x1="40" y1="82" x2="1160" y2="82" class="rule"/>
+
+  <!-- step numbers -->
+  <circle cx="165" cy="140" r="22" fill="#0ea5e9"/>
+  <text x="165" y="149" class="step" text-anchor="middle">1</text>
+  <circle cx="455" cy="140" r="22" fill="#0ea5e9"/>
+  <text x="455" y="149" class="step" text-anchor="middle">2</text>
+  <circle cx="745" cy="140" r="22" fill="#0ea5e9"/>
+  <text x="745" y="149" class="step" text-anchor="middle">3</text>
+  <circle cx="1035" cy="140" r="22" fill="#0ea5e9"/>
+  <text x="1035" y="149" class="step" text-anchor="middle">4</text>
+
+  <!-- step boxes -->
+  <rect x="40" y="180" width="250" height="140" rx="10" class="node"/>
+  <text x="165" y="222" class="body" text-anchor="middle">Client request</text>
+  <text x="165" y="256" class="codeS" text-anchor="middle">POST /api/v1/urls</text>
+  <text x="165" y="288" class="small" text-anchor="middle">{"long_url": "&#8230;"}</text>
+
+  <line x1="290" y1="250" x2="326" y2="250" class="flow" marker-end="url(#arrow)"/>
+
+  <rect x="330" y="180" width="250" height="140" rx="10" class="node"/>
+  <text x="455" y="222" class="body" text-anchor="middle">Allocate code</text>
+  <text x="455" y="256" class="codeS" text-anchor="middle">aB3xK9q</text>
+  <text x="455" y="288" class="small" text-anchor="middle">pop from leased batch</text>
+
+  <line x1="580" y1="250" x2="616" y2="250" class="flow" marker-end="url(#arrow)"/>
+
+  <rect x="620" y="180" width="250" height="140" rx="10" class="node"/>
+  <text x="745" y="222" class="body" text-anchor="middle">Persist row</text>
+  <text x="745" y="256" class="codeS" text-anchor="middle">INSERT INTO urls</text>
+  <text x="745" y="288" class="small" text-anchor="middle">UNIQUE(short_code)</text>
+
+  <line x1="870" y1="250" x2="906" y2="250" class="flow" marker-end="url(#arrow)"/>
+
+  <rect x="910" y="180" width="250" height="140" rx="10" class="node"/>
+  <text x="1035" y="222" class="body" text-anchor="middle">Respond</text>
+  <text x="1035" y="256" class="codeS" text-anchor="middle">201 Created</text>
+  <text x="1035" y="288" class="small" text-anchor="middle">sho.rt/aB3xK9q</text>
+
+  <!-- key service refill -->
+  <rect x="330" y="400" width="250" height="80" rx="10" class="amber"/>
+  <text x="455" y="435" class="body" text-anchor="middle">Key service</text>
+  <text x="455" y="464" class="small" text-anchor="middle">pre-generated codes</text>
+  <line x1="455" y1="400" x2="455" y2="324" class="dash" marker-end="url(#arrow)"/>
+  <text x="600" y="424" class="muted" text-anchor="start">refill: lease 10,000 codes when buffer is low</text>
+  <text x="600" y="450" class="muted" text-anchor="start">one RPC per ~10 k writes, off the hot path</text>
+
+  <text x="40" y="520" class="muted" text-anchor="start">Total: one in-memory pop + one indexed INSERT &#8776; single-digit ms, at only ~39 writes/s.</text>
+</svg>

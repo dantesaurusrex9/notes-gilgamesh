@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" width="1200" height="480" role="img" aria-labelledby="title desc">
+  <title id="title">Validity-interval timeline for a price row</title>
+  <desc id="desc">Three versions of a product price shown as half-open intervals on a timeline, with an as-of query point landing inside the second interval.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <rect x="0" y="0" width="1200" height="480" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Validity intervals: half-open [valid_from, valid_to)</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- timeline axis -->
+  <defs>
+    <marker id="arr3" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#111827"/>
+    </marker>
+  </defs>
+  <line x1="80" y1="360" x2="1120" y2="360" stroke="#111827" stroke-width="3" marker-end="url(#arr3)"/>
+  <text class="s" x="120" y="395">2026-01-01</text>
+  <text class="s" x="440" y="395">2026-03-01</text>
+  <text class="s" x="760" y="395">2026-06-01</text>
+  <text class="s" x="1040" y="395">now</text>
+  <line x1="160" y1="350" x2="160" y2="370" stroke="#111827" stroke-width="3"/>
+  <line x1="480" y1="350" x2="480" y2="370" stroke="#111827" stroke-width="3"/>
+  <line x1="800" y1="350" x2="800" y2="370" stroke="#111827" stroke-width="3"/>
+
+  <!-- intervals -->
+  <rect x="160" y="140" width="320" height="50" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="c" x="180" y="173">price = 9.99</text>
+  <text class="s" x="180" y="130">[2026-01-01, 2026-03-01)</text>
+
+  <rect x="480" y="210" width="320" height="50" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="500" y="243">price = 12.99</text>
+  <text class="s" x="500" y="200">[2026-03-01, 2026-06-01)</text>
+
+  <rect x="800" y="280" width="300" height="50" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c" x="820" y="313">price = 11.49</text>
+  <text class="s" x="820" y="270">[2026-06-01, NULL) = current</text>
+
+  <!-- as-of query marker -->
+  <line x1="640" y1="100" x2="640" y2="360" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="b" x="655" y="115" fill="#8b5cf6">AS OF 2026-04-15 → matches the blue row</text>
+
+  <text class="m" x="80" y="445">Half-open intervals tile the line with no gaps and no overlaps: each end equals the next start.</text>
+</svg>

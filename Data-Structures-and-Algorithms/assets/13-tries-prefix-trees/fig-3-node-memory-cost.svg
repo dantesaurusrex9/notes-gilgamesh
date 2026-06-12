@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">What one trie node costs in CPython</title>
+  <desc id="desc">Three boxes: the TrieNode instance with slots at 56 bytes, the children dict at 232 bytes once it has an entry, and the per-entry key and pointer. The bottom row contrasts roughly 288 bytes of overhead against 1 byte of character payload.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h  { font: 600 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #ffffff; stroke: #6b7280; stroke-width: 2.5; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2.5; }
+    .good { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+
+  <text class="t" x="40" y="58">What one trie node costs in CPython</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- box A: the instance -->
+  <rect class="box" x="60" y="120" width="340" height="230"/>
+  <text class="h" x="80" y="158">TrieNode (__slots__)</text>
+  <text class="s" x="80" y="196">PyObject header — 16 B</text>
+  <text class="s" x="80" y="226">children slot (pointer) — 8 B</text>
+  <text class="s" x="80" y="256">is_word slot (pointer) — 8 B</text>
+  <text class="s" x="80" y="286">count slot (pointer) — 8 B</text>
+  <text class="c" x="80" y="328">getsizeof: 56 B</text>
+
+  <line class="arrow" x1="400" y1="235" x2="462" y2="235" marker-end="url(#arr)"/>
+
+  <!-- box B: the children dict -->
+  <rect class="box" x="470" y="120" width="340" height="230"/>
+  <text class="h" x="490" y="158">children dict</text>
+  <text class="s" x="490" y="196">empty dict — 64 B</text>
+  <text class="s" x="490" y="226">first child inserted — 232 B</text>
+  <text class="s" x="490" y="256">(an 8-slot hash table is</text>
+  <text class="s" x="490" y="286">allocated up front)</text>
+  <text class="c" x="490" y="328">getsizeof: 232 B</text>
+
+  <line class="arrow" x1="810" y1="235" x2="872" y2="235" marker-end="url(#arr)"/>
+
+  <!-- box C: per entry -->
+  <rect class="box" x="880" y="120" width="280" height="230"/>
+  <text class="h" x="900" y="158">each entry</text>
+  <text class="s" x="900" y="196">key: 1-char str ≈ 50 B</text>
+  <text class="s" x="900" y="226">(cached by CPython,</text>
+  <text class="s" x="900" y="256">shared across nodes)</text>
+  <text class="s" x="900" y="286">value: 8 B pointer</text>
+  <text class="s" x="900" y="316">to the child node</text>
+
+  <!-- bottom comparison -->
+  <rect class="bad" x="60" y="400" width="540" height="90"/>
+  <text class="b" x="330" y="438" text-anchor="middle">overhead per interior node</text>
+  <text class="c" x="330" y="474" text-anchor="middle">56 + 232 ≈ 288 B</text>
+
+  <rect class="good" x="660" y="400" width="480" height="90"/>
+  <text class="b" x="900" y="438" text-anchor="middle">payload it represents</text>
+  <text class="c" x="900" y="474" text-anchor="middle">1 character ≈ 1 B</text>
+
+  <text class="s" x="60" y="530">Measured with sys.getsizeof on CPython 3.9, 64-bit. Without __slots__, add ~96 B more per node for the instance __dict__.</text>
+</svg>

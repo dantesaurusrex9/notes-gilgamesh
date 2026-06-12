@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Failover split-brain timeline</title>
+  <desc id="desc">Timeline showing a network partition: the old primary keeps accepting writes while a replica is promoted, producing two diverging primaries until fencing kills the old one.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .ok  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .amb { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .hl  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text class="t" x="40" y="60">Split brain: two primaries, one truth</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- time axis labels -->
+  <text class="s" x="280" y="130" text-anchor="middle">t0: partition</text>
+  <text class="s" x="540" y="130" text-anchor="middle">t1: timeout, promote replica</text>
+  <text class="s" x="850" y="130" text-anchor="middle">t2: fencing kills old primary</text>
+  <line x1="280" y1="140" x2="280" y2="540" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="540" y1="140" x2="540" y2="540" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="850" y1="140" x2="850" y2="540" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Node A lane -->
+  <text class="b" x="40" y="210">Node A</text>
+  <rect class="ok"  x="160" y="170" width="120" height="60" rx="8"/><text class="s" x="220" y="207" text-anchor="middle">primary</text>
+  <rect class="amb" x="280" y="170" width="570" height="60" rx="8"/>
+  <text class="s" x="565" y="207" text-anchor="middle">isolated — still accepts writes W1, W2 (divergent!)</text>
+  <rect class="bad" x="850" y="170" width="290" height="60" rx="8"/>
+  <text class="s" x="995" y="207" text-anchor="middle">fenced (STONITH) — down</text>
+
+  <!-- Node B lane -->
+  <text class="b" x="40" y="350">Node B</text>
+  <rect class="ok" x="160" y="310" width="380" height="60" rx="8"/><text class="s" x="350" y="347" text-anchor="middle">replica, streaming from A</text>
+  <rect class="hl" x="540" y="310" width="600" height="60" rx="8"/>
+  <text class="s" x="840" y="347" text-anchor="middle">promoted: new primary, new WAL timeline</text>
+
+  <!-- Danger zone -->
+  <rect class="bad" x="540" y="420" width="310" height="60" rx="8"/>
+  <text class="s" x="695" y="457" text-anchor="middle">t1 → t2: TWO primaries live</text>
+  <text class="m" x="40" y="530">Writes W1, W2 landed only on A after t1. They are on no timeline B knows about —</text>
+  <text class="m" x="40" y="565">they must be discarded or manually reconciled. Fencing shrinks this window to ~0.</text>
+</svg>

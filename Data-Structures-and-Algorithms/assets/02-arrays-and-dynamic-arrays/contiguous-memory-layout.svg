@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-labelledby="title desc">
+  <title id="title">Array indexing is address arithmetic</title>
+  <desc id="desc">Eight int64 cells laid out contiguously in memory with hexadecimal addresses above each cell and index labels below. Index 5 is highlighted, with the formula addr(5) = 0x1000 + 5 times 8 = 0x1028 pointing at it.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .addr  { font: 600 18px "SFMono-Regular", Consolas, monospace; fill: #6b7280; }
+    .cell  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .hot   { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="tri" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="520" fill="#ffffff"/>
+  <text x="60" y="70" class="title">Array indexing is address arithmetic</text>
+  <line x1="60" y1="92" x2="1140" y2="92" class="rule"/>
+
+  <!-- addresses above cells -->
+  <text x="140" y="205" class="addr" text-anchor="middle">0x1000</text>
+  <text x="270" y="205" class="addr" text-anchor="middle">0x1008</text>
+  <text x="400" y="205" class="addr" text-anchor="middle">0x1010</text>
+  <text x="530" y="205" class="addr" text-anchor="middle">0x1018</text>
+  <text x="660" y="205" class="addr" text-anchor="middle">0x1020</text>
+  <text x="790" y="205" class="addr" text-anchor="middle">0x1028</text>
+  <text x="920" y="205" class="addr" text-anchor="middle">0x1030</text>
+  <text x="1050" y="205" class="addr" text-anchor="middle">0x1038</text>
+
+  <!-- cells -->
+  <rect x="80"  y="220" width="120" height="90" class="cell"/>
+  <rect x="210" y="220" width="120" height="90" class="cell"/>
+  <rect x="340" y="220" width="120" height="90" class="cell"/>
+  <rect x="470" y="220" width="120" height="90" class="cell"/>
+  <rect x="600" y="220" width="120" height="90" class="cell"/>
+  <rect x="730" y="220" width="120" height="90" class="hot"/>
+  <rect x="860" y="220" width="120" height="90" class="cell"/>
+  <rect x="990" y="220" width="120" height="90" class="cell"/>
+
+  <!-- values -->
+  <text x="140" y="275" class="body" text-anchor="middle">7</text>
+  <text x="270" y="275" class="body" text-anchor="middle">42</text>
+  <text x="400" y="275" class="body" text-anchor="middle">13</text>
+  <text x="530" y="275" class="body" text-anchor="middle">99</text>
+  <text x="660" y="275" class="body" text-anchor="middle">5</text>
+  <text x="790" y="275" class="body" text-anchor="middle">61</text>
+  <text x="920" y="275" class="body" text-anchor="middle">8</text>
+  <text x="1050" y="275" class="body" text-anchor="middle">30</text>
+
+  <!-- index labels -->
+  <text x="140" y="345" class="small" text-anchor="middle">i = 0</text>
+  <text x="270" y="345" class="small" text-anchor="middle">i = 1</text>
+  <text x="400" y="345" class="small" text-anchor="middle">i = 2</text>
+  <text x="530" y="345" class="small" text-anchor="middle">i = 3</text>
+  <text x="660" y="345" class="small" text-anchor="middle">i = 4</text>
+  <text x="790" y="345" class="small" text-anchor="middle">i = 5</text>
+  <text x="920" y="345" class="small" text-anchor="middle">i = 6</text>
+  <text x="1050" y="345" class="small" text-anchor="middle">i = 7</text>
+
+  <!-- formula and arrow to cell 5 -->
+  <line x1="790" y1="405" x2="790" y2="322" class="arrow" marker-end="url(#tri)"/>
+  <text x="790" y="445" class="code" text-anchor="middle">addr(5) = 0x1000 + 5 &#215; 8 = 0x1028</text>
+
+  <text x="60" y="495" class="muted">Eight int64 values, stride 8 bytes. Any index costs one multiply + one add &#8212; O(1), independent of n.</text>
+</svg>

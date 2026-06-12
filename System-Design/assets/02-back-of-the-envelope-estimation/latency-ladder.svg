@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">The latency ladder, log scale</title>
+  <desc id="desc">Horizontal bar chart on a log scale showing eight latencies from an L1 cache hit at 0.5 nanoseconds up to a cross-region round trip at 150 milliseconds. Bars are colored by category: green for CPU and RAM, amber for storage, blue for same-datacenter network, red for cross-region network.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+    .grid  { stroke: #e5e7eb; stroke-width: 1.5; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .blue  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .red   { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+  </style>
+  <rect x="0" y="0" width="1200" height="700" fill="#ffffff"/>
+  <text x="40" y="58" class="title">The latency ladder (log scale)</text>
+  <line x1="40" y1="78" x2="1160" y2="78" class="rule"/>
+
+  <!-- decade gridlines -->
+  <line x1="405.7" y1="112" x2="405.7" y2="606" class="grid"/>
+  <line x1="642.1" y1="112" x2="642.1" y2="606" class="grid"/>
+  <line x1="878.5" y1="112" x2="878.5" y2="606" class="grid"/>
+  <line x1="1036.1" y1="112" x2="1036.1" y2="606" class="grid"/>
+  <text x="405.7" y="104" class="small" text-anchor="middle">1 ns</text>
+  <text x="642.1" y="104" class="small" text-anchor="middle">1 µs</text>
+  <text x="878.5" y="104" class="small" text-anchor="middle">1 ms</text>
+  <text x="1036.1" y="104" class="small" text-anchor="middle">100 ms</text>
+
+  <!-- rows -->
+  <text x="40" y="155" class="body">L1 cache hit</text>
+  <rect x="370" y="130" width="12" height="36" class="green"/>
+  <text x="394" y="155" class="code">0.5 ns</text>
+
+  <text x="40" y="217" class="body">RAM access</text>
+  <rect x="370" y="192" width="193" height="36" class="green"/>
+  <text x="575" y="217" class="code">100 ns</text>
+
+  <text x="40" y="279" class="body">SSD random read (4 KB)</text>
+  <rect x="370" y="254" width="444" height="36" class="amber"/>
+  <text x="826" y="279" class="code">150 µs</text>
+
+  <text x="40" y="341" class="body">Read 1 MB from RAM</text>
+  <rect x="370" y="316" width="461" height="36" class="green"/>
+  <text x="843" y="341" class="code">250 µs</text>
+
+  <text x="40" y="403" class="body">Same-DC round trip</text>
+  <rect x="370" y="378" width="485" height="36" class="blue"/>
+  <text x="867" y="403" class="code">0.5 ms</text>
+
+  <text x="40" y="465" class="body">Read 1 MB from SSD</text>
+  <rect x="370" y="440" width="508" height="36" class="amber"/>
+  <text x="890" y="465" class="code">1 ms</text>
+
+  <text x="40" y="527" class="body">HDD seek</text>
+  <rect x="370" y="502" width="587" height="36" class="amber"/>
+  <text x="969" y="527" class="code">10 ms</text>
+
+  <text x="40" y="589" class="body">Cross-region round trip</text>
+  <rect x="370" y="564" width="680" height="36" class="red"/>
+  <text x="1062" y="589" class="code">150 ms</text>
+
+  <!-- legend -->
+  <rect x="40" y="620" width="24" height="24" class="green"/>
+  <text x="72" y="638" class="small">CPU / RAM</text>
+  <rect x="240" y="620" width="24" height="24" class="amber"/>
+  <text x="272" y="638" class="small">Storage</text>
+  <rect x="420" y="620" width="24" height="24" class="blue"/>
+  <text x="452" y="638" class="small">Same-DC network</text>
+  <rect x="680" y="620" width="24" height="24" class="red"/>
+  <text x="712" y="638" class="small">Cross-region (WAN)</text>
+
+  <text x="40" y="682" class="small">Order-of-magnitude values (Dean / Norvig). A cross-region round trip is ~300,000,000× slower than an L1 hit.</text>
+</svg>

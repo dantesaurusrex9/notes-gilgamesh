@@ -1,7 +1,7 @@
 ---
 title: "3 - Iterables, Iterators, and Generators"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python's iteration protocol separates two concerns: an *iterable* knows how to produce an iterator, and an *iterator* knows how to yield the next item. Generator functions and expressions are syntactic sugar for writing iterators without managing state manually — Python converts the function body into a state machine, suspending at each `yield` and resuming on the next `next()` call. Lazy evaluation via generators is the idiomatic Python mechanism for infinite sequences, streaming data pipelines, and memory-efficient transformations.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/3-iterables-iterators-and-generators/vocabulary.svg)
 
 **Iterable**: Any object implementing `__iter__()`, returning an iterator. Lists, tuples, strings, files, dicts, sets, and generators are all iterables. The `for` loop and unpacking call `__iter__` implicitly.
 
@@ -60,11 +62,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/3-iterables-iterators-and-generators/intuition.svg)
+
 Think of an iterable as a recipe book, and an iterator as a bookmark in that book. `__iter__` gives you a bookmark; `__next__` turns one page. The same book can have multiple bookmarks (multiple iterators) in independent positions. But a bookmark itself is single-use — once you reach the back cover, it stays there. Creating a fresh iterator (calling `__iter__` again) is equivalent to starting from page 1 with a new bookmark.
 
 A generator function is a recipe that doesn't bake the entire cake upfront — it bakes one slice at a time, only when you ask. The function body is the recipe; the generator object is the baker who pauses between slices and waits. This is lazy evaluation: computation deferred until the result is needed.
 
 ## The Iterator Protocol
+
+![Visual diagram: The Iterator Protocol](./assets/3-iterables-iterators-and-generators/the-iterator-protocol.svg)
 
 ### `__iter__` and `__next__`
 
@@ -141,6 +147,8 @@ This means anything that implements `__iter__` / `__next__` works with `for`, `l
 
 ## Generator Functions
 
+![Visual diagram: Generator Functions](./assets/3-iterables-iterators-and-generators/generator-functions.svg)
+
 ### Basic Generator
 
 A generator function contains `yield`. Calling it returns a generator object without executing any of the body. The body runs incrementally as `next()` is called.
@@ -204,6 +212,8 @@ print(sys.getsizeof(squares_gen))   # >>> ~104 bytes — constant size
 
 ## Bidirectional Generators: `send`, `throw`, `close`
 
+![Visual diagram: Bidirectional Generators: send, throw, close](./assets/3-iterables-iterators-and-generators/bidirectional-generators-send-throw-close.svg)
+
 ### `send`
 
 `send(value)` resumes the generator and makes `value` the result of the current `yield` expression. This turns a generator into a coroutine-like object that can both produce and consume values. Before any `yield` has executed, the first resume must use `next()` or `send(None)`.
@@ -266,6 +276,8 @@ gen.close()              # >>> Releasing resource
 
 ## `itertools` — Composable Iterator Primitives
 
+![Visual diagram: itertools - Composable Iterator Primitives](./assets/3-iterables-iterators-and-generators/itertools-composable-iterator-primitives.svg)
+
 The `itertools` module provides building blocks that compose without materialising intermediate collections. Every function returns a lazy iterator.
 
 ```python
@@ -306,6 +318,8 @@ print(list(it1), list(it2))  # >>> [1, 2, 3] [1, 2, 3]
 > After `itertools.tee(it, n)`, do **not** use the original iterator `it`. `tee` buffers internally, and using `it` directly after `tee` causes undefined behaviour. Consume only the teed copies.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/3-iterables-iterators-and-generators/real-world-example.svg)
 
 A lazy streaming pipeline for processing a large log file line-by-line without loading it into memory. This pattern is common in data engineering for files that exceed available RAM.
 
@@ -375,6 +389,8 @@ def pipeline(path: Path, level: str = "ERROR") -> Generator[LogEntry, None, None
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/3-iterables-iterators-and-generators/in-practice.svg)
+
 **Generator pipelines vs. list comprehensions.** Use a generator expression when you iterate once and don't need random access. Use a list comprehension when you need the results multiple times, need `len()`, or need indexing. The memory difference is dramatic for large sequences.
 
 **`itertools.tee` has a hidden memory cost.** `tee` buffers items internally until all forked iterators have consumed them. If fork A is far ahead of fork B, the buffer grows to hold all the unconsumed items. For parallel consumption with different paces, materialise to a list instead.
@@ -386,6 +402,8 @@ def pipeline(path: Path, level: str = "ERROR") -> Generator[LogEntry, None, None
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/3-iterables-iterators-and-generators/pitfalls.svg)
+
 - **"I can re-iterate a generator."** — No. Generators are single-use. Once `StopIteration` is raised, calling `next()` again keeps raising `StopIteration`. If you need to iterate multiple times, materialise to a list: `data = list(gen())`.
 - **"Generator expressions are always better than list comprehensions."** — Only if you iterate once and don't need the length. If you pass a generator to a function that calls `len()` on it, you get a `TypeError`. If you iterate it twice, the second pass is empty.
 - **"Passing a file object to a function twice works."** — File objects are iterators, not iterables. After full traversal, the file pointer is at the end. The second loop sees nothing. Call `f.seek(0)` to reset, or re-open the file.
@@ -393,6 +411,8 @@ def pipeline(path: Path, level: str = "ERROR") -> Generator[LogEntry, None, None
 - **"Generators are coroutines."** — Generator-based coroutines (`send`/`yield`) were the prototype for Python's `async`/`await` model (PEP 492, 3.5+). They share machinery but `async def` functions are first-class coroutine objects with a distinct protocol. Do not use generator-based coroutines in new code; use `async def`.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/3-iterables-iterators-and-generators/exercises.svg)
 
 ### Exercise 1 — Implement `take`
 

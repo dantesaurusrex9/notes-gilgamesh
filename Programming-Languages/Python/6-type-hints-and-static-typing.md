@@ -1,7 +1,7 @@
 ---
 title: "6 - Type Hints and Static Typing"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python's type hint system (PEP 484+) adds optional static annotations evaluated by external checkers (pyright, mypy) without changing runtime behaviour. The system has evolved from basic `Optional[int]` to structural typing via `Protocol`, higher-kinded generics via `TypeVar`, precise literal types via `Literal`, and full variance annotations — enabling gradual typing that catches entire classes of bugs before tests run.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/6-type-hints-and-static-typing/vocabulary.svg)
 
 **Type annotation**: A syntax hint attached to a variable, parameter, or return value. Stored in `__annotations__` at runtime. Not enforced by CPython; evaluated by static checkers.
 
@@ -82,11 +84,15 @@ T = TypeVar("T")
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/6-type-hints-and-static-typing/intuition.svg)
+
 Think of Python's type system as a post-hoc overlay: the language runs without it, but a static checker reads the annotations and reports inconsistencies before the code executes. This is different from Java where types are enforced by the JVM. The practical consequence is that you can start with an entirely untyped codebase, add `# type: ignore` to suppress errors, and incrementally annotate the parts you care about. The checker only tells you about bugs in annotated code.
 
 `Protocol` is the most powerful addition. Rather than requiring `isinstance(x, MyABC)` (nominal typing), `Protocol` checks duck-typed interfaces: "does this object have a `.read(n)` method that takes an `int` and returns `bytes`?" This is structural typing — the same paradigm as Go interfaces — and it is the right model for Python's dynamic ecosystem.
 
 ## Core Annotation Syntax
+
+![Visual diagram: Core Annotation Syntax](./assets/6-type-hints-and-static-typing/core-annotation-syntax.svg)
 
 ### Variables, Parameters, Returns
 
@@ -164,6 +170,8 @@ int_stack.push(2)
 
 ## `Protocol` — Structural Typing
 
+![Visual diagram: Protocol - Structural Typing](./assets/6-type-hints-and-static-typing/protocol-structural-typing.svg)
+
 `Protocol` classes define an interface by listing required methods and attributes. Any object with matching structure satisfies the protocol, regardless of inheritance.
 
 ```python
@@ -201,6 +209,8 @@ print(isinstance(Circle(0, 0, 1), Drawable))  # >>> True  (runtime_checkable)
 > Prefer `Protocol` over ABCs when designing library APIs that accept user objects. ABCs require explicit inheritance (`class MyShape(ShapeABC):`); Protocols do not. This makes your library friendlier to third-party types that cannot be modified to inherit from your ABC. NumPy arrays, pandas DataFrames, and PIL Images all satisfy file-like protocols without knowing about them.
 
 ## `Literal`, `TypedDict`, `Final`
+
+![Visual diagram: Literal, TypedDict, Final](./assets/6-type-hints-and-static-typing/literal-typeddict-final.svg)
 
 ### `Literal`
 
@@ -252,6 +262,8 @@ MAX_RETRIES: Final = 3
 
 ## `TypeGuard` and Type Narrowing
 
+![Visual diagram: TypeGuard and Type Narrowing](./assets/6-type-hints-and-static-typing/typeguard-and-type-narrowing.svg)
+
 Type narrowing is when the checker automatically refines the type inside a conditional branch. You can define custom narrowing predicates with `TypeGuard`.
 
 ```python
@@ -270,6 +282,8 @@ def process(items: list[object]) -> None:
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/6-type-hints-and-static-typing/real-world-example.svg)
 
 A fully-typed Pydantic-free data validation layer using `TypedDict`, `Protocol`, `TypeVar`, and `Literal` — a realistic pattern for a FastAPI request handler.
 
@@ -330,6 +344,8 @@ print([p.name for p in page])  # >>> ['apple', 'banana']
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/6-type-hints-and-static-typing/in-practice.svg)
+
 **Pyright vs mypy.** Pyright (Microsoft, used by Pylance in VS Code) and mypy (PSF) are the two dominant checkers. They disagree on edge cases. Pyright is stricter by default and significantly faster (Go-like performance vs Python-process overhead). For new projects, pyright in `strict` mode is the recommended starting point.
 
 **Gradual typing strategy.** For a large existing codebase: (1) add `# type: ignore` globally to silence all existing errors, (2) set up pyright/mypy in CI, (3) annotate new code fully, (4) remove `# type: ignore` comments as you revisit old modules. Never annotate everything at once — the cognitive overhead collapses the team.
@@ -351,6 +367,8 @@ This avoids circular import errors and reduces startup time for large codebases.
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/6-type-hints-and-static-typing/pitfalls.svg)
+
 - **"Type hints are enforced at runtime."** — They are not. CPython ignores annotations entirely. `x: int = "hello"` runs without error. Only pyright/mypy catch this statically.
 - **"You need `Optional[T]` everywhere a value might be `None`."** — In Python 3.10+, use `T | None`. `Optional` remains valid but is verbose.
 - **"Protocols require `@runtime_checkable` to work with the checker."** — No. The static checker works with all `Protocol`s. `@runtime_checkable` is only needed for `isinstance()` checks at runtime. Most Protocols should not be `@runtime_checkable` — it adds overhead and the runtime check is weaker than the static check.
@@ -358,6 +376,8 @@ This avoids circular import errors and reduces startup time for large codebases.
 - **"Adding `from __future__ import annotations` is always safe."** — Almost. It makes all annotations strings at runtime (lazy evaluation). This breaks code that calls `get_type_hints()` or inspects `__annotations__` at runtime without `include_extras=True`, and it breaks some Pydantic v1 patterns. Test after adding.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/6-type-hints-and-static-typing/exercises.svg)
 
 ### Exercise 1 — Generic `zip_with`
 

@@ -1,7 +1,7 @@
 ---
 title: "2 - The Data Model — Objects, References, Identity"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** In CPython every value — integer, string, function, class, `None` — is a `PyObject` on the C heap with three attributes: identity (`id`), type (`type`), and value. Variables are names in namespace dictionaries pointing to objects, not memory slots holding values. The data model formalises how objects participate in language features (arithmetic, comparison, iteration, hashing) by implementing dunder methods, making Python's operator overloading both principled and predictable.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/2-the-data-model-objects-references-identity/vocabulary.svg)
 
 **Object**: The fundamental entity in Python's runtime. Every object has a unique identity, a type, and a value. In CPython, an object is a `PyObject` C struct.
 
@@ -69,6 +71,8 @@ print(id(x))  # >>> some integer, e.g. 140234567890
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/2-the-data-model-objects-references-identity/intuition.svg)
+
 Python variables are not boxes — they are sticky notes. When you write `x = [1, 2, 3]`, Python creates a list object somewhere in memory and sticks the label `x` on it. When you write `y = x`, you paste a second label `y` on the *same* object. Modifying `y.append(4)` also modifies `x` because they refer to the same list. This is aliasing, and it is the single most common source of subtle bugs for Python newcomers.
 
 Immutability is not about the name — it is about the object. The name `x = 5` can be rebound to `x = 6`, but the object `5` itself never changes. You created a new `int(6)` object and stuck the `x` label on it instead.
@@ -77,12 +81,14 @@ The dunder protocol is the language's extensibility hook. When you write `a + b`
 
 ## Objects, References, and Aliasing
 
+![Visual diagram: Objects, References, and Aliasing](./assets/2-the-data-model-objects-references-identity/objects-references-and-aliasing.svg)
+
 Every assignment in Python creates a reference, not a copy. The diagram below shows the memory state after `x = [1, 2]; y = x`.
 
 ```mermaid
 flowchart LR
-    NX["name 'x'<br/>in locals dict"] --> OBJ["PyListObject<br/>id=0x7f42<br/>value=[1,2]"]
-    NY["name 'y'<br/>in locals dict"] --> OBJ
+    NX["name 'x' / in locals dict"] --> OBJ["PyListObject / id=0x7f42 / value=[1,2]"]
+    NY["name 'y' / in locals dict"] --> OBJ
 ```
 
 ```python
@@ -151,6 +157,8 @@ print(s1 is s2)  # >>> True
 
 ## Mutable vs Immutable
 
+![Visual diagram: Mutable vs Immutable](./assets/2-the-data-model-objects-references-identity/mutable-vs-immutable.svg)
+
 Mutability is a property of the *type*, not the variable binding. The distinction determines copy semantics, hashability, and thread-safety.
 
 | Type | Mutable? | Hashable? | Notes |
@@ -184,6 +192,8 @@ print(id(lst) == old_id)  # >>> True — same list object
 
 ## Tuples vs Lists
 
+![Visual diagram: Tuples vs Lists](./assets/2-the-data-model-objects-references-identity/tuples-vs-lists.svg)
+
 Both are ordered sequences. The performance and semantic differences matter:
 
 - **Lists** are for homogeneous sequences of items you intend to mutate (append, remove, sort). Backed by a dynamic array; over-allocation for amortised O(1) append.
@@ -201,19 +211,21 @@ print(sys.getsizeof(tpl))   # >>> 72  (exact allocation, no over-alloc)
 
 ## The Dunder Protocol Overview
 
+![Visual diagram: The Dunder Protocol Overview](./assets/2-the-data-model-objects-references-identity/the-dunder-protocol-overview.svg)
+
 The Python data model defines over 80 dunder methods. Each one enables a specific language feature. The categories and their key dunders:
 
 ```mermaid
 flowchart TD
-    OBJ["Python Object"] --> REPR["Representation<br/>__repr__, __str__, __bytes__, __format__"]
-    OBJ --> COMP["Comparison & Hashing<br/>__eq__, __lt__, __le__, __gt__, __ge__, __hash__"]
-    OBJ --> ARITH["Arithmetic<br/>__add__, __mul__, __truediv__,<br/>__radd__, __iadd__, ..."]
-    OBJ --> CONT["Container protocol<br/>__len__, __getitem__, __setitem__,<br/>__contains__, __iter__"]
-    OBJ --> ATTR["Attribute access<br/>__getattr__, __setattr__, __delattr__,<br/>__getattribute__"]
-    OBJ --> CTX["Context manager<br/>__enter__, __exit__"]
-    OBJ --> CALL["Callable<br/>__call__"]
-    OBJ --> LIFE["Lifecycle<br/>__init__, __new__, __del__"]
-    OBJ --> DESC["Descriptor protocol<br/>__get__, __set__, __delete__"]
+    OBJ["Python Object"] --> REPR["Representation / __repr__, __str__, __bytes__, __format__"]
+    OBJ --> COMP["Comparison & Hashing / __eq__, __lt__, __le__, __gt__, __ge__, __hash__"]
+    OBJ --> ARITH["Arithmetic / __add__, __mul__, __truediv__, / __radd__, __iadd__, ..."]
+    OBJ --> CONT["Container protocol / __len__, __getitem__, __setitem__, / __contains__, __iter__"]
+    OBJ --> ATTR["Attribute access / __getattr__, __setattr__, __delattr__, / __getattribute__"]
+    OBJ --> CTX["Context manager / __enter__, __exit__"]
+    OBJ --> CALL["Callable / __call__"]
+    OBJ --> LIFE["Lifecycle / __init__, __new__, __del__"]
+    OBJ --> DESC["Descriptor protocol / __get__, __set__, __delete__"]
 ```
 
 ```python
@@ -269,6 +281,8 @@ print({v1, v2})         # set works because __hash__ defined
 > When `__add__` returns `NotImplemented` (not `raise TypeError`, but `return NotImplemented`), Python tries `other.__radd__(self)` before raising. This cooperative protocol lets third-party numeric types interoperate with yours without knowing about each other. Always `return NotImplemented` rather than raising when the operand type is unrecognised.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/2-the-data-model-objects-references-identity/real-world-example.svg)
 
 A practical demonstration of how identity and mutability interact in production code — specifically the notorious mutable default argument trap and its idiomatic fix.
 
@@ -328,6 +342,8 @@ print(x is y)   # >>> True — same cached object
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/2-the-data-model-objects-references-identity/in-practice.svg)
+
 **Attribute lookup is expensive.** Every `obj.name` traverses `obj.__dict__`, then `type(obj).__dict__`, then the MRO chain. In tight loops, cache attribute lookups as local variables: `fn = obj.method; for x in data: fn(x)` is measurably faster than `for x in data: obj.method(x)`.
 
 **`__slots__` eliminates `__dict__`.** For classes with a fixed set of attributes and many instances (e.g. coordinate objects, graph nodes), `__slots__ = ('x', 'y')` prevents the per-instance `__dict__`, reducing memory from ~200 bytes to ~56 bytes per instance. Covered in detail in [5 - Classes, Inheritance, MRO, ABCs](./5-classes-inheritance-mro-abcs.md).
@@ -339,6 +355,8 @@ print(x is y)   # >>> True — same cached object
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/2-the-data-model-objects-references-identity/pitfalls.svg)
+
 - **"`is` works for strings so I can use it for equality."** — String interning is an implementation detail of CPython and applies only to identifier-shaped strings. `"hello" is "hello"` may be `True` in CPython but is not guaranteed by the language spec. Use `==`.
 - **"Immutable objects cannot be modified."** — Correct, but a variable bound to an immutable can be rebound. `x = 5; x = 6` does not modify the integer 5; it creates a new integer 6 and rebinds `x`. The integer 5 object is unchanged.
 - **"Tuples are faster than lists for iteration."** — The difference is negligible for iteration. Tuples matter for memory (no over-allocation) and hashability, not for loop speed.
@@ -346,6 +364,8 @@ print(x is y)   # >>> True — same cached object
 - **"Default arguments are evaluated each call."** — No. They are evaluated once, at `def` time. The default value lives in `func.__defaults__`. This is the mutable default trap.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/2-the-data-model-objects-references-identity/exercises.svg)
 
 ### Exercise 1 — Identity vs equality
 

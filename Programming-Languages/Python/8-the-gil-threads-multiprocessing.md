@@ -1,7 +1,7 @@
 ---
 title: "8 - The GIL, Threads, Multiprocessing"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** CPython's Global Interpreter Lock (GIL) is a mutex that prevents more than one thread from executing Python bytecode simultaneously, making pure-Python threads useless for CPU parallelism but fine for I/O concurrency. True CPU parallelism in CPython 3.12 and earlier requires `multiprocessing` (separate processes, each with their own GIL) or C extensions that release the GIL. Python 3.13 ships a no-GIL build (PEP 703) as an opt-in experimental mode.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/8-the-gil-threads-multiprocessing/vocabulary.svg)
 
 **GIL (Global Interpreter Lock)**: A CPython-internal mutex (`_Py_CEVAL_GIL` in `ceval.c`). Only the thread holding the GIL may execute Python bytecode. Released during I/O system calls, C extension work, and `time.sleep`.
 
@@ -60,11 +62,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/8-the-gil-threads-multiprocessing/intuition.svg)
+
 Think of the GIL as a single talking stick in a meeting room where only one person can speak at a time. If the work is talking (pure Python bytecode), only one person can work regardless of how many are in the room. But if the work is writing (C extension, network call, file I/O), the talker can pass the stick to someone else while they write — that is, I/O releases the GIL.
 
 The practical consequence: threading is correct for network-I/O-heavy code (web scrapers, HTTP clients, DB queries) because threads spend most of their time waiting, not executing bytecode. For CPU-heavy pure Python code (number crunching, parsing, image processing), multiprocessing is necessary.
 
 ## The GIL in Depth
+
+![Visual diagram: The GIL in Depth](./assets/8-the-gil-threads-multiprocessing/the-gil-in-depth.svg)
 
 ### What the GIL Protects
 
@@ -95,6 +101,8 @@ sys.setswitchinterval(0.001)     # 1ms — more aggressive context switching
 ```
 
 ## Threads — When They Help
+
+![Visual diagram: Threads - When They Help](./assets/8-the-gil-threads-multiprocessing/threads-when-they-help.svg)
 
 ### I/O-Bound Concurrency
 
@@ -170,6 +178,8 @@ print(counter.value)  # >>> 1000  (not some smaller number)
 > In CPython, `counter += 1` on a plain `int` attribute is **not** atomic even though `int` is immutable. The operation compiles to `LOAD`, `LOAD_CONST`, `BINARY_OP`, `STORE` — four bytecode instructions. The GIL can switch between any two of them, so two threads can both read the old value, increment it locally, and write back the same incremented value, losing one increment. Always use a `Lock` for shared mutable state.
 
 ## Multiprocessing — True CPU Parallelism
+
+![Visual diagram: Multiprocessing - True CPU Parallelism](./assets/8-the-gil-threads-multiprocessing/multiprocessing-true-cpu-parallelism.svg)
 
 Each `multiprocessing.Process` runs a separate CPython interpreter with its own GIL. Objects must be serialised (pickled) to cross process boundaries.
 
@@ -256,6 +266,8 @@ if __name__ == "__main__":
 
 ## The No-GIL Future (PEP 703)
 
+![Visual diagram: The No-GIL Future (PEP 703)](./assets/8-the-gil-threads-multiprocessing/the-no-gil-future-pep-703.svg)
+
 Python 3.13 ships a no-GIL build as an opt-in (`python3.13t`). The GIL is replaced with per-object biased reference counting (borrowed from Biased Reference Counting, 2018). Key trade-offs:
 
 | | GIL build | No-GIL build (3.13+) |
@@ -269,6 +281,8 @@ Python 3.13 ships a no-GIL build as an opt-in (`python3.13t`). The GIL is replac
 > The no-GIL build's performance benefit depends on the workload. Embarrassingly parallel pure-Python code scales well. Code with lots of shared mutable state may be limited by per-object lock contention. The CPython maintainers estimate the stabilised no-GIL build will be the default by Python 3.16.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/8-the-gil-threads-multiprocessing/real-world-example.svg)
 
 A web scraper using `ThreadPoolExecutor` for I/O-bound fetching, then `ProcessPoolExecutor` for CPU-bound HTML parsing — the correct tool for each bottleneck.
 
@@ -319,6 +333,8 @@ def scrape(urls: list[str]) -> dict[str, list[str]]:
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/8-the-gil-threads-multiprocessing/in-practice.svg)
+
 **Thread pool sizing.** For I/O-bound work, use more threads than cores — `max_workers = min(32, os.cpu_count() + 4)` is `ThreadPoolExecutor`'s default in Python 3.8+. For CPU-bound work, `max_workers = os.cpu_count()` is the ceiling; more processes won't help and add overhead.
 
 **`queue.Queue` vs `multiprocessing.Queue`.** `queue.Queue` is for threads (same process, shared memory). `multiprocessing.Queue` is for processes (different processes, pickle-serialised). They have identical APIs, which is a common source of confusion.
@@ -330,6 +346,8 @@ def scrape(urls: list[str]) -> dict[str, list[str]]:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/8-the-gil-threads-multiprocessing/pitfalls.svg)
+
 - **"Python threads run in parallel."** — Only for I/O and GIL-releasing C code. Pure Python bytecode runs sequentially — only one thread holds the GIL at a time.
 - **"Simple operations like `x += 1` are thread-safe."** — They are not. `+=` is multiple bytecodes; the GIL can switch between them. Use a `Lock`.
 - **"`multiprocessing` is always faster than threads for CPU work."** — Process startup is expensive (~0.1s). For tasks shorter than a few milliseconds, the overhead of spawning processes exceeds the parallelism gain. Profile first.
@@ -337,6 +355,8 @@ def scrape(urls: list[str]) -> dict[str, list[str]]:
 - **"The no-GIL build is production-ready in Python 3.13."** — It is experimental. Extension compatibility is not universal, and the CPython maintainers recommend the GIL build for production until 3.16.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/8-the-gil-threads-multiprocessing/exercises.svg)
 
 ### Exercise 1 — Diagnose the race condition
 

@@ -1,7 +1,7 @@
 ---
 title: "14 - Reference Types and Internal Headers"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's "reference types" — strings, slices, maps, channels, interfaces, and function values — are all small fixed-size header structs whose fields point to memory allocated elsewhere. Copying one of these values copies the header (8–24 bytes), not the pointed-to data. Understanding the exact byte layout of each header is the key to reasoning about aliasing, nil semantics, the nil-interface-holding-non-nil-pointer gotcha, and why certain operations allocate while others do not.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/14-reference-types-and-internal-headers/vocabulary.svg)
 
 **Header struct**: A small value-type struct (8–24 bytes) that describes a larger heap-allocated data structure. The Go variable holds the header; the header holds a pointer to the actual data.
 
@@ -56,6 +58,8 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/14-reference-types-and-internal-headers/intuition.svg)
+
 Every "reference type" in Go is a lie in the best sense: the variable you hold is tiny and stack-friendly, while the real data lives elsewhere. Think of each header as a business card: it fits in your wallet (the stack frame), but the address printed on it points to the office building (the heap). When you pass a map to a function, you hand them your business card — they can walk to your office building and change things inside, because you both have the same address.
 
 The implication: for these types, "copying" is cheap (you copy the business card), but it does not give the callee an independent copy of the building. Mutations through the copy affect the original. The exception is slices after a `cap`-busting `append` — that creates a new building and hands back a new business card pointing to it, leaving your original card unchanged.
@@ -72,6 +76,8 @@ flowchart LR
 ```
 
 ## How it works
+
+![Visual diagram: How it works](./assets/14-reference-types-and-internal-headers/how-it-works.svg)
 
 ### 1. Strings
 
@@ -512,6 +518,8 @@ func main() {
 
 ## The header reference table
 
+![Visual diagram: The header reference table](./assets/14-reference-types-and-internal-headers/the-header-reference-table.svg)
+
 A one-stop summary of all six header types, their sizes on a 64-bit platform, and what they ultimately point to.
 
 | Type | Header size | Fields | What it points to |
@@ -527,6 +535,8 @@ A one-stop summary of all six header types, their sizes on a 64-bit platform, an
 > `reflect.StringHeader` and `reflect.SliceHeader` were the historical way to inspect these layouts. As of Go 1.20, the preferred approach is `unsafe.String`, `unsafe.StringData`, `unsafe.Slice`, and `unsafe.SliceData` — these are compiler-recognised builtins that avoid the pitfall of constructing a `reflect.SliceHeader` on the stack and then passing its address to `unsafe.Pointer` (which could be misused).
 
 ## Real-world example
+
+![Visual diagram: Real-world example](./assets/14-reference-types-and-internal-headers/real-world-example.svg)
 
 The following program demonstrates three practical implications of the header model in a single benchmark: (1) slice append stomp, (2) interface nil pitfall, and (3) `sync.Map` vs mutex-protected `map` at byte level.
 
@@ -632,6 +642,8 @@ func():           8 bytes
 
 ## In practice
 
+![Visual diagram: In practice](./assets/14-reference-types-and-internal-headers/in-practice.svg)
+
 **Interface boxing and allocation**: Assigning a non-pointer value to an interface allocates a heap copy of the value to place in the `data` field. For values that fit in one pointer word (integers, booleans, small structs on some architectures), the compiler *sometimes* stores the value directly in the `data` field without allocation, but this is an implementation detail you cannot rely on. In hot paths, avoid repeated boxing of the same value by caching the interface-typed version.
 
 **`sync.Map` vs mutex-protected `map`**: A regular `map[K]V` is an `hmap` pointer. A `sync.Map` is a struct containing an atomic pointer to a read-only `map` (for lock-free reads) plus a dirty `map` behind a mutex (for writes). At the byte level, `sync.Map` stores each value as `any` (a boxed interface), which means every stored value is heap-allocated and pointer-indirected regardless of its type. This makes `sync.Map` worse than a mutex-protected typed map for write-heavy workloads or for storing small scalar values.
@@ -645,6 +657,8 @@ func():           8 bytes
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/14-reference-types-and-internal-headers/pitfalls.svg)
+
 - **"Copying a map copies the map."** — Copying a map variable copies the 8-byte `hmap` pointer. Both variables now reference the same hash table. To get an independent map you must manually copy key-value pairs.
 - **"A nil channel blocks forever; that is useless."** — Receiving from or sending to a nil channel blocks forever, but this is deliberately useful: in `select` statements, a nil channel case is permanently disabled. You can selectively enable/disable `select` arms by setting a channel to nil.
 - **"Interface comparison compares the underlying values."** — Interface comparison (`==`) compares both the type pointer and the data pointer. If the concrete type is not comparable (e.g., `[]int`), a runtime panic occurs. Use `reflect.DeepEqual` for value-level comparison of interface-wrapped slices or maps.
@@ -653,6 +667,8 @@ func():           8 bytes
 - **"`unsafe.Sizeof` measures the data size."** — `unsafe.Sizeof` measures the header (the stack variable), not the pointed-to data. `unsafe.Sizeof("hello")` is 16 (the string header); `len("hello")` is 5 (the number of bytes in the content).
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/14-reference-types-and-internal-headers/exercises.svg)
 
 ### Exercise 1 — `unsafe.Sizeof` vs `len`
 

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">CPython compact dict layout</title>
+  <desc id="desc">A small sparse index table of 8 one-byte slots points into a dense entries array of hash, key, value rows. Iterating the dense array top to bottom yields insertion order.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="660" fill="#ffffff"/>
+
+  <text class="title" x="60" y="58">CPython compact dict: sparse indices, dense entries</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="muted" x="60" y="118">d = {'a': 1, 'b': 2, 'c': 3} — slot positions illustrative; real slots come from SipHash</text>
+
+  <!-- slot labels above cells -->
+  <text class="small" x="250" y="178" text-anchor="middle">0</text>
+  <text class="small" x="350" y="178" text-anchor="middle">1</text>
+  <text class="small" x="450" y="178" text-anchor="middle">2</text>
+  <text class="small" x="550" y="178" text-anchor="middle">3</text>
+  <text class="small" x="650" y="178" text-anchor="middle">4</text>
+  <text class="small" x="750" y="178" text-anchor="middle">5</text>
+  <text class="small" x="850" y="178" text-anchor="middle">6</text>
+  <text class="small" x="950" y="178" text-anchor="middle">7</text>
+
+  <!-- dk_indices label -->
+  <text class="code" x="185" y="230" text-anchor="end">dk_indices</text>
+
+  <!-- dk_indices cells -->
+  <rect x="200" y="190" width="100" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="300" y="190" width="100" height="64" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="400" y="190" width="100" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="500" y="190" width="100" height="64" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="600" y="190" width="100" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="700" y="190" width="100" height="64" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="800" y="190" width="100" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="900" y="190" width="100" height="64" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text class="muted" x="250" y="230" text-anchor="middle">-1</text>
+  <text class="code"  x="350" y="230" text-anchor="middle">0</text>
+  <text class="muted" x="450" y="230" text-anchor="middle">-1</text>
+  <text class="code"  x="550" y="230" text-anchor="middle">2</text>
+  <text class="muted" x="650" y="230" text-anchor="middle">-1</text>
+  <text class="code"  x="750" y="230" text-anchor="middle">1</text>
+  <text class="muted" x="850" y="230" text-anchor="middle">-1</text>
+  <text class="muted" x="950" y="230" text-anchor="middle">-1</text>
+
+  <text class="small" x="1015" y="215">1 byte per slot</text>
+  <text class="small" x="1015" y="240">in small dicts</text>
+
+  <!-- arrows from index slots to entry rows -->
+  <path d="M 350 256 C 350 320, 332 372, 320 404" fill="none" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <path d="M 550 256 C 520 350, 390 480, 326 532" fill="none" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <path d="M 750 256 C 700 360, 430 430, 326 468" fill="none" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowPurple)"/>
+
+  <!-- dk_entries label and column headers -->
+  <text class="small" x="320" y="340">dk_entries (dense, insertion order)</text>
+  <text class="small" x="440" y="370" text-anchor="middle">hash</text>
+  <text class="small" x="640" y="370" text-anchor="middle">key</text>
+  <text class="small" x="800" y="370" text-anchor="middle">value</text>
+
+  <!-- entry rows -->
+  <text class="small" x="305" y="418" text-anchor="end">entry 0</text>
+  <rect x="320" y="380" width="240" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="560" y="380" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="720" y="380" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="code" x="440" y="420" text-anchor="middle">0x6b...3a</text>
+  <text class="code" x="640" y="420" text-anchor="middle">'a'</text>
+  <text class="code" x="800" y="420" text-anchor="middle">1</text>
+
+  <text class="small" x="305" y="482" text-anchor="end">entry 1</text>
+  <rect x="320" y="444" width="240" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="560" y="444" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="720" y="444" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="code" x="440" y="484" text-anchor="middle">0x1d...9f</text>
+  <text class="code" x="640" y="484" text-anchor="middle">'b'</text>
+  <text class="code" x="800" y="484" text-anchor="middle">2</text>
+
+  <text class="small" x="305" y="546" text-anchor="end">entry 2</text>
+  <rect x="320" y="508" width="240" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="560" y="508" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="720" y="508" width="160" height="64" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="code" x="440" y="548" text-anchor="middle">0x88...41</text>
+  <text class="code" x="640" y="548" text-anchor="middle">'c'</text>
+  <text class="code" x="800" y="548" text-anchor="middle">3</text>
+
+  <!-- right-side annotation -->
+  <text class="small" x="910" y="478">iterate top &#8594; bottom</text>
+  <text class="small" x="910" y="504">= insertion order</text>
+
+  <!-- bottom annotations -->
+  <text class="small" x="60" y="606">&#8226; Lookup: probe dk_indices until a slot's entry number leads to a matching hash and key.</text>
+  <text class="small" x="60" y="632">&#8226; Delete: the index slot becomes a tombstone; the hole in dk_entries is squeezed out at the next resize.</text>
+</svg>

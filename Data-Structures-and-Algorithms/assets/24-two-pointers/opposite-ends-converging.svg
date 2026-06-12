@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520">
+  <title>Opposite-ends two-pointer pattern converging on a sorted array</title>
+  <desc>A sorted array [2, 4, 6, 9, 11, 15] with left and right pointers shown across three steps as they converge toward a target sum of 15. Each step shows the current sum and the decision arrow.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; fill: #111827; }
+    .title  { font-size: 40px; font-weight: 700; }
+    .label  { font-size: 24px; }
+    .mono   { font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Courier, monospace; font-size: 24px; fill: #d63384; }
+    .muted  { font-size: 22px; fill: #6b7280; }
+    .decision { font-size: 21px; fill: #0ea5e9; font-weight: 700; }
+    .found    { font-size: 21px; fill: #16a34a; font-weight: 700; }
+  </style>
+
+  <!-- background -->
+  <rect width="1200" height="520" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="600" y="52" class="title" text-anchor="middle">Opposite-Ends Pattern — Converging on a Sorted Array</text>
+
+  <!-- array cells: nums = [2, 4, 6, 9, 11, 15], target = 15 -->
+  <!-- cell width 120, start x=120, row y=160 -->
+
+  <!-- column headers -->
+  <text x="120"  y="118" class="muted" text-anchor="middle">idx 0</text>
+  <text x="240"  y="118" class="muted" text-anchor="middle">idx 1</text>
+  <text x="360"  y="118" class="muted" text-anchor="middle">idx 2</text>
+  <text x="480"  y="118" class="muted" text-anchor="middle">idx 3</text>
+  <text x="600"  y="118" class="muted" text-anchor="middle">idx 4</text>
+  <text x="720"  y="118" class="muted" text-anchor="middle">idx 5</text>
+
+  <!-- array cells -->
+  <rect x="60"  y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="180" y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="300" y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="420" y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="540" y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="660" y="128" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+
+  <text x="115"  y="175" class="mono" text-anchor="middle">2</text>
+  <text x="235"  y="175" class="mono" text-anchor="middle">4</text>
+  <text x="355"  y="175" class="mono" text-anchor="middle">6</text>
+  <text x="475"  y="175" class="mono" text-anchor="middle">9</text>
+  <text x="595"  y="175" class="mono" text-anchor="middle">11</text>
+  <text x="715"  y="175" class="mono" text-anchor="middle">15</text>
+
+  <!-- Step 1: left=0, right=5, sum=17 > 15 → move right left -->
+  <!-- left arrow (green) -->
+  <text x="115" y="240" class="label" text-anchor="middle" fill="#16a34a">L</text>
+  <line x1="115" y1="248" x2="115" y2="204" stroke="#16a34a" stroke-width="3" marker-end="url(#arrowG)"/>
+  <!-- right arrow (red) -->
+  <text x="715" y="240" class="label" text-anchor="middle" fill="#dc2626">R</text>
+  <line x1="715" y1="248" x2="715" y2="204" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowR)"/>
+
+  <!-- step annotation -->
+  <text x="900" y="168" class="label" font-weight="700">Step 1</text>
+  <text x="900" y="198" class="mono">2 + 15 = 17</text>
+  <text x="900" y="228" class="decision">17 &gt; 15 → right−=1</text>
+
+  <!-- divider -->
+  <line x1="60" y1="268" x2="1150" y2="268" stroke="#e5e7eb" stroke-width="1.5"/>
+
+  <!-- Step 2: left=0, right=4, sum=13 < 15 → move left right -->
+  <!-- array row 2 -->
+  <rect x="60"  y="280" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="180" y="280" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="300" y="280" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="420" y="280" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="540" y="280" width="110" height="72" rx="8" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="660" y="280" width="110" height="72" rx="8" fill="#f5f5f5" stroke="#d1d5db" stroke-width="1" opacity="0.5"/>
+
+  <text x="115"  y="327" class="mono" text-anchor="middle">2</text>
+  <text x="235"  y="327" class="mono" text-anchor="middle">4</text>
+  <text x="355"  y="327" class="mono" text-anchor="middle">6</text>
+  <text x="475"  y="327" class="mono" text-anchor="middle">9</text>
+  <text x="595"  y="327" class="mono" text-anchor="middle">11</text>
+  <text x="715"  y="327" class="mono" text-anchor="middle" fill="#9ca3af">15</text>
+
+  <text x="115" y="392" class="label" text-anchor="middle" fill="#16a34a">L</text>
+  <line x1="115" y1="400" x2="115" y2="356" stroke="#16a34a" stroke-width="3" marker-end="url(#arrowG)"/>
+  <text x="595" y="392" class="label" text-anchor="middle" fill="#dc2626">R</text>
+  <line x1="595" y1="400" x2="595" y2="356" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowR)"/>
+
+  <text x="900" y="320" class="label" font-weight="700">Step 2</text>
+  <text x="900" y="350" class="mono">2 + 11 = 13</text>
+  <text x="900" y="380" class="decision">13 &lt; 15 → left+=1</text>
+
+  <!-- divider -->
+  <line x1="60" y1="418" x2="1150" y2="418" stroke="#e5e7eb" stroke-width="1.5"/>
+
+  <!-- Step 3: left=1, right=4, sum=15 = target → found -->
+  <rect x="180" y="430" width="110" height="72" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="540" y="430" width="110" height="72" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+
+  <text x="235"  y="477" class="mono" text-anchor="middle">4</text>
+  <text x="595"  y="477" class="mono" text-anchor="middle">11</text>
+
+  <text x="235" y="510" class="label" text-anchor="middle" fill="#16a34a">L</text>
+  <text x="595" y="510" class="label" text-anchor="middle" fill="#dc2626">R</text>
+
+  <text x="900" y="468" class="label" font-weight="700">Step 3</text>
+  <text x="900" y="498" class="mono">4 + 11 = 15</text>
+  <text x="900" y="520" class="found">✓ found target</text>
+
+  <!-- arrow markers -->
+  <defs>
+    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+</svg>

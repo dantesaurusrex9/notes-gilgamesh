@@ -1,7 +1,7 @@
 ---
 title: "15 - Interoperability, Unsafe Memory, and Embedded Swift"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, interop, unsafe-memory, embedded]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift can work with C, Objective-C, C++, system APIs, and embedded targets, but those boundaries reduce the compiler's safety net. Use safe wrappers, narrow unsafe scopes, explicit ownership, and current Swift 6.3 interop features deliberately.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/15-interoperability-unsafe-memory-and-embedded-swift/real-world-example.svg)
 
 This example wraps a C-style byte buffer operation in a safe Swift function. The unsafe pointer exists only inside the closure.
 
@@ -33,6 +35,8 @@ print(checksum([1, 2, 3]))
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/15-interoperability-unsafe-memory-and-embedded-swift/vocabulary.svg)
 
 **Interop**: Calling code across language or ABI boundaries.
 
@@ -62,11 +66,15 @@ print(checksum([1, 2, 3]))
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/15-interoperability-unsafe-memory-and-embedded-swift/intuition.svg)
+
 Unsafe code should be an island. The rest of your program should still speak in safe Swift types. Write a small unsafe wrapper once, test it heavily, and keep pointer lifetimes local.
 
 Interop work has two risks: type mismatch and lifetime mismatch. Type mismatch means Swift and the foreign API disagree about layout, nullability, mutability, or ownership. Lifetime mismatch means Swift releases or moves something while foreign code still expects it to exist.
 
 ## C Interop Shape
+
+![Visual diagram: C Interop Shape](./assets/15-interoperability-unsafe-memory-and-embedded-swift/c-interop-shape.svg)
 
 When calling C, prefer Swift wrappers that convert raw pointers and error codes into Swift values and errors.
 
@@ -86,6 +94,8 @@ func firstByte(_ bytes: [UInt8]) throws -> UInt8 {
 ```
 
 ## Unsafe Pointer Rules
+
+![Visual diagram: Unsafe Pointer Rules](./assets/15-interoperability-unsafe-memory-and-embedded-swift/unsafe-pointer-rules.svg)
 
 Use this checklist before writing pointer code:
 
@@ -110,6 +120,8 @@ withUnsafePointer(to: &value) { pointer in
 
 ## Objective-C and Apple Frameworks
 
+![Visual diagram: Objective-C and Apple Frameworks](./assets/15-interoperability-unsafe-memory-and-embedded-swift/objective-c-and-apple-frameworks.svg)
+
 Apple-platform Swift often crosses Objective-C boundaries. Be careful with:
 
 - `AnyObject` and dynamic dispatch.
@@ -120,13 +132,19 @@ Apple-platform Swift often crosses Objective-C boundaries. Be careful with:
 
 ## C++ and Swift 6.3
 
+![Visual diagram: C++ and Swift 6.3](./assets/15-interoperability-unsafe-memory-and-embedded-swift/c-and-swift-6-3.svg)
+
 Swift's C++ interoperability has been evolving, and Swift 6.3 expanded C interoperability with the `@c` attribute. Treat mixed Swift/C++ projects as systems projects: keep ownership explicit, test both sides, and document which side owns objects and buffers.
 
 ## Embedded Swift
 
+![Visual diagram: Embedded Swift](./assets/15-interoperability-unsafe-memory-and-embedded-swift/embedded-swift.svg)
+
 Embedded Swift targets low-resource environments. It is not where most app developers start, but it matters for understanding Swift's systems ambitions. Expect constraints around runtime features, allocation patterns, platform APIs, and build configuration.
 
 ## Pitfalls
+
+![Visual diagram: Pitfalls](./assets/15-interoperability-unsafe-memory-and-embedded-swift/pitfalls.svg)
 
 - **Unsafe pointer escape**: A pointer used after its closure ends can become invalid.
 - **Assuming C nullability is truthful**: Legacy headers may not express reality.
@@ -135,6 +153,8 @@ Embedded Swift targets low-resource environments. It is not where most app devel
 - **Ignoring platform differences**: Linux, Apple platforms, Windows, Android, and embedded targets do not expose identical system APIs.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/15-interoperability-unsafe-memory-and-embedded-swift/exercises.svg)
 
 1. Wrap an unsafe buffer operation in a safe Swift function.
 2. Write down ownership rules for a hypothetical C API returning a pointer.

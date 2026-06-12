@@ -1,7 +1,7 @@
 ---
 title: "11 - Standard Library, Strings, Collections, and Algorithms"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, standard-library, collections]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift's standard library is small but deep. Master `String`, `Array`, `Dictionary`, `Set`, `Sequence`, `Collection`, lazy operations, sorting, hashing, and Unicode correctness before reaching for third-party dependencies.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/11-standard-library-strings-collections-and-algorithms/real-world-example.svg)
 
 This example normalizes words from user input and counts frequency. It uses strings, sequences, dictionaries, sorting, and a small amount of Unicode-aware filtering.
 
@@ -40,6 +42,8 @@ for (word, count) in sorted {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/11-standard-library-strings-collections-and-algorithms/vocabulary.svg)
+
 **Standard library**: The core types and functions available without importing Foundation.
 
 ---
@@ -64,11 +68,15 @@ for (word, count) in sorted {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/11-standard-library-strings-collections-and-algorithms/intuition.svg)
+
 Swift strings are not byte arrays. A user-visible character can be made from multiple Unicode scalars, so indexing by integer offset is intentionally not the normal model. This protects correctness for names, emoji, accents, and non-English text.
 
 Collections are value types with copy-on-write storage. You can pass arrays and dictionaries around freely in most code, but hot paths still need measurement. The high-level API is expressive; the low-level cost depends on allocation, hashing, sorting, bridging, and mutation.
 
 ## Strings and Substrings
+
+![Visual diagram: Strings and Substrings](./assets/11-standard-library-strings-collections-and-algorithms/strings-and-substrings.svg)
 
 `String.split` returns `Substring` values because they can share storage with the original string. That is efficient for short pipelines, but storing many substrings can keep the original large string alive.
 
@@ -85,6 +93,8 @@ print(level)
 
 ## Arrays
 
+![Visual diagram: Arrays](./assets/11-standard-library-strings-collections-and-algorithms/arrays.svg)
+
 Arrays are ordered collections. Appending is usually amortized constant time, but inserting or removing near the front shifts elements.
 
 ```swift
@@ -99,6 +109,8 @@ For a real high-throughput FIFO queue, avoid repeated `removeFirst()` on large a
 
 ## Dictionaries and Sets
 
+![Visual diagram: Dictionaries and Sets](./assets/11-standard-library-strings-collections-and-algorithms/dictionaries-and-sets.svg)
+
 Dictionaries and sets depend on hashing. Keys must be `Hashable`, and good domain modeling often means creating small typed keys instead of passing raw strings everywhere.
 
 ```swift
@@ -111,6 +123,8 @@ activeUsers.insert(UserID(rawValue: "u-1"))
 ```
 
 ## Lazy Pipelines
+
+![Visual diagram: Lazy Pipelines](./assets/11-standard-library-strings-collections-and-algorithms/lazy-pipelines.svg)
 
 Use `lazy` when a transformation chain should not allocate intermediate arrays. It is most useful when you stop early or process large collections.
 
@@ -125,6 +139,8 @@ print(firstLargeSquare ?? 0)
 
 ## Sorting and Stability
 
+![Visual diagram: Sorting and Stability](./assets/11-standard-library-strings-collections-and-algorithms/sorting-and-stability.svg)
+
 Swift's `sorted()` returns a new array. `sort()` mutates in place. Do not assume sort stability unless the API promises it for your context.
 
 ```swift
@@ -135,6 +151,8 @@ print(scores)
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/11-standard-library-strings-collections-and-algorithms/pitfalls.svg)
+
 - **Integer-indexing strings**: Swift strings use `String.Index`, not integer offsets, because Unicode is not fixed width.
 - **Long-lived substrings**: A small substring can keep a large original string alive.
 - **Hidden intermediate arrays**: Chained `map` and `filter` can allocate. Use `lazy` when it matters.
@@ -142,6 +160,8 @@ print(scores)
 - **Premature micro-optimization**: Standard library operations are optimized. Profile before replacing them.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/11-standard-library-strings-collections-and-algorithms/exercises.svg)
 
 1. Count word frequency in a paragraph and return the top five words.
 2. Rewrite a `map().filter().first` chain with `lazy` and explain what allocation changes.

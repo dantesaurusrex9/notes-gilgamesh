@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">URL shortener read path with cache-aside</title>
+  <desc id="desc">GET /code checks Redis first; on hit it redirects immediately, on miss it reads the database, backfills the cache, and emits a click event asynchronously.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .red { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .edge { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .pedge { stroke: #8b5cf6; stroke-width: 3; fill: none; stroke-dasharray: 8 6; }
+  </style>
+  <defs>
+    <marker id="ar3" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arp3" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text x="40" y="58" class="t">Read path — GET /a1B2c3 (cache-aside)</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <rect x="40" y="180" width="170" height="80" rx="10" class="box"/>
+  <text x="125" y="228" class="b" text-anchor="middle">Client</text>
+
+  <rect x="330" y="180" width="210" height="80" rx="10" class="green"/>
+  <text x="435" y="228" class="b" text-anchor="middle">App server</text>
+
+  <rect x="680" y="120" width="230" height="80" rx="10" class="green"/>
+  <text x="795" y="155" class="b" text-anchor="middle">Redis</text>
+  <text x="795" y="185" class="m" text-anchor="middle">~80% hit rate</text>
+
+  <rect x="680" y="290" width="230" height="80" rx="10" class="amber"/>
+  <text x="795" y="325" class="b" text-anchor="middle">Database</text>
+  <text x="795" y="355" class="m" text-anchor="middle">only on miss</text>
+
+  <rect x="680" y="430" width="230" height="80" rx="10" class="red"/>
+  <text x="795" y="465" class="b" text-anchor="middle">Event queue</text>
+  <text x="795" y="495" class="m" text-anchor="middle">click analytics</text>
+
+  <line x1="210" y1="210" x2="322" y2="210" class="edge" marker-end="url(#ar3)"/>
+  <text x="266" y="195" class="m" text-anchor="middle">1. GET /a1B2c3</text>
+
+  <line x1="540" y1="195" x2="672" y2="165" class="edge" marker-end="url(#ar3)"/>
+  <text x="606" y="158" class="m" text-anchor="middle">2. GET code:a1B2c3</text>
+
+  <line x1="540" y1="245" x2="672" y2="320" class="edge" marker-end="url(#ar3)"/>
+  <text x="575" y="312" class="m" text-anchor="middle">3. miss → SELECT</text>
+
+  <line x1="795" y1="282" x2="795" y2="208" class="edge" marker-end="url(#ar3)"/>
+  <text x="845" y="250" class="m" text-anchor="middle">4. backfill + TTL</text>
+
+  <line x1="540" y1="252" x2="672" y2="462" class="pedge" marker-end="url(#arp3)"/>
+  <text x="560" y="420" class="m">6. emit click event (async)</text>
+
+  <line x1="322" y1="245" x2="210" y2="245" class="edge" marker-end="url(#ar3)"/>
+  <text x="266" y="278" class="m" text-anchor="middle">5. 302 Location</text>
+
+  <text x="40" y="395" class="c">hit: 1 round trip</text>
+  <text x="40" y="430" class="c">miss: 2 round trips</text>
+  <text x="40" y="470" class="m">Negative caching: a miss for a nonexistent</text>
+  <text x="40" y="495" class="m">code stores a sentinel with a short TTL so</text>
+  <text x="40" y="520" class="m">attackers cannot hammer the DB with junk codes.</text>
+</svg>

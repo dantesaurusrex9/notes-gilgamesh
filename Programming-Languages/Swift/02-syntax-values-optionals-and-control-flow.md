@@ -1,7 +1,7 @@
 ---
 title: "02 - Syntax, Values, Optionals, and Control Flow"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, syntax, optionals]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift's surface syntax is compact, but the real foundation is explicit values, strong static types, and optionals. If you learn `let`, `var`, type inference, `if let`, `guard let`, `switch`, and collection literals deeply, most beginner Swift code becomes readable.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/02-syntax-values-optionals-and-control-flow/real-world-example.svg)
 
 This example parses a user profile from a dictionary-like payload. It shows constants, variables, optionals, optional binding, `guard`, string interpolation, arrays, and `switch`.
 
@@ -48,6 +50,8 @@ swift user.swift
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/02-syntax-values-optionals-and-control-flow/vocabulary.svg)
+
 **`let`**: Declares a constant binding. The name cannot be reassigned after initialization.
 
 ---
@@ -76,11 +80,15 @@ swift user.swift
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/02-syntax-values-optionals-and-control-flow/intuition.svg)
+
 Swift wants you to make absence explicit. In many languages, a variable of type `String` can secretly be null. In Swift, `String` and `String?` are different types. This is not decoration. It changes what code is legal.
 
 Optionals force the question: "What should happen when this value is missing?" That pressure is useful. Most production bugs around JSON, UI inputs, databases, and network responses start with "we assumed this field was always there."
 
 ## Constants and Variables
+
+![Visual diagram: Constants and Variables](./assets/02-syntax-values-optionals-and-control-flow/constants-and-variables.svg)
 
 Use `let` by default. Make a binding `var` only when you need to change it. This is not just style. It gives the compiler and the reader a smaller state space.
 
@@ -97,6 +105,8 @@ print("Retry \(retryCount) against \(apiBaseURL)")
 
 ## Type Inference and Annotations
 
+![Visual diagram: Type Inference and Annotations](./assets/02-syntax-values-optionals-and-control-flow/type-inference-and-annotations.svg)
+
 Swift inference is local and strong. You usually let the compiler infer obvious types, but annotate public APIs, ambiguous numeric values, and places where the type is part of the design.
 
 ```swift
@@ -106,6 +116,8 @@ let timeoutSeconds: Double = 2.5  // explicit to avoid numeric ambiguity
 ```
 
 ## Optionals
+
+![Visual diagram: Optionals](./assets/02-syntax-values-optionals-and-control-flow/optionals.svg)
 
 An optional is not a value plus a flag you manually check. It is a distinct type with language support. You must unwrap it safely before using the wrapped value as a normal value.
 
@@ -133,6 +145,8 @@ func loadProfile(id: String?) -> String {
 
 ## Collections
 
+![Visual diagram: Collections](./assets/02-syntax-values-optionals-and-control-flow/collections.svg)
+
 Swift's core collection literals cover arrays, dictionaries, and sets. Arrays and dictionaries are value types with copy-on-write storage, which means passing them around is usually cheap until mutation requires a separate copy.
 
 ```swift
@@ -146,6 +160,8 @@ print(uniqueNames.contains("Theo"))
 ```
 
 ## Control Flow
+
+![Visual diagram: Control Flow](./assets/02-syntax-values-optionals-and-control-flow/control-flow.svg)
 
 Use `if` for boolean branches, `guard` for preconditions, `for` for iteration, and `switch` for domain cases. A Swift `switch` does not fall through by default.
 
@@ -170,12 +186,16 @@ func report(_ result: ImportResult) -> String {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/02-syntax-values-optionals-and-control-flow/pitfalls.svg)
+
 - **Force unwrapping too early**: `value!` turns a recoverable absence into a crash. Use it only when a crash is the correct invariant failure.
 - **Making everything optional**: Optional should model real absence, not uncertainty in your design.
 - **Confusing `let` with object immutability**: A `let` reference to a class instance prevents rebinding, not mutation of the object through its mutable properties.
 - **Using `default` too quickly in `switch`**: For enums you own, avoid `default` at first. Exhaustive cases let the compiler tell you when the model changes.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/02-syntax-values-optionals-and-control-flow/exercises.svg)
 
 1. Write a function that accepts `[String: String]` and returns a validated email string or an error message.
 2. Rewrite the function once with nested `if let`, then once with `guard let`. Compare readability.

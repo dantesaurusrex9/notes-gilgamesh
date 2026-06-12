@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">SQL logical query processing order</title>
+  <desc id="desc">Nine numbered stages from FROM to LIMIT showing the order the engine logically evaluates a SELECT statement, which differs from the written order.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .n  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .late { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Logical query processing order</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="b" x="40" y="118">Blue = builds and filters rows. Amber = shapes the final output. Aliases born in stage 6 are invisible to stages 1–5.</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: stages 1-5 -->
+  <g>
+    <rect class="box" x="40"  y="170" width="190" height="90" rx="10"/>
+    <circle cx="60" cy="190" r="16" fill="#0ea5e9"/><text class="n" x="60" y="199" text-anchor="middle">1</text>
+    <text class="c" x="135" y="222" text-anchor="middle">FROM</text>
+    <text class="s" x="135" y="248" text-anchor="middle">pick base tables</text>
+
+    <rect class="box" x="270" y="170" width="190" height="90" rx="10"/>
+    <circle cx="290" cy="190" r="16" fill="#0ea5e9"/><text class="n" x="290" y="199" text-anchor="middle">2</text>
+    <text class="c" x="365" y="222" text-anchor="middle">JOIN / ON</text>
+    <text class="s" x="365" y="248" text-anchor="middle">match + pad rows</text>
+
+    <rect class="box" x="500" y="170" width="190" height="90" rx="10"/>
+    <circle cx="520" cy="190" r="16" fill="#0ea5e9"/><text class="n" x="520" y="199" text-anchor="middle">3</text>
+    <text class="c" x="595" y="222" text-anchor="middle">WHERE</text>
+    <text class="s" x="595" y="248" text-anchor="middle">filter single rows</text>
+
+    <rect class="box" x="730" y="170" width="190" height="90" rx="10"/>
+    <circle cx="750" cy="190" r="16" fill="#0ea5e9"/><text class="n" x="750" y="199" text-anchor="middle">4</text>
+    <text class="c" x="825" y="222" text-anchor="middle">GROUP BY</text>
+    <text class="s" x="825" y="248" text-anchor="middle">collapse to groups</text>
+
+    <rect class="box" x="960" y="170" width="190" height="90" rx="10"/>
+    <circle cx="980" cy="190" r="16" fill="#0ea5e9"/><text class="n" x="980" y="199" text-anchor="middle">5</text>
+    <text class="c" x="1055" y="222" text-anchor="middle">HAVING</text>
+    <text class="s" x="1055" y="248" text-anchor="middle">filter groups</text>
+
+    <line x1="230" y1="215" x2="262" y2="215" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+    <line x1="460" y1="215" x2="492" y2="215" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+    <line x1="690" y1="215" x2="722" y2="215" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+    <line x1="920" y1="215" x2="952" y2="215" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- connector down -->
+  <path d="M 1055 260 L 1055 320 L 145 320 L 145 372" fill="none" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- Row 2: stages 6-9 -->
+  <g>
+    <rect class="late" x="40"  y="380" width="190" height="90" rx="10"/>
+    <circle cx="60" cy="400" r="16" fill="#8b5cf6"/><text class="n" x="60" y="409" text-anchor="middle">6</text>
+    <text class="c" x="135" y="432" text-anchor="middle">SELECT</text>
+    <text class="s" x="135" y="458" text-anchor="middle">compute, alias</text>
+
+    <rect class="late" x="270" y="380" width="190" height="90" rx="10"/>
+    <circle cx="290" cy="400" r="16" fill="#8b5cf6"/><text class="n" x="290" y="409" text-anchor="middle">7</text>
+    <text class="c" x="365" y="432" text-anchor="middle">DISTINCT</text>
+    <text class="s" x="365" y="458" text-anchor="middle">drop duplicates</text>
+
+    <rect class="late" x="500" y="380" width="190" height="90" rx="10"/>
+    <circle cx="520" cy="400" r="16" fill="#8b5cf6"/><text class="n" x="520" y="409" text-anchor="middle">8</text>
+    <text class="c" x="595" y="432" text-anchor="middle">ORDER BY</text>
+    <text class="s" x="595" y="458" text-anchor="middle">sort result</text>
+
+    <rect class="late" x="730" y="380" width="190" height="90" rx="10"/>
+    <circle cx="750" cy="400" r="16" fill="#8b5cf6"/><text class="n" x="750" y="409" text-anchor="middle">9</text>
+    <text class="c" x="825" y="432" text-anchor="middle">LIMIT</text>
+    <text class="s" x="825" y="458" text-anchor="middle">cut to N rows</text>
+
+    <line x1="230" y1="425" x2="262" y2="425" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+    <line x1="460" y1="425" x2="492" y2="425" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+    <line x1="690" y1="425" x2="722" y2="425" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+  </g>
+
+  <text class="b" x="40" y="525">Written order: SELECT ... FROM ... WHERE ... — logical order starts at FROM. That gap explains most SQL surprises.</text>
+</svg>

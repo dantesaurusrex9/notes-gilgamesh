@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">The three anomalies of a denormalized orders table</title>
+  <desc id="desc">A wide orders table with redundant customer data, annotated with update, insert, and delete anomalies.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .hdr { fill: #dbeafe; stroke: #38bdf8; }
+    .cell { fill: #ffffff; stroke: #e5e7eb; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; }
+    .warn { fill: #fef3c7; stroke: #fcd34d; }
+  </style>
+  <rect width="1200" height="640" fill="#ffffff"/>
+  <text class="t" x="40" y="60">One table, three anomalies</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- header row -->
+  <g>
+    <rect class="hdr" x="40" y="110" width="130" height="50"/>
+    <text class="b" x="55" y="143">order_id</text>
+    <rect class="hdr" x="170" y="110" width="170" height="50"/>
+    <text class="b" x="185" y="143">customer</text>
+    <rect class="hdr" x="340" y="110" width="290" height="50"/>
+    <text class="b" x="355" y="143">customer_email</text>
+    <rect class="hdr" x="630" y="110" width="170" height="50"/>
+    <text class="b" x="645" y="143">product</text>
+    <rect class="hdr" x="800" y="110" width="130" height="50"/>
+    <text class="b" x="815" y="143">price</text>
+  </g>
+  <!-- row 1 -->
+  <g>
+    <rect class="cell" x="40" y="160" width="130" height="50"/>
+    <text class="c" x="55" y="193">1</text>
+    <rect class="bad" x="170" y="160" width="170" height="50"/>
+    <text class="b" x="185" y="193">Ada</text>
+    <rect class="bad" x="340" y="160" width="290" height="50"/>
+    <text class="b" x="355" y="193">ada@ex.com</text>
+    <rect class="cell" x="630" y="160" width="170" height="50"/>
+    <text class="b" x="645" y="193">Widget</text>
+    <rect class="cell" x="800" y="160" width="130" height="50"/>
+    <text class="b" x="815" y="193">9.99</text>
+  </g>
+  <!-- row 2 -->
+  <g>
+    <rect class="cell" x="40" y="210" width="130" height="50"/>
+    <text class="c" x="55" y="243">2</text>
+    <rect class="bad" x="170" y="210" width="170" height="50"/>
+    <text class="b" x="185" y="243">Ada</text>
+    <rect class="bad" x="340" y="210" width="290" height="50"/>
+    <text class="b" x="355" y="243">ada@ex.com</text>
+    <rect class="cell" x="630" y="210" width="170" height="50"/>
+    <text class="b" x="645" y="243">Gadget</text>
+    <rect class="cell" x="800" y="210" width="130" height="50"/>
+    <text class="b" x="815" y="243">4.50</text>
+  </g>
+  <!-- row 3 -->
+  <g>
+    <rect class="cell" x="40" y="260" width="130" height="50"/>
+    <text class="c" x="55" y="293">3</text>
+    <rect class="warn" x="170" y="260" width="170" height="50"/>
+    <text class="b" x="185" y="293">Bob</text>
+    <rect class="warn" x="340" y="260" width="290" height="50"/>
+    <text class="b" x="355" y="293">bob@ex.com</text>
+    <rect class="cell" x="630" y="260" width="170" height="50"/>
+    <text class="b" x="645" y="293">Widget</text>
+    <rect class="cell" x="800" y="260" width="130" height="50"/>
+    <text class="b" x="815" y="293">9.99</text>
+  </g>
+
+  <!-- annotations -->
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <text class="b" x="40" y="390" font-weight="700" fill="#dc2626">UPDATE anomaly</text>
+  <text class="m" x="40" y="422">Ada changes email: must edit every Ada row.</text>
+  <text class="m" x="40" y="452">Miss one row and the data contradicts itself.</text>
+  <line x1="320" y1="370" x2="400" y2="245" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text class="b" x="460" y="390" font-weight="700" fill="#dc2626">INSERT anomaly</text>
+  <text class="m" x="460" y="422">Cannot record customer Carol until she</text>
+  <text class="m" x="460" y="452">places an order — no row to put her in.</text>
+
+  <text class="b" x="880" y="390" font-weight="700" fill="#dc2626">DELETE anomaly</text>
+  <text class="m" x="880" y="422">Delete order 3 (Bob's only order)</text>
+  <text class="m" x="880" y="452">and Bob's email vanishes too.</text>
+  <line x1="960" y1="370" x2="500" y2="300" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text class="s" x="40" y="540">Red cells: the same fact (Ada's email) stored twice — the redundancy that causes all three anomalies.</text>
+  <text class="s" x="40" y="570">Root cause: customer attributes depend on customer, not on order_id. The table mixes two entities.</text>
+</svg>

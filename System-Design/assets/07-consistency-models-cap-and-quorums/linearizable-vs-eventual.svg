@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Linearizable vs eventual consistency: two-client timeline</title>
+  <desc id="desc">Two timelines. Top: linearizable — after the write commits, every read returns the new value. Bottom: eventual — a read on another replica can return the stale value for a while.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .axis { stroke: #4b5563; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Linearizable vs eventual: same operations, different reads</text>
+  <line class="rule" x1="40" y1="76" x2="1160" y2="76"/>
+
+  <!-- Linearizable section -->
+  <text class="h" x="40" y="122">Linearizable</text>
+  <text class="s" x="220" y="122">real-time order: once write(x=2) returns, ALL reads see 2</text>
+  <text class="b" x="40" y="170">Client A</text>
+  <line class="axis" x1="160" y1="162" x2="1140" y2="162" marker-end="url(#arr)"/>
+  <text class="b" x="40" y="240">Client B</text>
+  <line class="axis" x1="160" y1="232" x2="1140" y2="232" marker-end="url(#arr)"/>
+
+  <rect x="220" y="140" width="240" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="250" y="170">write(x = 2)</text>
+  <text class="s" x="250" y="206">returns at t1</text>
+
+  <rect x="560" y="210" width="200" height="44" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c" x="585" y="240">read(x) = 2</text>
+  <text class="s" x="585" y="276">starts after t1 — must see 2</text>
+
+  <line class="rule" x1="40" y1="310" x2="1160" y2="310"/>
+
+  <!-- Eventual section -->
+  <text class="h" x="40" y="356">Eventual</text>
+  <text class="s" x="180" y="356">replicas converge later; stale reads are legal in the window</text>
+  <text class="b" x="40" y="404">Client A</text>
+  <line class="axis" x1="160" y1="396" x2="1140" y2="396" marker-end="url(#arr)"/>
+  <text class="b" x="40" y="474">Client B</text>
+  <line class="axis" x1="160" y1="466" x2="1140" y2="466" marker-end="url(#arr)"/>
+
+  <rect x="220" y="374" width="240" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="250" y="404">write(x = 2)</text>
+  <text class="s" x="250" y="440">replica 1 has 2</text>
+
+  <rect x="560" y="444" width="200" height="44" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="c" x="585" y="474">read(x) = 1</text>
+  <text class="s" x="585" y="510">replica 2 still stale</text>
+
+  <rect x="880" y="444" width="200" height="44" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c" x="905" y="474">read(x) = 2</text>
+  <text class="s" x="905" y="510">after anti-entropy sync</text>
+
+  <text class="m" x="40" y="580">Stale window: replication lag between replica 1 and replica 2. Eventual consistency only promises the window ends.</text>
+</svg>

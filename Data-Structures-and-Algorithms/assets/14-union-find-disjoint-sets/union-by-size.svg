@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Union by size attaches the smaller tree under the bigger root</title>
+  <desc id="desc">Before: a tree of size 4 rooted at 0 and a tree of size 2 rooted at 5. union of 3 and 6 finds roots 0 and 5; size 4 is at least size 2, so node 5 is attached under node 0. After: one tree of size 6 rooted at 0, with the new edge from 5 to 0 highlighted in blue.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .nodetxt { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; text-anchor: middle; }
+    .mid { text-anchor: middle; }
+    .edge { stroke: #4b5563; stroke-width: 3; fill: none; }
+    .newedge { stroke: #0ea5e9; stroke-width: 4; fill: none; }
+    .rootn  { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .childn { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .oldroot { fill: #fef3c7; stroke: #fcd34d; stroke-width: 3; }
+  </style>
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+  <text class="title" x="60" y="56">Union by size</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="muted" x="60" y="118">union(3, 6): roots are 0 (size 4) and 5 (size 2) &#8594; 4 &#8805; 2, so parent[5] = 0</text>
+
+  <text class="small" x="60" y="164">BEFORE</text>
+  <text class="small" x="730" y="164">AFTER</text>
+
+  <!-- before: tree rooted at 0 (size 4) -->
+  <line class="edge" x1="138" y1="323" x2="179" y2="262" marker-end="url(#arrow2)"/>
+  <line class="edge" x1="262" y1="323" x2="221" y2="262" marker-end="url(#arrow2)"/>
+  <line class="edge" x1="120" y1="438" x2="120" y2="388" marker-end="url(#arrow2)"/>
+  <circle class="rootn"  cx="200" cy="230" r="30"/>
+  <circle class="childn" cx="120" cy="350" r="30"/>
+  <circle class="childn" cx="280" cy="350" r="30"/>
+  <circle class="childn" cx="120" cy="470" r="30"/>
+  <text class="nodetxt" x="200" y="239">0</text>
+  <text class="nodetxt" x="120" y="359">1</text>
+  <text class="nodetxt" x="280" y="359">2</text>
+  <text class="nodetxt" x="120" y="479">3</text>
+  <text class="code mid" x="200" y="545">size[0] = 4</text>
+
+  <!-- before: tree rooted at 5 (size 2) -->
+  <line class="edge" x1="460" y1="318" x2="460" y2="268" marker-end="url(#arrow2)"/>
+  <circle class="rootn"  cx="460" cy="230" r="30"/>
+  <circle class="childn" cx="460" cy="350" r="30"/>
+  <text class="nodetxt" x="460" y="239">5</text>
+  <text class="nodetxt" x="460" y="359">6</text>
+  <text class="code mid" x="460" y="545">size[5] = 2</text>
+
+  <!-- big transition arrow -->
+  <text class="code mid" x="612" y="300">union(3, 6)</text>
+  <line x1="560" y1="330" x2="652" y2="330" stroke="#0ea5e9" stroke-width="6" marker-end="url(#arrowBlue)"/>
+
+  <!-- after: merged tree rooted at 0 (size 6) -->
+  <line class="edge" x1="814" y1="328" x2="892" y2="256" marker-end="url(#arrow2)"/>
+  <line class="edge" x1="920" y1="318" x2="920" y2="268" marker-end="url(#arrow2)"/>
+  <line class="newedge" x1="1027" y1="328" x2="948" y2="256" marker-end="url(#arrowBlue)"/>
+  <line class="edge" x1="790" y1="438" x2="790" y2="388" marker-end="url(#arrow2)"/>
+  <line class="edge" x1="1050" y1="438" x2="1050" y2="388" marker-end="url(#arrow2)"/>
+  <circle class="rootn"   cx="920"  cy="230" r="30"/>
+  <circle class="childn"  cx="790"  cy="350" r="30"/>
+  <circle class="childn"  cx="920"  cy="350" r="30"/>
+  <circle class="oldroot" cx="1050" cy="350" r="30"/>
+  <circle class="childn"  cx="790"  cy="470" r="30"/>
+  <circle class="childn"  cx="1050" cy="470" r="30"/>
+  <text class="nodetxt" x="920"  y="239">0</text>
+  <text class="nodetxt" x="790"  y="359">1</text>
+  <text class="nodetxt" x="920"  y="359">2</text>
+  <text class="nodetxt" x="1050" y="359">5</text>
+  <text class="nodetxt" x="790"  y="479">3</text>
+  <text class="nodetxt" x="1050" y="479">6</text>
+  <text class="small mid" x="1118" y="358">old root</text>
+  <text class="code mid" x="920" y="545">size[0] = 6</text>
+
+  <text class="muted" x="60" y="592">A node gets deeper only when its tree merges into one at least as big &#8594; height &#8804; log&#8322;(n).</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "12 - Building Production Services in Python"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Production Python services in 2025 are built on FastAPI (async HTTP), Pydantic v2 (validation), async database drivers (asyncpg, SQLAlchemy async), structured logging with OpenTelemetry spans, and graceful shutdown via `asyncio` signal handlers. The stack is fully async, statically typed, and instrumented end-to-end — enabling the observability required to operate a service at scale.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/12-building-production-services-in-python/vocabulary.svg)
 
 **FastAPI**: An async Python web framework built on Starlette and Pydantic. Generates OpenAPI docs automatically from type annotations. Routing, dependency injection, and request validation are first-class.
 
@@ -60,11 +62,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/12-building-production-services-in-python/intuition.svg)
+
 A production Python HTTP service is an async program that: receives HTTP requests on a Starlette ASGI app, validates input with Pydantic, queries PostgreSQL via asyncpg, emits OpenTelemetry spans for every operation, and streams structured JSON logs. The async model means a single process can handle hundreds of in-flight requests with minimal thread overhead. Pydantic v2 makes the API boundary safe — invalid requests are rejected before they touch business logic.
 
 The pieces fit together because they are all async-native. The event loop runs the Starlette request handler, which awaits the asyncpg database call, which runs inside an OpenTelemetry span. Nothing blocks. The production concern is not concurrency — it is observability: can you explain why request P99 spiked at 2 AM?
 
 ## Project Structure for a Production Service
+
+![Visual diagram: Project Structure for a Production Service](./assets/12-building-production-services-in-python/project-structure-for-a-production-service.svg)
 
 ```
 myservice/
@@ -86,6 +92,8 @@ myservice/
 ```
 
 ## FastAPI Application
+
+![Visual diagram: FastAPI Application](./assets/12-building-production-services-in-python/fastapi-application.svg)
 
 ### Lifespan and Startup/Shutdown
 
@@ -189,6 +197,8 @@ async def create_item(
 
 ## Pydantic v2 Models
 
+![Visual diagram: Pydantic v2 Models](./assets/12-building-production-services-in-python/pydantic-v2-models.svg)
+
 Pydantic v2's core is implemented in Rust (`pydantic-core`). Validation is 5–50× faster than v1. Key v2 changes: `model_validator`, `field_validator` (class methods), `model_config` (dict or `ConfigDict`).
 
 ```python
@@ -230,6 +240,8 @@ except Exception as exc:
 ```
 
 ## Async Database with asyncpg
+
+![Visual diagram: Async Database with asyncpg](./assets/12-building-production-services-in-python/async-database-with-asyncpg.svg)
 
 `asyncpg` is the fastest Python PostgreSQL driver. It uses a connection pool and native PostgreSQL binary protocol.
 
@@ -283,6 +295,8 @@ async def get_items(conn: asyncpg.Connection, limit: int = 100) -> list[dict[str
 
 ## Structured Logging
 
+![Visual diagram: Structured Logging](./assets/12-building-production-services-in-python/structured-logging.svg)
+
 ```python
 # src/myservice/logging_config.py
 import logging
@@ -318,6 +332,8 @@ def configure_logging(level: str = "INFO") -> None:
 
 ## OpenTelemetry Instrumentation
 
+![Visual diagram: OpenTelemetry Instrumentation](./assets/12-building-production-services-in-python/opentelemetry-instrumentation.svg)
+
 ```python
 # src/myservice/telemetry.py
 from opentelemetry import trace  # type: ignore[import-untyped]
@@ -340,6 +356,8 @@ def setup_telemetry(otlp_endpoint: str = "http://localhost:4317") -> None:
 ```
 
 ## Graceful Shutdown
+
+![Visual diagram: Graceful Shutdown](./assets/12-building-production-services-in-python/graceful-shutdown.svg)
 
 Kubernetes sends `SIGTERM` before `SIGKILL`. A graceful shutdown handler: stops accepting new connections, drains in-flight requests, then exits.
 
@@ -370,6 +388,8 @@ def install_signal_handlers(shutdown_event: asyncio.Event) -> None:
 > The Kubernetes default `terminationGracePeriodSeconds` is 30 seconds. If your service takes longer than 30 seconds to drain, Kubernetes sends `SIGKILL` and requests in-flight are dropped. Set `--timeout-graceful-shutdown` in uvicorn to 25 seconds (slightly under the Kubernetes limit) so uvicorn finishes before `SIGKILL` arrives.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/12-building-production-services-in-python/real-world-example.svg)
 
 A complete minimal FastAPI service with Pydantic v2 validation, asyncpg connection pool, structured logging, and a health endpoint.
 
@@ -464,6 +484,8 @@ if __name__ == "__main__":
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/12-building-production-services-in-python/in-practice.svg)
+
 **Connection pool sizing.** For a PostgreSQL-backed service, the asyncpg pool `max_size` should be: `max_size = (postgres_max_connections - reserved) / num_app_instances`. A PostgreSQL instance typically handles 100–300 connections. With 5 app instances and 20 reserved for admin, `max_size = 16` per instance. Too many connections → PostgreSQL OOM; too few → queue buildup under load.
 
 **Pydantic v2 performance.** Pydantic v2 validates in Rust, but the Python model class still has overhead for creating instances. For ultra-hot paths (millions of objects/second), use `model.model_validate(dict, from_attributes=True)` with `model_config = ConfigDict(from_attributes=True)` to avoid building an intermediate dict. For batch ingestion, `TypeAdapter.validate_json(raw_bytes)` skips the intermediate Python dict entirely.
@@ -475,6 +497,8 @@ if __name__ == "__main__":
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/12-building-production-services-in-python/pitfalls.svg)
+
 - **"FastAPI is WSGI-compatible."** — FastAPI is ASGI only. Deploying it behind a WSGI server (gunicorn without `uvicorn.workers.UvicornWorker`) will not work. Use `gunicorn -k uvicorn.workers.UvicornWorker` for multi-worker deployments.
 - **"Pydantic models are free."** — Each instantiation runs full validation. For performance-critical loops over millions of records, profile Pydantic's contribution. `model_validate` with trusted data (internal service-to-service) is faster than the default validator.
 - **"asyncpg auto-commits."** — No. `asyncpg` is in autocommit mode *unless* you use a transaction: `async with conn.transaction():`. Multiple `conn.execute` calls without a transaction may interleave with concurrent connections. Always use a transaction for multi-statement writes.
@@ -482,6 +506,8 @@ if __name__ == "__main__":
 - **"Graceful shutdown is handled by the container runtime."** — The container runtime sends `SIGTERM`; your process must handle it. If your lifespan context manager does not close the DB pool and drain in-flight requests, you will have connection leaks and 502 errors during rolling deploys.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/12-building-production-services-in-python/exercises.svg)
 
 ### Exercise 1 — FastAPI dependency injection
 

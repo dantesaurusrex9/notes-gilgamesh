@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Path compression: find(4) flattens a four-hop chain</title>
+  <desc id="desc">Before: a chain where node 4 points to 3, 3 to 2, 2 to 1, and 1 to root 0, so find(4) costs 4 hops. After find(4): nodes 1 through 4 all point directly at root 0, so the next find costs 1 hop.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .nodetxt { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; text-anchor: middle; }
+    .mid { text-anchor: middle; }
+    .edge { stroke: #4b5563; stroke-width: 3; fill: none; }
+    .newedge { stroke: #0ea5e9; stroke-width: 3.5; fill: none; }
+    .rootn  { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .childn { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .target { fill: #fef3c7; stroke: #fcd34d; stroke-width: 3; }
+  </style>
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrowBlue3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+  <text class="title" x="60" y="56">Path compression: find(4) flattens the chain</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text class="small" x="60" y="130">BEFORE &#8212; find(4) walks 4 hops to reach root 0</text>
+  <!-- before chain -->
+  <line class="edge" x1="368" y1="210" x2="238" y2="210" marker-end="url(#arrow3)"/>
+  <line class="edge" x1="568" y1="210" x2="438" y2="210" marker-end="url(#arrow3)"/>
+  <line class="edge" x1="768" y1="210" x2="638" y2="210" marker-end="url(#arrow3)"/>
+  <line class="edge" x1="968" y1="210" x2="838" y2="210" marker-end="url(#arrow3)"/>
+  <circle class="rootn"  cx="200"  cy="210" r="30"/>
+  <circle class="childn" cx="400"  cy="210" r="30"/>
+  <circle class="childn" cx="600"  cy="210" r="30"/>
+  <circle class="childn" cx="800"  cy="210" r="30"/>
+  <circle class="target" cx="1000" cy="210" r="30"/>
+  <text class="nodetxt" x="200"  y="219">0</text>
+  <text class="nodetxt" x="400"  y="219">1</text>
+  <text class="nodetxt" x="600"  y="219">2</text>
+  <text class="nodetxt" x="800"  y="219">3</text>
+  <text class="nodetxt" x="1000" y="219">4</text>
+  <text class="small mid" x="1000" y="270">find(4) starts here</text>
+
+  <text class="small" x="60" y="330">AFTER &#8212; every node on the walked path now points straight at the root</text>
+  <!-- after: arcs from 2, 3, 4 to root 0; straight arrow from 1 -->
+  <line class="newedge" x1="368" y1="440" x2="238" y2="440" marker-end="url(#arrowBlue3)"/>
+  <path class="newedge" d="M 580 418 Q 390 350 232 424" marker-end="url(#arrowBlue3)"/>
+  <path class="newedge" d="M 780 416 Q 480 330 226 416" marker-end="url(#arrowBlue3)"/>
+  <path class="newedge" d="M 978 414 Q 570 308 220 408" marker-end="url(#arrowBlue3)"/>
+  <circle class="rootn"  cx="200"  cy="440" r="30"/>
+  <circle class="childn" cx="400"  cy="440" r="30"/>
+  <circle class="childn" cx="600"  cy="440" r="30"/>
+  <circle class="childn" cx="800"  cy="440" r="30"/>
+  <circle class="target" cx="1000" cy="440" r="30"/>
+  <text class="nodetxt" x="200"  y="449">0</text>
+  <text class="nodetxt" x="400"  y="449">1</text>
+  <text class="nodetxt" x="600"  y="449">2</text>
+  <text class="nodetxt" x="800"  y="449">3</text>
+  <text class="nodetxt" x="1000" y="449">4</text>
+
+  <text class="muted" x="60" y="530">Pay the long walk once. The next find on any of these nodes is a single hop.</text>
+</svg>

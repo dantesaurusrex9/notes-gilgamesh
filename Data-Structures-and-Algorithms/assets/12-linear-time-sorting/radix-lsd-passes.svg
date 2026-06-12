@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">LSD radix sort passes over seven 3-digit numbers</title>
+  <desc id="desc">Four columns showing the unsorted input, the array after a stable counting sort on the ones digit, after the tens digit, and after the hundreds digit, at which point the array is fully sorted. The active digit in each pass is highlighted.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+    .hot   { fill: #d63384; }
+    .cplain { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .cpass  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .cdone  { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .edge  { stroke: #6b7280; stroke-width: 2.5; fill: none; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="660" fill="#ffffff"/>
+  <text class="title" x="40" y="52">LSD radix sort: one stable pass per digit</text>
+  <line class="rule" x1="40" y1="72" x2="1160" y2="72"/>
+
+  <!-- headers -->
+  <text class="small" x="165"  y="120" text-anchor="middle">Input (unsorted)</text>
+  <text class="small" x="455"  y="120" text-anchor="middle">Pass 1 &#8212; ones digit</text>
+  <text class="small" x="745"  y="120" text-anchor="middle">Pass 2 &#8212; tens digit</text>
+  <text class="small" x="1035" y="120" text-anchor="middle">Pass 3 &#8212; hundreds: sorted</text>
+
+  <!-- arrows between columns -->
+  <line class="edge" x1="278" y1="340" x2="342" y2="340" marker-end="url(#arr)"/>
+  <line class="edge" x1="568" y1="340" x2="632" y2="340" marker-end="url(#arr)"/>
+  <line class="edge" x1="858" y1="340" x2="922" y2="340" marker-end="url(#arr)"/>
+
+  <!-- column 1: input -->
+  <rect class="cplain" x="60" y="140" width="210" height="52"/>
+  <rect class="cplain" x="60" y="198" width="210" height="52"/>
+  <rect class="cplain" x="60" y="256" width="210" height="52"/>
+  <rect class="cplain" x="60" y="314" width="210" height="52"/>
+  <rect class="cplain" x="60" y="372" width="210" height="52"/>
+  <rect class="cplain" x="60" y="430" width="210" height="52"/>
+  <rect class="cplain" x="60" y="488" width="210" height="52"/>
+  <text class="code" x="165" y="174" text-anchor="middle">329</text>
+  <text class="code" x="165" y="232" text-anchor="middle">457</text>
+  <text class="code" x="165" y="290" text-anchor="middle">657</text>
+  <text class="code" x="165" y="348" text-anchor="middle">839</text>
+  <text class="code" x="165" y="406" text-anchor="middle">436</text>
+  <text class="code" x="165" y="464" text-anchor="middle">720</text>
+  <text class="code" x="165" y="522" text-anchor="middle">355</text>
+
+  <!-- column 2: after ones-digit pass -->
+  <rect class="cpass" x="350" y="140" width="210" height="52"/>
+  <rect class="cpass" x="350" y="198" width="210" height="52"/>
+  <rect class="cpass" x="350" y="256" width="210" height="52"/>
+  <rect class="cpass" x="350" y="314" width="210" height="52"/>
+  <rect class="cpass" x="350" y="372" width="210" height="52"/>
+  <rect class="cpass" x="350" y="430" width="210" height="52"/>
+  <rect class="cpass" x="350" y="488" width="210" height="52"/>
+  <text class="code" x="455" y="174" text-anchor="middle">72<tspan class="hot">0</tspan></text>
+  <text class="code" x="455" y="232" text-anchor="middle">35<tspan class="hot">5</tspan></text>
+  <text class="code" x="455" y="290" text-anchor="middle">43<tspan class="hot">6</tspan></text>
+  <text class="code" x="455" y="348" text-anchor="middle">45<tspan class="hot">7</tspan></text>
+  <text class="code" x="455" y="406" text-anchor="middle">65<tspan class="hot">7</tspan></text>
+  <text class="code" x="455" y="464" text-anchor="middle">32<tspan class="hot">9</tspan></text>
+  <text class="code" x="455" y="522" text-anchor="middle">83<tspan class="hot">9</tspan></text>
+
+  <!-- column 3: after tens-digit pass -->
+  <rect class="cpass" x="640" y="140" width="210" height="52"/>
+  <rect class="cpass" x="640" y="198" width="210" height="52"/>
+  <rect class="cpass" x="640" y="256" width="210" height="52"/>
+  <rect class="cpass" x="640" y="314" width="210" height="52"/>
+  <rect class="cpass" x="640" y="372" width="210" height="52"/>
+  <rect class="cpass" x="640" y="430" width="210" height="52"/>
+  <rect class="cpass" x="640" y="488" width="210" height="52"/>
+  <text class="code" x="745" y="174" text-anchor="middle">7<tspan class="hot">2</tspan>0</text>
+  <text class="code" x="745" y="232" text-anchor="middle">3<tspan class="hot">2</tspan>9</text>
+  <text class="code" x="745" y="290" text-anchor="middle">4<tspan class="hot">3</tspan>6</text>
+  <text class="code" x="745" y="348" text-anchor="middle">8<tspan class="hot">3</tspan>9</text>
+  <text class="code" x="745" y="406" text-anchor="middle">3<tspan class="hot">5</tspan>5</text>
+  <text class="code" x="745" y="464" text-anchor="middle">4<tspan class="hot">5</tspan>7</text>
+  <text class="code" x="745" y="522" text-anchor="middle">6<tspan class="hot">5</tspan>7</text>
+
+  <!-- column 4: after hundreds-digit pass -->
+  <rect class="cdone" x="930" y="140" width="210" height="52"/>
+  <rect class="cdone" x="930" y="198" width="210" height="52"/>
+  <rect class="cdone" x="930" y="256" width="210" height="52"/>
+  <rect class="cdone" x="930" y="314" width="210" height="52"/>
+  <rect class="cdone" x="930" y="372" width="210" height="52"/>
+  <rect class="cdone" x="930" y="430" width="210" height="52"/>
+  <rect class="cdone" x="930" y="488" width="210" height="52"/>
+  <text class="code" x="1035" y="174" text-anchor="middle"><tspan class="hot">3</tspan>29</text>
+  <text class="code" x="1035" y="232" text-anchor="middle"><tspan class="hot">3</tspan>55</text>
+  <text class="code" x="1035" y="290" text-anchor="middle"><tspan class="hot">4</tspan>36</text>
+  <text class="code" x="1035" y="348" text-anchor="middle"><tspan class="hot">4</tspan>57</text>
+  <text class="code" x="1035" y="406" text-anchor="middle"><tspan class="hot">6</tspan>57</text>
+  <text class="code" x="1035" y="464" text-anchor="middle"><tspan class="hot">7</tspan>20</text>
+  <text class="code" x="1035" y="522" text-anchor="middle"><tspan class="hot">8</tspan>39</text>
+
+  <!-- annotation -->
+  <text class="body" x="600" y="595" text-anchor="middle">Each pass is a stable counting sort on one digit (base b = 10, k = 10 buckets).</text>
+  <text class="small" x="600" y="628" text-anchor="middle">Stability is load-bearing: ties on the current digit keep the order won in earlier passes (355 &#8594; 457 &#8594; 657 in pass 2).</text>
+</svg>

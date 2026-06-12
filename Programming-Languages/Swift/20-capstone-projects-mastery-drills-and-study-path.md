@@ -1,7 +1,7 @@
 ---
 title: "20 - Capstone Projects, Mastery Drills, and Study Path"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, capstone, mastery]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** You master Swift by building progressively harder systems: a CLI, a package, a tested library, a SwiftUI app, a server API, and a low-level interop wrapper. Each project should force syntax, types, memory, concurrency, testing, performance, and shipping to connect.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/20-capstone-projects-mastery-drills-and-study-path/real-world-example.svg)
 
 This capstone starter models a small task tracker domain without UI or storage. It is intentionally plain Swift so it can become a CLI, SwiftUI app, or server API later.
 
@@ -50,6 +52,8 @@ struct TaskList {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/20-capstone-projects-mastery-drills-and-study-path/vocabulary.svg)
+
 **Capstone**: A project that forces multiple skills to work together.
 
 ---
@@ -70,11 +74,15 @@ struct TaskList {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/20-capstone-projects-mastery-drills-and-study-path/intuition.svg)
+
 Reading gives vocabulary. Building gives judgment. You will not internalize Swift's memory model until you debug a retain cycle. You will not respect actor isolation until you hit a concurrency warning. You will not understand signing until you archive and distribute an app.
 
 The study path should make hidden assumptions visible. Every capstone has a test gate and a shipping gate. That is what turns language knowledge into engineering skill.
 
 ## Project 1: CLI Tool
+
+![Visual diagram: Project 1: CLI Tool](./assets/20-capstone-projects-mastery-drills-and-study-path/project-1-cli-tool.svg)
 
 Build a command-line task tracker.
 
@@ -98,6 +106,8 @@ Skills practiced:
 
 ## Project 2: Reusable Library
 
+![Visual diagram: Project 2: Reusable Library](./assets/20-capstone-projects-mastery-drills-and-study-path/project-2-reusable-library.svg)
+
 Extract the domain into a package library.
 
 Milestones:
@@ -117,6 +127,8 @@ Skills practiced:
 - Versioning.
 
 ## Project 3: SwiftUI App
+
+![Visual diagram: Project 3: SwiftUI App](./assets/20-capstone-projects-mastery-drills-and-study-path/project-3-swiftui-app.svg)
 
 Build a small desktop or iOS app on top of the library.
 
@@ -139,6 +151,8 @@ Skills practiced:
 
 ## Project 4: Server API
 
+![Visual diagram: Project 4: Server API](./assets/20-capstone-projects-mastery-drills-and-study-path/project-4-server-api.svg)
+
 Expose the same task model through a server.
 
 Milestones:
@@ -160,6 +174,8 @@ Skills practiced:
 
 ## Project 5: Low-Level Wrapper
 
+![Visual diagram: Project 5: Low-Level Wrapper](./assets/20-capstone-projects-mastery-drills-and-study-path/project-5-low-level-wrapper.svg)
+
 Write a tiny safe wrapper around an unsafe byte-buffer function.
 
 Milestones:
@@ -179,6 +195,8 @@ Skills practiced:
 
 ## Weekly Study Loop
 
+![Visual diagram: Weekly Study Loop](./assets/20-capstone-projects-mastery-drills-and-study-path/weekly-study-loop.svg)
+
 Use this loop until the language feels natural:
 
 1. Read one note.
@@ -190,6 +208,8 @@ Use this loop until the language feels natural:
 7. Summarize the rule in your own words.
 
 ## Mastery Drills
+
+![Visual diagram: Mastery Drills](./assets/20-capstone-projects-mastery-drills-and-study-path/mastery-drills.svg)
 
 - Rewrite optional-heavy code with `guard`.
 - Replace booleans with enums.
@@ -204,6 +224,8 @@ Use this loop until the language feels natural:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/20-capstone-projects-mastery-drills-and-study-path/pitfalls.svg)
+
 - **Only reading**: Swift must be typed and debugged to stick.
 - **Skipping release workflows**: Shipping teaches constraints tutorials ignore.
 - **Avoiding compiler errors**: The errors are part of the teacher.
@@ -211,6 +233,8 @@ Use this loop until the language feels natural:
 - **No tests**: Without tests, refactoring does not build confidence.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/20-capstone-projects-mastery-drills-and-study-path/exercises.svg)
 
 1. Start Project 1 and create the SwiftPM package.
 2. Implement `TaskID`, `TaskStatus`, and `TaskItem`.

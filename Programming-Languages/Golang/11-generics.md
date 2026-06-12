@@ -1,7 +1,7 @@
 ---
 title: "11 - Generics (Go 1.18+)"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, generics, type-parameters, constraints]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go 1.18 (March 2022) introduced type parameters — the language's approach to generics. A type parameter is a placeholder type in a function or type declaration, constrained by an interface that specifies what operations are available on the type. Generics eliminate repetitive code for containers and algorithms that work on any type satisfying a constraint, without sacrificing compile-time type safety or requiring boxing. The cost story is real: instantiation adds compile time and binary size; use generics where they genuinely remove duplication, not as a default.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/11-generics/vocabulary.svg)
 
 **Type parameter**: A placeholder type written in square brackets before the regular parameters. `func Min[T constraints.Ordered](a, b T) T`.
 
@@ -52,11 +54,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/11-generics/intuition.svg)
+
 Before generics, Go had two approaches to "write once, use with any type": empty interfaces (`interface{}` / `any`) with type assertions, and code generation (e.g., `go generate` + templates). Empty interfaces lose type safety; code generation is tedious. Generics provide a third option: type-parameterised functions and types that are checked at compile time.
 
 The constraint system is the key innovation. Rather than "any type" (Java-style `<T>`), Go constraints are interfaces with a type set. `[T comparable]` means "any type that supports `==`." `[T interface{ ~int | ~float64 }]` means "any type whose underlying type is int or float64." This gives the compiler enough information to generate correct code and gives you enough safety to catch misuse at compile time.
 
 ## Syntax
+
+![Visual diagram: Syntax](./assets/11-generics/syntax.svg)
 
 ### Generic Functions
 
@@ -144,6 +150,8 @@ fmt.Println(Sum([]float64{1.1, 2.2, 3.3})) // 6.6
 
 ## Built-in Constraints
 
+![Visual diagram: Built-in Constraints](./assets/11-generics/built-in-constraints.svg)
+
 ### `comparable`
 
 The built-in constraint for types that support `==` and `!=`. Required for map keys and set implementations:
@@ -189,6 +197,8 @@ strs := Map([]int{1, 2, 3}, func(x int) string { return fmt.Sprintf("%d", x) })
 ```
 
 ## Common Generic Patterns
+
+![Visual diagram: Common Generic Patterns](./assets/11-generics/common-generic-patterns.svg)
 
 ### `Filter` and `Reduce`
 
@@ -245,6 +255,8 @@ func (c *TypedCache[K, V]) Load(k K) (V, bool) {
 
 ## When Generics Help and When They Don't
 
+![Visual diagram: When Generics Help and When They Don't](./assets/11-generics/when-generics-help-and-when-they-don-t.svg)
+
 Generics are the right tool when:
 
 1. You are writing a **container type** (stack, queue, set, ordered map) that should work for any element type.
@@ -261,6 +273,8 @@ Generics are the wrong tool when:
 > The Go team's position: "If you find yourself writing the same code three or more times with different types and cannot use interfaces, consider generics." This is a conservative, pragmatic stance — generics are not the default design tool, they are the refactoring tool.
 
 ## The Cost Story
+
+![Visual diagram: The Cost Story](./assets/11-generics/the-cost-story.svg)
 
 Generics in Go are implemented via a hybrid strategy called GC shapes (dictionaries + partial monomorphisation):
 
@@ -284,6 +298,8 @@ ls -la myapp-*
 > Overly complex constraint hierarchies slow compilation noticeably. If you have 10 layers of constraint embedding and 50 type parameters, compile time can balloon. Keep constraints simple and specific.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/11-generics/real-world-example.svg)
 
 A generic result type (similar to Rust's `Result<T, E>`) that makes error handling more explicit in pipelines:
 
@@ -349,6 +365,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/11-generics/in-practice.svg)
+
 The `slices` and `maps` packages (Go 1.21) use generics to provide utility functions for slices and maps that previously required manual implementation or code generation:
 
 ```go
@@ -375,6 +393,8 @@ fmt.Println(keys)  // [a b c]
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/11-generics/pitfalls.svg)
+
 - **"Generics replace interfaces."** — No. Interfaces are for behaviour polymorphism (different types, different implementations, selected at runtime). Generics are for type-safe algorithms and containers (same code, different types, resolved at compile time). They serve different purposes and often appear together.
 - **"Type parameters can be used with any operator."** — Only operators supported by the constraint. `[T any]` supports nothing; `[T comparable]` supports `==`; `[T constraints.Ordered]` supports `<`, `>`, etc. Attempting `a + b` with `[T any]` is a compile error.
 - **"Generics always improve performance."** — They are performance-neutral in most cases. The benefit is code reuse and type safety, not speed.
@@ -382,6 +402,8 @@ fmt.Println(keys)  // [a b c]
 - **"You must specify type arguments explicitly."** — Usually not; type inference handles it for function calls. For type literals (`Stack[int]{}`), you must specify because there are no arguments to infer from.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/11-generics/exercises.svg)
 
 ### Exercise 1 — Implementation: Write a generic `Contains` function
 

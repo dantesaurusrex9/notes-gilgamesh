@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Per-level work bars showing why build-heap is O(n) for n = 64</title>
+  <desc id="desc">Horizontal bars, one per tree level from the leaves up, for a 64-node heap. 32 leaves do 0 swaps, 16 nodes do at most 1 swap each, 8 nodes do 2, 4 nodes do 3, 2 nodes do 4, 1 node does 5. The bar lengths total at most 57 swaps, which is less than n = 64, versus up to 384 moves for 64 individual pushes.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .bar   { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .rule  { stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+
+  <text class="title" x="60" y="58">Why heapify is O(n): swap budget per level, n = 64</text>
+  <line class="rule" x1="60" y1="78" x2="1140" y2="78"/>
+
+  <text class="small" x="60"  y="124">height h (from the leaves) · nodes × max swaps</text>
+  <text class="small" x="430" y="124">total swaps at this level (30 px per swap)</text>
+
+  <line class="rule" x1="430" y1="138" x2="430" y2="512"/>
+
+  <!-- h=0 -->
+  <text class="code" x="60" y="184">h=0   32 × 0</text>
+  <text class="muted" x="444" y="184">= 0 — leaves are already one-element heaps</text>
+
+  <!-- h=1 -->
+  <text class="code" x="60" y="244">h=1   16 × ≤1</text>
+  <rect class="bar" x="430" y="218" width="480" height="38"/>
+  <text class="body" x="924" y="244">= 16</text>
+
+  <!-- h=2 -->
+  <text class="code" x="60" y="304">h=2    8 × ≤2</text>
+  <rect class="bar" x="430" y="278" width="480" height="38"/>
+  <text class="body" x="924" y="304">= 16</text>
+
+  <!-- h=3 -->
+  <text class="code" x="60" y="364">h=3    4 × ≤3</text>
+  <rect class="bar" x="430" y="338" width="360" height="38"/>
+  <text class="body" x="804" y="364">= 12</text>
+
+  <!-- h=4 -->
+  <text class="code" x="60" y="424">h=4    2 × ≤4</text>
+  <rect class="bar" x="430" y="398" width="240" height="38"/>
+  <text class="body" x="684" y="424">= 8</text>
+
+  <!-- h=5 (root) -->
+  <text class="code" x="60" y="484">h=5    1 × ≤5</text>
+  <rect class="bar" x="430" y="458" width="150" height="38"/>
+  <text class="body" x="594" y="484">= 5</text>
+
+  <line class="rule" x1="60" y1="522" x2="1140" y2="522"/>
+  <text class="code" x="60" y="558">Total ≤ 16+16+12+8+5 = 57 swaps  &lt;  n = 64   →   O(n)</text>
+  <text class="muted" x="60" y="596">Compare: 64 one-at-a-time pushes can each climb the full 6 levels → up to 384 moves, O(n log n).</text>
+</svg>

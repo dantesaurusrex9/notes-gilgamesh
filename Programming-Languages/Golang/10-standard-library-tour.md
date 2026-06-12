@@ -1,7 +1,7 @@
 ---
 title: "10 - The Standard Library Tour"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, stdlib, io, http, json, testing, context]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's standard library is production-grade and self-contained for the vast majority of server-side work. The packages you will use in every service are `io`, `bufio`, `os`, `fmt`, `strings`, `encoding/json`, `net/http`, `context`, `database/sql`, `testing`, and `log/slog`. Understanding their interfaces and idioms — particularly the `io.Reader`/`io.Writer` chain, `encoding/json`'s struct tag conventions, and `testing`'s table-test + subtest pattern — is the practical foundation for idiomatic Go.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/10-standard-library-tour/vocabulary.svg)
 
 **`io.Reader`**: The interface for sequential byte reading. `Read(p []byte) (n int, err error)`. Returns `io.EOF` when the source is exhausted.
 
@@ -56,9 +58,13 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/10-standard-library-tour/intuition.svg)
+
 The Go standard library is designed around small interfaces and composition. `io.Reader` and `io.Writer` are the foundation: `os.File` implements both, `bytes.Buffer` implements both, `net.Conn` implements both, a gzip writer wraps any `io.Writer`. Every package in the standard library that reads or writes uses these interfaces, so every data source and sink is interchangeable. Once you understand how to chain readers and writers, you understand how 80% of Go I/O works.
 
 ## `io` and `bufio` — I/O Foundations
+
+![Visual diagram: io and bufio - I/O Foundations](./assets/10-standard-library-tour/io-and-bufio-i-o-foundations.svg)
 
 ### `io.Reader` and `io.Writer`
 
@@ -120,6 +126,8 @@ if err := scanner.Err(); err != nil {
 
 ## `strings` and `bytes`
 
+![Visual diagram: strings and bytes](./assets/10-standard-library-tour/strings-and-bytes.svg)
+
 These two packages mirror each other: `strings` operates on `string`, `bytes` on `[]byte`. The `strings` package is heavily used for text processing; `bytes` for binary data and building byte output.
 
 ```go
@@ -143,6 +151,8 @@ fmt.Println(b.String())  // "01234"
 ```
 
 ## `encoding/json`
+
+![Visual diagram: encoding/json](./assets/10-standard-library-tour/encoding-json.svg)
 
 ### Marshal and Unmarshal
 
@@ -201,6 +211,8 @@ func decodeRequest(r *http.Request, dst any) error {
 > `json.Decoder.DisallowUnknownFields()` returns an error if the JSON contains keys not in the target struct. This catches typos in API clients at the parsing layer rather than silently ignoring them. Enable it in APIs where a typo in a field name would cause silent data loss.
 
 ## `net/http` — Server and Client
+
+![Visual diagram: net/http - Server and Client](./assets/10-standard-library-tour/net-http-server-and-client.svg)
 
 ### HTTP Server
 
@@ -288,6 +300,8 @@ func fetchUser(ctx context.Context, id int) (*User, error) {
 
 ## `database/sql`
 
+![Visual diagram: database/sql](./assets/10-standard-library-tour/database-sql.svg)
+
 `database/sql` provides a connection pool and a driver-agnostic interface. Import a driver with a blank import — it registers itself via `init()`.
 
 ```go
@@ -321,6 +335,8 @@ func getUser(ctx context.Context, db *sql.DB, id int) (*User, error) {
 > `db.QueryContext` returns a `*sql.Rows` that must be closed with `defer rows.Close()`. Failing to close rows leaks a database connection from the pool. `db.QueryRowContext` (for single rows) automatically closes after `Scan`. Use `QueryRowContext` when expecting exactly one row; use `QueryContext` + `rows.Close()` for multiple rows.
 
 ## `testing` — Table Tests, Subtests, Benchmarks
+
+![Visual diagram: testing - Table Tests, Subtests, Benchmarks](./assets/10-standard-library-tour/testing-table-tests-subtests-benchmarks.svg)
 
 ### Table Tests with Subtests
 
@@ -394,6 +410,8 @@ go test -fuzz=FuzzAdd -fuzztime=30s ./...
 
 ## `log/slog` — Structured Logging (Go 1.21+)
 
+![Visual diagram: log/slog - Structured Logging (Go 1.21+)](./assets/10-standard-library-tour/log-slog-structured-logging-go-1-21.svg)
+
 `log/slog` is the standard structured logger. It emits key-value pairs alongside the log message, with configurable handlers (JSON, text).
 
 ```go
@@ -420,6 +438,8 @@ func main() {
 > Use `slog.With(key, value, ...)` to create a child logger with pre-populated fields. In an HTTP handler, create a logger with `requestID`, `userID`, and `method` pre-set, then pass it through context or use it directly. This gives every log line in a request handler the full request context without re-specifying it.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/10-standard-library-tour/real-world-example.svg)
 
 A complete HTTP handler that reads a JSON request, queries a database, and writes a JSON response, using all the patterns above:
 
@@ -499,6 +519,8 @@ func createUserHandler(db *sql.DB) http.HandlerFunc {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/10-standard-library-tour/in-practice.svg)
+
 **`http.DefaultClient` is unsafe for production.** It has no timeout. If the remote server is slow or hangs, the calling goroutine blocks forever. Always construct your own `http.Client` with `Timeout` and, for services making many outbound calls, a custom `Transport` with tuned connection pool settings (`MaxIdleConns`, `IdleConnTimeout`).
 
 **`database/sql` connection pool tuning.** `db.SetMaxOpenConns(n)` limits the total connections. `db.SetMaxIdleConns(n)` controls how many connections stay open when not in use. `db.SetConnMaxLifetime(d)` recycles connections — important for services behind a load balancer where the DB resets long-lived connections.
@@ -514,6 +536,8 @@ db.SetConnMaxLifetime(5 * time.Minute)
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/10-standard-library-tour/pitfalls.svg)
+
 - **"`http.Get` is the right way to make a request."** — `http.Get` uses `http.DefaultClient` which has no timeout. Use `http.NewRequestWithContext` + a custom `http.Client` with a `Timeout`.
 - **"`json.Marshal` round-trips perfectly."** — Not for types that don't have a JSON representation: `time.Time` marshals to RFC3339 strings; `[]byte` marshals to base64; `map[int]string` (integer keys) fails. Know your types.
 - **"All test functions run in parallel by default."** — Only if you call `t.Parallel()`. Without it, subtests run sequentially within a test function, and test functions run sequentially within a package (unless `go test -parallel=N` is set).
@@ -521,6 +545,8 @@ db.SetConnMaxLifetime(5 * time.Minute)
 - **"`slog` replaces `log`."** — Not entirely. The old `log` package still works and `log.Fatal` is still idiomatic in `main`. `slog` adds structured output; `log` is fine for simple single-process CLIs.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/10-standard-library-tour/exercises.svg)
 
 ### Exercise 1 — Implementation: Write a JSON round-trip test for a struct
 

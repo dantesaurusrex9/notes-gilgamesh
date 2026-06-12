@@ -1,7 +1,7 @@
 ---
 title: "6 - Errors, Panics, and Recovery"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, errors, panics, recovery, error-handling]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go treats errors as ordinary values returned from functions, not as exceptions that unwind the stack. This makes error handling explicit and visible in every call site. Panics are reserved for programmer errors (index out of bounds, nil dereference, assertion failures) and are not a flow-control mechanism. `recover()` inside a deferred function can intercept a panic, but this is a sharp tool used almost exclusively at process boundaries (HTTP handlers, goroutine entry points) to prevent one bad request from killing the server.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/6-errors-panics-recovery/vocabulary.svg)
 
 **`error`**: A built-in interface with a single method `Error() string`. Any type implementing that method is an error. The idiomatic convention: `nil` means no error; non-nil means failure.
 
@@ -48,6 +50,8 @@ var ErrNotFound = errors.New("not found")
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/6-errors-panics-recovery/intuition.svg)
+
 The design philosophy of error-as-value comes from Unix: a function signals failure by returning a value, and the caller decides what to do. There is no invisible stack unwinding, no magic `try/catch` syntax that hides control flow. Every possible failure is visible in the function signature and must be handled (or explicitly ignored) at the call site.
 
 This verbosity is intentional. In a codebase with thousands of calls that each return `(T, error)`, the error handling pattern is uniform and searchable. A `grep` for `if err != nil` reveals every error handling site. In a codebase with exceptions, error handling is invisible unless you read every method's documentation.
@@ -55,6 +59,8 @@ This verbosity is intentional. In a codebase with thousands of calls that each r
 Panics are for things that "cannot happen" in a correctly written program — index out of bounds means the programmer wrote wrong code, not that the user provided bad input. Production Go services rarely call `panic` explicitly. When they do, it is to fail fast on an invariant violation during startup (e.g., a nil required dependency), not for ordinary runtime errors.
 
 ## Error as a Value — The `error` Interface
+
+![Visual diagram: Error as a Value - The error Interface](./assets/6-errors-panics-recovery/error-as-a-value-the-error-interface.svg)
 
 The `error` interface is defined in the builtin package:
 
@@ -115,6 +121,8 @@ This message tells the reader exactly where in the call stack the failure origin
 
 ## Sentinel Errors
 
+![Visual diagram: Sentinel Errors](./assets/6-errors-panics-recovery/sentinel-errors.svg)
+
 Sentinel errors are package-level variables used for comparison. They give callers something to branch on without inspecting the error string (which changes, breaks, and is not API-stable).
 
 ```go
@@ -138,6 +146,8 @@ if errors.Is(err, db.ErrNotFound) {
 > Never compare errors with `==` when wrapping is involved. `err == ErrNotFound` fails if `err` is wrapped. Always use `errors.Is(err, ErrNotFound)`, which walks the `Unwrap` chain.
 
 ## Custom Error Types
+
+![Visual diagram: Custom Error Types](./assets/6-errors-panics-recovery/custom-error-types.svg)
 
 When callers need more than just an error string — a field name, an HTTP status code, a retry-after duration — define a custom error type:
 
@@ -188,6 +198,8 @@ fmt.Println(errors.Is(dbErr, ErrNoRows))  // true — Unwrap reached ErrNoRows
 
 ## Panics
 
+![Visual diagram: Panics](./assets/6-errors-panics-recovery/panics.svg)
+
 A panic is Go's mechanism for signalling that the program is in an unrecoverable state. The runtime triggers panics automatically for:
 
 - Nil pointer dereference
@@ -223,6 +235,8 @@ flowchart TD
 > `panic` in a goroutine that was launched with `go func()` and not recovered will crash the entire program, not just the goroutine. Every long-running goroutine launched by a service should have a `recover()` wrapper at the top. HTTP handlers registered with `net/http` have a built-in recovery wrapper (panics are caught and converted to 500 responses), but goroutines you launch manually do not.
 
 ## `recover()` — Catching Panics
+
+![Visual diagram: recover() - Catching Panics](./assets/6-errors-panics-recovery/recover-catching-panics.svg)
 
 `recover()` can only be called inside a deferred function. It intercepts the panic and returns the panic value. After recovery, execution continues normally at the point after the deferred function runs (the panicking function does not resume; the caller of the panicking function continues).
 
@@ -274,6 +288,8 @@ func panicMiddleware(next http.Handler) http.Handler {
 
 ## When to Panic vs Return Error
 
+![Visual diagram: When to Panic vs Return Error](./assets/6-errors-panics-recovery/when-to-panic-vs-return-error.svg)
+
 The rule is simple: panics are for programmer errors; errors are for runtime conditions that the caller should handle.
 
 | Situation | Use |
@@ -305,6 +321,8 @@ func parseIP(s string) (*net.IP, error) {
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/6-errors-panics-recovery/real-world-example.svg)
 
 An error handling pattern for a multi-layer service: a database layer, a business logic layer, and an HTTP layer, each wrapping errors with context.
 
@@ -367,6 +385,8 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/6-errors-panics-recovery/in-practice.svg)
+
 Go 1.20 added `errors.Join(errs ...error) error` for collecting multiple errors into one (common in validation). The joined error's `Unwrap() []error` returns all constituent errors; `errors.Is` and `errors.As` walk the list.
 
 ```go
@@ -391,6 +411,8 @@ At scale, error handling is a significant fraction of code volume. Linters like 
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/6-errors-panics-recovery/pitfalls.svg)
+
 - **"Errors should be strings, not types."** — String comparisons on error messages break when the message changes. Use sentinel errors or custom types for programmatic inspection.
 - **"`panic` is like `throw` in other languages."** — Panics are for programmer errors, not for conditions the caller should handle. Using panic for expected failures (user not found, file missing) is idiomatic in other languages but wrong in Go.
 - **"`recover()` catches panics from other goroutines."** — It does not. A `recover()` in goroutine A cannot catch a panic in goroutine B. Each goroutine must have its own recovery mechanism.
@@ -398,6 +420,8 @@ At scale, error handling is a significant fraction of code volume. Linters like 
 - **"`defer/recover` makes your code exception-safe."** — It does not. After a `recover`, the program state may be partially mutated. Panics in the middle of a database transaction, a lock acquisition, or a multi-step computation leave the state inconsistent. Use `recover` at process boundaries only, not as a general error recovery mechanism.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/6-errors-panics-recovery/exercises.svg)
 
 ### Exercise 1 — Code output: What does this print?
 

@@ -1,7 +1,7 @@
 ---
 title: "15 - CPython Compiler, Bytecode, and Import System"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [python, programming-languages, cpython, bytecode, imports]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python source is parsed, compiled to code objects, executed by the CPython interpreter, and cached as `.pyc` bytecode when imported. Mastering imports means understanding `sys.path`, `sys.modules`, finders, loaders, module specs, package execution, and why running a file as a script is not the same as importing it.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/15-cpython-compiler-bytecode-import-system/real-world-example.svg)
 
 This example lets you inspect the exact object CPython executes. It parses source, compiles it to a code object, disassembles bytecode, executes it in a namespace, and shows the resulting module-like globals.
 
@@ -39,6 +41,8 @@ print(namespace["answer"])
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/15-cpython-compiler-bytecode-import-system/vocabulary.svg)
 
 **AST**: Abstract Syntax Tree. A structured representation of parsed source before bytecode generation.
 
@@ -68,6 +72,8 @@ print(namespace["answer"])
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/15-cpython-compiler-bytecode-import-system/intuition.svg)
+
 Python feels like it "runs source," but CPython executes code objects. Source is tokenized, parsed, compiled, and then interpreted. Imported modules are also cached so repeated imports return the same module object rather than rerunning the file from scratch.
 
 This explains common production bugs. A circular import sees a partially initialized module because the module is already in `sys.modules` while its body is still executing. A script run as `python app.py` has name `__main__`, while the same file imported as `app` is a different module identity. A test suite can import the wrong package if `sys.path` points at the wrong directory.
@@ -82,6 +88,8 @@ flowchart LR
 ```
 
 ## Compilation Pipeline
+
+![Visual diagram: Compilation Pipeline](./assets/15-cpython-compiler-bytecode-import-system/compilation-pipeline.svg)
 
 The `compile()` builtin exposes CPython's front half. The `dis` module exposes the bytecode shape the interpreter sees.
 
@@ -101,6 +109,8 @@ The bytecode is an implementation detail, not a stable language contract. Use it
 
 ## `.pyc` Files and Caches
 
+![Visual diagram: .pyc Files and Caches](./assets/15-cpython-compiler-bytecode-import-system/pyc-files-and-caches.svg)
+
 When a module is imported from source, CPython may write bytecode into `__pycache__`. The cache speeds startup by skipping parsing and compilation when the source is unchanged.
 
 ```bash
@@ -111,6 +121,8 @@ find . -name '*.pyc'
 The `.pyc` file does not make Python "compiled like C." It still contains interpreter bytecode for CPython, not native machine code.
 
 ## Import Resolution
+
+![Visual diagram: Import Resolution](./assets/15-cpython-compiler-bytecode-import-system/import-resolution.svg)
 
 Import roughly follows this path:
 
@@ -133,6 +145,8 @@ print(module.__spec__.origin)
 
 ## Script Versus Module Execution
 
+![Visual diagram: Script Versus Module Execution](./assets/15-cpython-compiler-bytecode-import-system/script-versus-module-execution.svg)
+
 Prefer `python -m package.module` for package code. It sets up package-relative imports correctly.
 
 ```bash
@@ -143,6 +157,8 @@ Running a file path directly can break relative imports because the file is exec
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/15-cpython-compiler-bytecode-import-system/pitfalls.svg)
+
 - **Circular imports**: Two modules importing each other at top level can observe partially initialized objects.
 - **Import-time side effects**: Network calls, config loading, and heavy computation at import time slow every process start and make tests brittle.
 - **Wrong `sys.path`**: Running tests from the wrong directory can import installed code instead of local code.
@@ -150,6 +166,8 @@ Running a file path directly can break relative imports because the file is exec
 - **Depending on bytecode stability**: Bytecode changes across CPython versions.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/15-cpython-compiler-bytecode-import-system/exercises.svg)
 
 1. Use `dis.dis()` on a loop, a list comprehension, and a function call.
 2. Create a circular import and explain the partial module state.

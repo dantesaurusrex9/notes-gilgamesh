@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-labelledby="title desc">
+  <title id="title">Merge step with two fingers</title>
+  <desc id="desc">Two sorted runs, left 2 5 9 and right 3 4 8, with finger i on 5 and finger j on 8. Already-consumed cells are grayed. The comparison 5 less-or-equal 8 copies 5 into the output slot k equals 3, after 2, 3 and 4 were already placed.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; text-anchor: middle; }
+    .ci { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #8b5cf6; text-anchor: middle; }
+    .cj { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #0ea5e9; text-anchor: middle; }
+    .v  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; text-anchor: middle; }
+    .vm { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #6b7280; text-anchor: middle; }
+    .i  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; text-anchor: middle; }
+    .cap { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+  </style>
+  <rect width="1200" height="680" fill="#ffffff"/>
+  <defs>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">Merge step &#8212; two fingers, copy the smaller</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Left run -->
+  <text class="s" x="160" y="126">left run L (sorted)</text>
+  <rect x="160" y="140" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="270" y="140" width="110" height="70" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="380" y="140" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="vm" x="215" y="183">2</text>
+  <text class="v" x="325" y="183">5</text>
+  <text class="v" x="435" y="183">9</text>
+
+  <!-- Right run -->
+  <text class="s" x="660" y="126">right run R (sorted)</text>
+  <rect x="660" y="140" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="770" y="140" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="880" y="140" width="110" height="70" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="vm" x="715" y="183">3</text>
+  <text class="vm" x="825" y="183">4</text>
+  <text class="v" x="935" y="183">8</text>
+
+  <!-- Finger arrows -->
+  <line x1="325" y1="282" x2="325" y2="222" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrP)"/>
+  <text class="ci" x="325" y="316">i = 1</text>
+  <line x1="935" y1="282" x2="935" y2="222" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrB)"/>
+  <text class="cj" x="935" y="316">j = 2</text>
+
+  <!-- Comparison banner -->
+  <text class="c" x="600" y="382">L[i]=5 &#8804; R[j]=8 &#8594; out[k]=5, i+=1</text>
+  <line x1="655" y1="398" x2="655" y2="430" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrB)"/>
+
+  <!-- Output array -->
+  <rect x="270" y="438" width="110" height="70" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="380" y="438" width="110" height="70" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="490" y="438" width="110" height="70" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <rect x="600" y="438" width="110" height="70" fill="#dbeafe" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="710" y="438" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="820" y="438" width="110" height="70" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="v" x="325" y="481">2</text>
+  <text class="v" x="435" y="481">3</text>
+  <text class="v" x="545" y="481">4</text>
+  <text class="v" x="655" y="481">5</text>
+  <text class="i" x="325" y="534">0</text>
+  <text class="i" x="435" y="534">1</text>
+  <text class="i" x="545" y="534">2</text>
+  <text class="i" x="655" y="534">3</text>
+  <text class="i" x="765" y="534">4</text>
+  <text class="i" x="875" y="534">5</text>
+  <text class="s" x="240" y="481" text-anchor="end">out</text>
+
+  <!-- k finger -->
+  <line x1="655" y1="600" x2="655" y2="546" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrB)"/>
+  <text class="cj" x="655" y="632">k = 3</text>
+
+  <text class="cap" x="160" y="668">Grayed cells are consumed. Each element is copied exactly once &#8594; merging n items is O(n).</text>
+</svg>

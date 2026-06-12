@@ -1,7 +1,7 @@
 ---
 title: "09 - Apple App Architecture, Signing, TestFlight, and App Store Release"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, xcode, app-store, shipping]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Shipping an Apple-platform app is more than writing Swift. You need an architecture that keeps logic testable, an Xcode project that builds repeatably, correct signing and capabilities, archives, TestFlight feedback, App Store Connect metadata, and a release checklist.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/real-world-example.svg)
 
 This tiny SwiftUI view keeps display code separate from state logic. The view model is main-actor isolated because UI state belongs on the main actor.
 
@@ -52,6 +54,8 @@ xcodebuild test -scheme MyApp -destination 'platform=iOS Simulator,name=iPhone 1
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/vocabulary.svg)
+
 **Scheme**: Xcode's named build/test/archive configuration for a product.
 
 ---
@@ -80,11 +84,15 @@ xcodebuild test -scheme MyApp -destination 'platform=iOS Simulator,name=iPhone 1
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/intuition.svg)
+
 Apple app shipping has two parallel tracks: code quality and distribution correctness. Code quality asks: can we test the core logic, preserve UI responsiveness, and handle lifecycle edges? Distribution correctness asks: is this exact binary signed, archived, uploaded, symbolicated, and review-ready?
 
 Do not wait until the end to learn signing. A build can compile perfectly and still fail distribution because the bundle ID, capabilities, team, certificate, provisioning profile, or App Store Connect record is wrong.
 
 ## App Architecture
+
+![Visual diagram: App Architecture](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/app-architecture.svg)
 
 Keep framework-specific code at the edge. Put domain logic in plain Swift types that can be tested without booting the full app.
 
@@ -110,6 +118,8 @@ For small apps, this can live in one Xcode project. For larger apps, use Swift p
 
 ## Signing and Capabilities
 
+![Visual diagram: Signing and Capabilities](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/signing-and-capabilities.svg)
+
 Automatic signing is usually the right starting point. Xcode can create and update development signing assets when the project has the correct team and bundle identifier. Manual signing is for CI, enterprise workflows, or teams that need explicit profile control.
 
 Before archive day, verify:
@@ -124,6 +134,8 @@ Before archive day, verify:
 > Signing errors often come from stale profiles, mismatched teams, duplicate certificates, or entitlements that changed after the profile was created. Treat signing assets as release inputs, not random Xcode magic.
 
 ## Archive and Upload
+
+![Visual diagram: Archive and Upload](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/archive-and-upload.svg)
 
 The normal Xcode path is Product -> Archive, then Organizer -> Distribute App. Apple's documentation describes exporting the archive for non-App-Store distribution or uploading to App Store Connect for TestFlight and App Store release.
 
@@ -141,6 +153,8 @@ The common release path is:
 
 ## TestFlight
 
+![Visual diagram: TestFlight](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/testflight.svg)
+
 Use TestFlight before App Review. Internal testing catches signing, launch, entitlement, and device-family mistakes. External testing catches onboarding, privacy, and real-user workflow problems.
 
 Keep beta notes short and action-oriented:
@@ -154,6 +168,8 @@ Build 42
 
 ## App Store Review Readiness
 
+![Visual diagram: App Store Review Readiness](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/app-store-review-readiness.svg)
+
 Before submission, review the parts that commonly cause delays:
 
 - Privacy nutrition labels match actual data collection.
@@ -165,6 +181,8 @@ Before submission, review the parts that commonly cause delays:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/pitfalls.svg)
+
 - **Business logic trapped in views**: It becomes hard to test and easy to break.
 - **One giant app target**: Build times and dependency boundaries decay.
 - **Manual signing without documentation**: Future releases become fragile.
@@ -172,6 +190,8 @@ Before submission, review the parts that commonly cause delays:
 - **Only testing happy paths**: Review and users find permission denial, offline mode, expired sessions, and first-launch issues.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/09-apple-app-architecture-signing-testflight-and-app-store-release/exercises.svg)
 
 1. Sketch an app into UI, feature, and core layers.
 2. Identify which code could live in a Swift package and be tested with `swift test`.

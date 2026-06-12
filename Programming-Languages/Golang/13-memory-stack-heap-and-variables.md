@@ -1,7 +1,7 @@
 ---
 title: "13 - Memory: Stack, Heap, and Variables"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Every Go variable is a named, typed region of memory whose bytes are either on a goroutine's stack or on the shared heap — the compiler decides which via escape analysis, not you. Stack allocation is a single pointer bump, is zeroed automatically, and evaporates when the frame returns; heap allocation is managed by the runtime allocator and reclaimed by the GC. Understanding the escape-analysis rules, the stack-frame layout, and the allocator's size-class design is the prerequisite for any serious Go performance work.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/13-memory-stack-heap-and-variables/vocabulary.svg)
 
 **Stack frame**: The contiguous block of memory the runtime reserves on the goroutine's stack for a single function call. It holds local variables, spill storage, and the saved return address. Torn down automatically on `return`.
 
@@ -56,6 +58,8 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/13-memory-stack-heap-and-variables/intuition.svg)
+
 Think of the goroutine stack as a stack of legal pads: every function call grabs a fresh sheet at the top, scribbles its local variables on it, and tears it off when it returns. Sheets are cheap — you never ask a librarian (the allocator), you just flip to the next blank page. The heap, by contrast, is a large shared whiteboard: anyone can write on it, but a janitor (the GC) has to periodically erase what nobody references anymore.
 
 The compiler's job in escape analysis is exactly this question: "can this variable fit on the current legal pad, or does it need to go on the shared whiteboard?" The answer depends on whether the variable's address will outlive the function that created it, not on how you declared it. `var x int` and `x := new(int)` both *can* go on the stack — if the compiler sees that `x`'s address never escapes the frame, it will keep it there regardless of how you spelled it.
@@ -64,6 +68,8 @@ The compiler's job in escape analysis is exactly this question: "can this variab
 > In Go, `new(T)` does not force a heap allocation. Neither does `&T{...}`. The compiler allocates on the stack if escape analysis proves the lifetime is bounded. Do not conflate the C meaning of `malloc` with Go's `new`.
 
 ## How it works
+
+![Visual diagram: How it works](./assets/13-memory-stack-heap-and-variables/how-it-works.svg)
 
 ### The Go program address space
 
@@ -289,6 +295,8 @@ runtime.KeepAlive(obj) // ensure obj is not collected before this line
 
 ## Math
 
+![Visual diagram: Math](./assets/13-memory-stack-heap-and-variables/math.svg)
+
 Struct size and alignment follow the standard C ABI rules. For a 64-bit platform:
 
 ```math
@@ -335,6 +343,8 @@ Total           16     8
 Reordering largest-first saves 8 bytes — 33% — here.
 
 ## Real-world example
+
+![Visual diagram: Real-world example](./assets/13-memory-stack-heap-and-variables/real-world-example.svg)
 
 The following program exercises four of the six escape triggers. Read the `gcflags='-m'` output to verify each prediction.
 
@@ -410,6 +420,8 @@ go build -gcflags='-m' ./...
 
 ## In practice
 
+![Visual diagram: In practice](./assets/13-memory-stack-heap-and-variables/in-practice.svg)
+
 **Stack-frame sizing and the 64 KB threshold**: The Go compiler places a hard limit of roughly 64 KB on the size of a single local variable (a very large struct or array). Beyond that, it forces a heap allocation regardless of lifetime. This is intentional — a 1 MB local struct would require a 1 MB stack growth event, defeating the purpose of cheap goroutine stacks.
 
 **Inlining interacts with escape analysis**: When the compiler inlines a callee into the caller, the callee's variables become part of the caller's frame. This can *prevent* escapes — a value that would escape from the inlined function no longer needs to, because the "return" is now inside the same frame. Use `//go:noinline` to force a function out of the inlining budget when benchmarking allocation behaviour.
@@ -423,6 +435,8 @@ go build -gcflags='-m' ./...
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/13-memory-stack-heap-and-variables/pitfalls.svg)
+
 - **"`new(T)` allocates on the heap."** — Not necessarily. `p := new(Point)` is syntactic sugar for `var tmp Point; p = &tmp`. If `p` never escapes the frame, the compiler allocates `tmp` on the stack.
 - **"Pointer receivers are always faster than value receivers."** — For small structs (≤ 3–4 words), value receivers avoid the indirection and can be cheaper. The cost of passing a pointer also includes the GC needing to track it. Measure with `go test -benchmem`.
 - **"Stack variables always outlive the function call."** — The frame is torn down on return. Any pointer to a stack-allocated value that outlives the frame is only valid because the compiler *moved the value to the heap* — the pointer now points to heap memory, not stack memory.
@@ -431,6 +445,8 @@ go build -gcflags='-m' ./...
 - **"Stack growth is free."** — A stack-growth event copies all live frames, rewrites all internal pointers, and frees the old stack. For a deep call stack with many captured variables, this can take microseconds. Tight latency-critical loops should avoid stack-growth events by pre-warming goroutines with a short hot function to trigger early growth.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/13-memory-stack-heap-and-variables/exercises.svg)
 
 ### Exercise 1 — Predict escape, then verify
 

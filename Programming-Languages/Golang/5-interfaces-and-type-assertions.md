@@ -1,7 +1,7 @@
 ---
 title: "5 - Interfaces and Type Assertions"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, interfaces, type-assertions, type-switches]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go interfaces are satisfied implicitly — a type need not declare that it implements an interface, it just needs to have the right methods. This structural (duck-typed) approach makes Go interfaces extraordinarily composable: small interfaces (one or two methods) are the idiomatic unit, and every type in the standard library (Reader, Writer, Closer, Handler, Stringer) is defined this way. The empty interface `any` (`interface{}`) holds any value, but loses all static type information; type assertions and type switches recover it.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/5-interfaces-and-type-assertions/vocabulary.svg)
 
 **Interface**: A type defined by a set of method signatures. Any type that implements all the methods implicitly satisfies the interface. No explicit `implements` keyword.
 
@@ -60,11 +62,15 @@ default:     fmt.Println("unknown")
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/5-interfaces-and-type-assertions/intuition.svg)
+
 In Java or C++, you declare that a class implements an interface (`implements Runnable`, `extends AbstractBase`). In Go, satisfaction is checked by the compiler by structural matching — if the type has the methods, it satisfies the interface, full stop. This means you can define an interface in your package that an external type (from the standard library, from a third party) satisfies without changing that external type. You are not constrained by the library author's hierarchy.
 
 The mantra "accept interfaces, return structs" captures the design idiom: function parameters should be interfaces (accept the minimal surface a caller can provide), and return types should be concrete structs (give the caller the full concrete type so they can use everything). This keeps APIs flexible on the input side and explicit on the output side.
 
 ## Interface Declaration and Satisfaction
+
+![Visual diagram: Interface Declaration and Satisfaction](./assets/5-interfaces-and-type-assertions/interface-declaration-and-satisfaction.svg)
 
 An interface groups method signatures. A type satisfies the interface if it has all listed methods with matching signatures.
 
@@ -102,6 +108,8 @@ This line compiles only if `*MyReader` has a `Read([]byte) (int, error)` method.
 
 ## The Standard Library's Small Interfaces
 
+![Visual diagram: The Standard Library's Small Interfaces](./assets/5-interfaces-and-type-assertions/the-standard-library-s-small-interfaces.svg)
+
 The standard library exemplifies the small-interface design. Every package builds on a handful of one- or two-method interfaces:
 
 | Interface | Package | Method(s) |
@@ -117,6 +125,8 @@ The standard library exemplifies the small-interface design. Every package build
 Because `io.Reader` and `io.Writer` are single-method, virtually every type that produces or consumes bytes satisfies them: `os.File`, `bytes.Buffer`, `strings.Reader`, `net.Conn`, `http.Request.Body`, a gzip decompressor, a TLS layer. You can chain them without adapters.
 
 ## Interface Values Under the Hood
+
+![Visual diagram: Interface Values Under the Hood](./assets/5-interfaces-and-type-assertions/interface-values-under-the-hood.svg)
 
 An interface value is a two-word pair at runtime: a pointer to the type descriptor (runtime type info / itab) and a pointer to the concrete data. A nil interface has both words nil.
 
@@ -153,6 +163,8 @@ fmt.Println(err == nil)  // FALSE — interface type word is *MyError, not nil
 
 ## Type Assertions
 
+![Visual diagram: Type Assertions](./assets/5-interfaces-and-type-assertions/type-assertions.svg)
+
 A type assertion `x.(T)` extracts the concrete value from interface `x` as type `T`. Single-value form panics if `x` does not hold a `T`. Two-value (comma-ok) form is safe.
 
 ```go
@@ -177,6 +189,8 @@ fmt.Println(n, ok)   // 0 false — safe, no panic
 > Single-value type assertions panic at runtime when the type does not match. In library code that accepts `any`, always use the comma-ok form. Single-value assertions are appropriate only when you have already checked the type (e.g., inside a type switch case).
 
 ## Type Switches
+
+![Visual diagram: Type Switches](./assets/5-interfaces-and-type-assertions/type-switches.svg)
 
 A type switch branches on the dynamic type of an interface value. It is the idiomatic pattern for handling a sum of types.
 
@@ -209,6 +223,8 @@ fmt.Println(describe([]int{1, 2}))  // []int of len 2
 Inside each `case`, `v` has the concrete type of that case — `v` is `int` in the `case int` branch, `string` in the `case string` branch.
 
 ## `errors.Is` and `errors.As`
+
+![Visual diagram: errors.Is and errors.As](./assets/5-interfaces-and-type-assertions/errors-is-and-errors-as.svg)
 
 The `errors` package provides two essential functions for working with wrapped error chains. Modern Go code should use these instead of direct equality comparisons or type assertions on errors.
 
@@ -247,6 +263,8 @@ if errors.As(err, &pathErr) {
 
 ## Interface Design Principles
 
+![Visual diagram: Interface Design Principles](./assets/5-interfaces-and-type-assertions/interface-design-principles.svg)
+
 Three idioms that appear in every well-designed Go codebase:
 
 **1. Accept interfaces, return structs.** Function parameters should be the narrowest interface that satisfies your needs. This makes the function testable with mocks and usable with any type that satisfies the interface.
@@ -264,6 +282,8 @@ func ParseCSV(f *os.File) ([]Record, error) { ... }
 **3. Define interfaces where they are used, not where types are defined.** If package A defines type `T` and package B needs to call one method of `T`, define the interface in B. This avoids import cycles and keeps package A free of unnecessary abstractions.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/5-interfaces-and-type-assertions/real-world-example.svg)
 
 A pluggable notification system using interfaces — allows swapping email, SMS, and Slack backends without changing the notification logic.
 
@@ -326,6 +346,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/5-interfaces-and-type-assertions/in-practice.svg)
+
 Interface overhead is real but small. A direct method call dispatches via a vtable (one indirect call). In tight loops (nanosecond-scale per iteration), this is measurable. In any I/O-bound or network code, it is invisible. Don't optimise it away unless profiling shows it matters.
 
 The `any` type is used heavily in reflection-based code (JSON, gRPC marshalling, ORM). Every `any`-typed value may escape to the heap (the compiler cannot always prove it doesn't), adding GC pressure. For performance-sensitive generic containers, use Go 1.18 generics (type parameters) instead of `any` to preserve static types and avoid boxing.
@@ -335,6 +357,8 @@ The `any` type is used heavily in reflection-based code (JSON, gRPC marshalling,
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/5-interfaces-and-type-assertions/pitfalls.svg)
+
 - **"A nil pointer satisfies an interface."** — A nil pointer stored in an interface gives a non-nil interface value. `if err != nil` will be true even though the underlying `*MyError` is nil. Always return the bare `nil` literal from functions returning `error`.
 - **"Interfaces are implemented explicitly."** — No declaration needed. If the type has the methods, it satisfies the interface. This is a feature, not a bug — but it means you can accidentally satisfy an interface and not realise it until something unexpected is passed to a function.
 - **"Type assertion always works if I know the type."** — Use the comma-ok form in any code path that could receive varying types. Single-value assertions panic on mismatch; a wrong assumption causes a production panic.
@@ -342,6 +366,8 @@ The `any` type is used heavily in reflection-based code (JSON, gRPC marshalling,
 - **"Interfaces should be large to be useful."** — The opposite. Large interfaces are hard to mock, hard to satisfy, and couple implementations to a specific framework. The Go standard library's most used interfaces have one method.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/5-interfaces-and-type-assertions/exercises.svg)
 
 ### Exercise 1 — Conceptual: Why is `var e *MyError; return e` a bug when the return type is `error`?
 

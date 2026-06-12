@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">Kruskal scans edges in sorted order; union-find rejects cycle edges</title>
+  <desc id="desc">Nine edge cells in ascending weight order. Five are green and accepted, two are red and rejected because they would close a cycle, and two gray cells are never examined because the tree is complete after five accepts. A second row tracks how many components remain after each step.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .ok { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #15803d; }
+    .no { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b91c1c; }
+    .e  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .w  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+  </style>
+  <rect x="0" y="0" width="1200" height="660" fill="#ffffff"/>
+
+  <text class="t" x="60" y="58">Kruskal: sorted scan + union-find cycle check</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="60" y="118">6 vertices, 9 edges — the MST needs exactly V − 1 = 5 accepted edges.</text>
+
+  <text class="s" x="57" y="152">scan order ⟶</text>
+
+  <!-- edge cells: y=165..275 -->
+  <!-- 1 B–C accept -->
+  <rect x="57" y="165" width="110" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="e" x="112" y="212" text-anchor="middle">B–C</text>
+  <text class="w" x="112" y="252" text-anchor="middle">1</text>
+  <!-- 2 B–D accept -->
+  <rect x="179" y="165" width="110" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="e" x="234" y="212" text-anchor="middle">B–D</text>
+  <text class="w" x="234" y="252" text-anchor="middle">2</text>
+  <!-- 3 A–C accept -->
+  <rect x="301" y="165" width="110" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="e" x="356" y="212" text-anchor="middle">A–C</text>
+  <text class="w" x="356" y="252" text-anchor="middle">3</text>
+  <!-- 4 A–B reject -->
+  <rect x="423" y="165" width="110" height="110" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+  <text class="e" x="478" y="212" text-anchor="middle">A–B</text>
+  <text class="w" x="478" y="252" text-anchor="middle">4</text>
+  <!-- 5 C–D reject -->
+  <rect x="545" y="165" width="110" height="110" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+  <text class="e" x="600" y="212" text-anchor="middle">C–D</text>
+  <text class="w" x="600" y="252" text-anchor="middle">4</text>
+  <!-- 6 C–F accept -->
+  <rect x="667" y="165" width="110" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="e" x="722" y="212" text-anchor="middle">C–F</text>
+  <text class="w" x="722" y="252" text-anchor="middle">5</text>
+  <!-- 7 E–F accept (5th) -->
+  <rect x="789" y="165" width="110" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="e" x="844" y="212" text-anchor="middle">E–F</text>
+  <text class="w" x="844" y="252" text-anchor="middle">6</text>
+  <!-- 8 D–E never examined -->
+  <rect x="911" y="165" width="110" height="110" rx="10" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="3"/>
+  <text class="e" x="966" y="212" text-anchor="middle" fill="#9ca3af">D–E</text>
+  <text class="w" x="966" y="252" text-anchor="middle" fill="#9ca3af">7</text>
+  <!-- 9 A–F never examined -->
+  <rect x="1033" y="165" width="110" height="110" rx="10" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="3"/>
+  <text class="e" x="1088" y="212" text-anchor="middle" fill="#9ca3af">A–F</text>
+  <text class="w" x="1088" y="252" text-anchor="middle" fill="#9ca3af">8</text>
+
+  <!-- decision labels -->
+  <text class="ok" x="112" y="305" text-anchor="middle">accept</text>
+  <text class="ok" x="234" y="305" text-anchor="middle">accept</text>
+  <text class="ok" x="356" y="305" text-anchor="middle">accept</text>
+  <text class="no" x="478" y="305" text-anchor="middle">cycle ✗</text>
+  <text class="no" x="600" y="305" text-anchor="middle">cycle ✗</text>
+  <text class="ok" x="722" y="305" text-anchor="middle">accept</text>
+  <text class="ok" x="844" y="305" text-anchor="middle">accept — stop</text>
+  <text class="s" x="966" y="305" text-anchor="middle">never seen</text>
+  <text class="s" x="1088" y="305" text-anchor="middle">never seen</text>
+
+  <!-- sorted position index -->
+  <text class="s" x="112" y="335" text-anchor="middle">1</text>
+  <text class="s" x="234" y="335" text-anchor="middle">2</text>
+  <text class="s" x="356" y="335" text-anchor="middle">3</text>
+  <text class="s" x="478" y="335" text-anchor="middle">4</text>
+  <text class="s" x="600" y="335" text-anchor="middle">5</text>
+  <text class="s" x="722" y="335" text-anchor="middle">6</text>
+  <text class="s" x="844" y="335" text-anchor="middle">7</text>
+  <text class="s" x="966" y="335" text-anchor="middle">8</text>
+  <text class="s" x="1088" y="335" text-anchor="middle">9</text>
+
+  <!-- components remaining band -->
+  <text class="b" x="57" y="398">Components remaining (start: 6 singletons) — each accept merges two; rejects change nothing:</text>
+  <rect x="57" y="420" width="110" height="60" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="112" y="458" text-anchor="middle">5</text>
+  <rect x="179" y="420" width="110" height="60" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="234" y="458" text-anchor="middle">4</text>
+  <rect x="301" y="420" width="110" height="60" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="356" y="458" text-anchor="middle">3</text>
+  <rect x="423" y="420" width="110" height="60" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="c" x="478" y="458" text-anchor="middle">3</text>
+  <rect x="545" y="420" width="110" height="60" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="c" x="600" y="458" text-anchor="middle">3</text>
+  <rect x="667" y="420" width="110" height="60" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="722" y="458" text-anchor="middle">2</text>
+  <rect x="789" y="420" width="110" height="60" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="c" x="844" y="458" text-anchor="middle">1</text>
+  <rect x="911" y="420" width="110" height="60" rx="8" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="966" y="458" text-anchor="middle" fill="#9ca3af">—</text>
+  <rect x="1033" y="420" width="110" height="60" rx="8" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="1088" y="458" text-anchor="middle" fill="#9ca3af">—</text>
+
+  <!-- caption -->
+  <line x1="60" y1="520" x2="1140" y2="520" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="b" x="60" y="560">Stop as soon as 5 edges are accepted: D–E and A–F are never even examined. Total weight = 1+2+3+5+6 = 17.</text>
+  <text class="m" x="60" y="596">Bonus: stop earlier, when k components remain, and you get single-linkage clustering with k clusters</text>
+  <text class="m" x="60" y="628">— same code, different stopping condition.</text>
+</svg>

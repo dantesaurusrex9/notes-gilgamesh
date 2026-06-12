@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-labelledby="title desc">
+  <title id="title">URL shortener write path</title>
+  <desc id="desc">POST /shorten flows from client to app server, which takes a pre-generated key from the key service, inserts the mapping into the database, and returns the short URL.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .edge { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="520" fill="#ffffff"/>
+  <text x="40" y="58" class="t">Write path — POST /shorten</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <rect x="40" y="180" width="180" height="80" rx="10" class="box"/>
+  <text x="130" y="228" class="b" text-anchor="middle">Client</text>
+
+  <rect x="360" y="180" width="220" height="80" rx="10" class="green"/>
+  <text x="470" y="215" class="b" text-anchor="middle">App server</text>
+  <text x="470" y="245" class="m" text-anchor="middle">validate URL, auth</text>
+
+  <rect x="720" y="120" width="240" height="80" rx="10" class="green"/>
+  <text x="840" y="155" class="b" text-anchor="middle">Key service</text>
+  <text x="840" y="185" class="m" text-anchor="middle">pop unused code</text>
+
+  <rect x="720" y="280" width="240" height="80" rx="10" class="green"/>
+  <text x="840" y="315" class="b" text-anchor="middle">Database</text>
+  <text x="840" y="345" class="m" text-anchor="middle">INSERT mapping</text>
+
+  <line x1="220" y1="210" x2="352" y2="210" class="edge" marker-end="url(#ar2)"/>
+  <text x="286" y="195" class="m" text-anchor="middle">1. POST long URL</text>
+
+  <line x1="580" y1="195" x2="712" y2="165" class="edge" marker-end="url(#ar2)"/>
+  <text x="646" y="158" class="m" text-anchor="middle">2. take key "a1B2c3"</text>
+
+  <line x1="580" y1="245" x2="712" y2="310" class="edge" marker-end="url(#ar2)"/>
+  <text x="612" y="300" class="m" text-anchor="middle">3. insert row</text>
+
+  <line x1="352" y1="245" x2="220" y2="245" class="edge" marker-end="url(#ar2)"/>
+  <text x="286" y="275" class="m" text-anchor="middle">4. 201 short URL</text>
+
+  <text x="40" y="430" class="c">{"code": "a1B2c3", "short_url": "https://sho.rt/a1B2c3"}</text>
+  <text x="40" y="475" class="m">Custom alias: skip step 2 and INSERT with the requested code; a unique-constraint violation means "alias taken".</text>
+</svg>

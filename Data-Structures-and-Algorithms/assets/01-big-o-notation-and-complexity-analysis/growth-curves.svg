@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Growth-rate comparison of common complexity classes</title>
+  <desc id="desc">Line chart of operations versus input size n from 1 to 100, clipped at 400 operations. O(1) and O(log n) hug the floor, O(n) rises gently, O(n log n) exits the top of the chart at n of about 66, and O(n squared) exits at n equals 20.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .lbl { font: 700 24px "SFMono-Regular", Consolas, monospace; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+    .axis { stroke: #4b5563; stroke-width: 2; }
+    .curve { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+  </style>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+  <text class="t" x="60" y="52">How operation counts grow with n</text>
+  <line x1="60" y1="72" x2="1140" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- gridlines -->
+  <line class="grid" x1="110" y1="447.5" x2="840" y2="447.5"/>
+  <line class="grid" x1="110" y1="335"   x2="840" y2="335"/>
+  <line class="grid" x1="110" y1="222.5" x2="840" y2="222.5"/>
+  <line class="grid" x1="110" y1="110"   x2="840" y2="110"/>
+  <text class="s" x="98" y="453" text-anchor="end">100</text>
+  <text class="s" x="98" y="341" text-anchor="end">200</text>
+  <text class="s" x="98" y="228" text-anchor="end">300</text>
+  <text class="s" x="98" y="116" text-anchor="end">400</text>
+  <text class="s" x="98" y="566" text-anchor="end">0</text>
+  <text class="s" x="60" y="92">ops</text>
+
+  <!-- axes -->
+  <line class="axis" x1="110" y1="110" x2="110" y2="560"/>
+  <line class="axis" x1="110" y1="560" x2="840" y2="560"/>
+  <text class="s" x="110" y="588" text-anchor="middle">0</text>
+  <text class="s" x="292.5" y="588" text-anchor="middle">25</text>
+  <text class="s" x="475" y="588" text-anchor="middle">50</text>
+  <text class="s" x="657.5" y="588" text-anchor="middle">75</text>
+  <text class="s" x="840" y="588" text-anchor="middle">100</text>
+  <text class="m" x="475" y="622" text-anchor="middle">input size n →   (chart clipped at 400 ops)</text>
+
+  <!-- O(n^2): exits top at n = 20 -->
+  <polyline class="curve" stroke="#fca5a5" points="117.3,558.9 124.6,555.5 131.9,549.9 139.2,542.0 146.5,531.9 153.8,519.5 161.1,504.9 168.4,488.0 175.7,468.9 183.0,447.5 190.3,423.9 197.6,398.0 204.9,369.9 212.2,339.5 219.5,306.9 226.8,272.0 234.1,234.9 241.4,195.5 248.7,153.9 256.0,110.0"/>
+  <!-- O(n log n): exits top at n ≈ 66 -->
+  <polyline class="curve" stroke="#fcd34d" points="117.3,560.0 124.6,557.8 139.2,551.0 153.8,542.6 168.4,533.0 183.0,522.6 197.6,511.6 212.2,500.0 226.8,488.0 241.4,475.6 256.0,462.8 270.6,449.6 285.2,436.2 299.8,422.5 314.4,408.6 329.0,394.4 343.6,380.0 358.2,365.4 372.8,350.6 387.4,335.7 402.0,320.5 416.6,305.2 431.2,289.8 445.8,274.2 460.4,258.4 475.0,242.5 489.6,226.5 504.2,210.4 518.8,194.1 533.4,177.8 548.0,161.3 562.6,144.7 577.2,128.0 591.8,111.2 592.8,110.0"/>
+  <!-- O(n) -->
+  <line class="curve" stroke="#8b5cf6" x1="110" y1="560" x2="840" y2="447.5"/>
+  <!-- O(log n) -->
+  <polyline class="curve" stroke="#0ea5e9" points="117.3,560.0 124.6,558.9 139.2,557.8 153.8,557.1 168.4,556.6 183.0,556.3 197.6,556.0 212.2,555.7 226.8,555.5 241.4,555.3 256.0,555.1 270.6,555.0 285.2,554.8 299.8,554.7 314.4,554.6 329.0,554.5 343.6,554.4 358.2,554.3 372.8,554.2 387.4,554.1 402.0,554.0 416.6,553.9 431.2,553.9 445.8,553.8 460.4,553.7 475.0,553.7 489.6,553.6 504.2,553.5 518.8,553.5 533.4,553.4 548.0,553.4 562.6,553.3 577.2,553.2 591.8,553.2 606.4,553.2 621.0,553.1 635.6,553.1 650.2,553.0 664.8,553.0 679.4,552.9 694.0,552.9 708.6,552.8 723.2,552.8 737.8,552.8 752.4,552.7 767.0,552.7 781.6,552.7 796.2,552.6 810.8,552.6 825.4,552.6 840.0,552.5"/>
+  <!-- O(1) -->
+  <line class="curve" stroke="#6b7280" x1="110" y1="558.9" x2="840" y2="558.9"/>
+
+  <!-- curve labels -->
+  <text class="lbl" x="266" y="140" fill="#ef4444">O(n²)</text>
+  <text class="lbl" x="604" y="140" fill="#d97706">O(n log n)</text>
+  <text class="lbl" x="852" y="455" fill="#8b5cf6">O(n)</text>
+  <text class="lbl" x="852" y="544" fill="#0ea5e9">O(log n)</text>
+  <text class="lbl" x="852" y="578" fill="#6b7280">O(1)</text>
+
+  <!-- side panel -->
+  <text class="b" x="1010" y="160">Read it as:</text>
+  <text class="s" x="1010" y="200">double n and ask</text>
+  <text class="s" x="1010" y="226">what happens —</text>
+  <text class="s" x="1010" y="266">O(1): nothing</text>
+  <text class="s" x="1010" y="296">O(log n): +1 op</text>
+  <text class="s" x="1010" y="326">O(n): 2× ops</text>
+  <text class="s" x="1010" y="356">O(n log n): ~2× ops</text>
+  <text class="s" x="1010" y="386">O(n²): 4× ops</text>
+</svg>

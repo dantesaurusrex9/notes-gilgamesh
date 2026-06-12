@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="title desc">
+  <title id="title">Encryption in transit, at rest, and field-level</title>
+  <desc id="desc">A request path from client through load balancer to service and database, annotated with where TLS, mTLS, disk encryption, and field-level encryption protect data and what each one does not protect against.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .box { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .amber { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .good { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; marker-end: url(#tri2); }
+    .lbl { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8b5cf6; }
+  </style>
+  <defs>
+    <marker id="tri2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="540" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Three encryption layers protect different attackers</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+
+  <rect class="box" x="50" y="140" width="170" height="80" rx="10"/>
+  <text class="b" x="135" y="188" text-anchor="middle">Client</text>
+
+  <rect class="box" x="350" y="140" width="190" height="80" rx="10"/>
+  <text class="b" x="445" y="188" text-anchor="middle">Load balancer</text>
+
+  <rect class="box" x="670" y="140" width="170" height="80" rx="10"/>
+  <text class="b" x="755" y="188" text-anchor="middle">Service</text>
+
+  <rect class="amber" x="970" y="140" width="180" height="80" rx="10"/>
+  <text class="b" x="1060" y="188" text-anchor="middle">Database</text>
+
+  <path class="arrow" d="M220 180 L344 180"/>
+  <text class="lbl" x="282" y="160" text-anchor="middle">TLS</text>
+  <path class="arrow" d="M540 180 L664 180"/>
+  <text class="lbl" x="602" y="160" text-anchor="middle">mTLS</text>
+  <path class="arrow" d="M840 180 L964 180"/>
+  <text class="lbl" x="902" y="160" text-anchor="middle">TLS</text>
+
+  <rect class="good" x="50" y="280" width="540" height="100" rx="10"/>
+  <text class="b" x="70" y="318">In transit (TLS / mTLS)</text>
+  <text class="m" x="70" y="352">Stops wire sniffing + impostor services.</text>
+  <rect class="bad" x="50" y="395" width="540" height="50" rx="10"/>
+  <text class="m" x="70" y="427">Does NOT protect data once it lands on disk.</text>
+
+  <rect class="good" x="640" y="280" width="510" height="100" rx="10"/>
+  <text class="b" x="660" y="318">At rest (disk / volume encryption)</text>
+  <text class="m" x="660" y="352">Stops stolen disks and discarded drives.</text>
+  <rect class="bad" x="640" y="395" width="510" height="50" rx="10"/>
+  <text class="m" x="660" y="427">Does NOT stop a SQL-injected SELECT *.</text>
+
+  <rect class="good" x="50" y="465" width="1100" height="55" rx="10"/>
+  <text class="b" x="70" y="500">Field-level: encrypt the SSN column itself — survives DB compromise; only the app holds the key (in a KMS).</text>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "08 - SwiftPM, Testing, Compiling, and Shipping"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, swiftpm, testing, shipping]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** SwiftPM is the standard command-line workflow for packages, libraries, tools, and server apps. Use `swift build`, `swift run`, `swift test`, release builds, sanitizers, Docker/Linux verification for server targets, and CI gates that reflect production.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/08-swiftpm-testing-compiling-and-shipping/real-world-example.svg)
 
 Create a tiny executable package with a testable library target. This structure scales better than putting all logic in `main.swift`.
 
@@ -53,6 +55,8 @@ import Testing
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/08-swiftpm-testing-compiling-and-shipping/vocabulary.svg)
+
 **Package**: A SwiftPM project defined by `Package.swift`.
 
 ---
@@ -81,11 +85,15 @@ import Testing
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/08-swiftpm-testing-compiling-and-shipping/intuition.svg)
+
 Treat SwiftPM as your repeatable automation surface. Xcode is excellent for Apple apps, but serious teams still need command-line build and test paths for CI, release automation, server deployment, and reproducible bug reports.
 
 The production rule is simple: the closer the verification environment is to the shipping environment, the more trustworthy the result. If you deploy to Linux, test on Linux. If you care about performance, measure release builds. If concurrency is risky, run ThreadSanitizer.
 
 ## Package Layout
+
+![Visual diagram: Package Layout](./assets/08-swiftpm-testing-compiling-and-shipping/package-layout.svg)
 
 A clean package separates library code, executable entry points, and tests.
 
@@ -104,6 +112,8 @@ Tests/
 The executable should parse arguments, load config, call the library, and handle top-level errors. The library should contain the logic you test.
 
 ## Manifest Basics
+
+![Visual diagram: Manifest Basics](./assets/08-swiftpm-testing-compiling-and-shipping/manifest-basics.svg)
 
 The manifest is Swift code. Keep it boring unless the package has complex build needs.
 
@@ -135,6 +145,8 @@ let package = Package(
 
 ## Testing
 
+![Visual diagram: Testing](./assets/08-swiftpm-testing-compiling-and-shipping/testing.svg)
+
 Modern Swift has XCTest and Swift Testing. Swift Testing gives expressive APIs such as `@Test` and `#expect`; XCTest remains deeply integrated and common in older projects and UI test setups.
 
 ```swift
@@ -159,6 +171,8 @@ swift test -c release
 
 ## Linux and Docker Verification
 
+![Visual diagram: Linux and Docker Verification](./assets/08-swiftpm-testing-compiling-and-shipping/linux-and-docker-verification.svg)
+
 Server-side Swift and CLI tools often run on Linux. macOS code can accidentally import Apple-only APIs or assume Darwin behavior, so test in the target OS.
 
 ```bash
@@ -167,6 +181,8 @@ docker run --rm -v "$(pwd):/code" -w /code swift:latest swift build -c release
 ```
 
 ## Release Builds and Binary Paths
+
+![Visual diagram: Release Builds and Binary Paths](./assets/08-swiftpm-testing-compiling-and-shipping/release-builds-and-binary-paths.svg)
 
 Debug binaries are not suitable for production performance. Build release artifacts and ask SwiftPM for the binary path.
 
@@ -183,6 +199,8 @@ swift build -c release -Xswiftc -cross-module-optimization
 
 ## Packaging Server Apps
 
+![Visual diagram: Packaging Server Apps](./assets/08-swiftpm-testing-compiling-and-shipping/packaging-server-apps.svg)
+
 For containerized server apps, build inside a Swift image, copy the release binary into a runtime image, and run only what you need.
 
 ```dockerfile
@@ -198,6 +216,8 @@ CMD ["my-server"]
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/08-swiftpm-testing-compiling-and-shipping/pitfalls.svg)
+
 - **Testing only from Xcode**: Keep a command-line `swift test` path green.
 - **Shipping debug builds**: Debug builds can be dramatically slower.
 - **Assuming macOS success means Linux success**: Foundation, filesystem, networking, and conditional imports can differ.
@@ -205,6 +225,8 @@ CMD ["my-server"]
 - **Fat executable targets**: Move logic into library targets so tests do not need to drive the whole process.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/08-swiftpm-testing-compiling-and-shipping/exercises.svg)
 
 1. Create a package with one library target, one executable target, and one test target.
 2. Add a Swift Testing test with `@Test` and `#expect`.

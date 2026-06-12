@@ -1,7 +1,7 @@
 ---
 title: "1 - What is Python"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python is a dynamically-typed, garbage-collected, interpreted language whose central design philosophy is that code should read like prose and that "everything is an object." CPython — the reference implementation written in C — compiles source to bytecode, executes that bytecode in a virtual machine, and manages memory via reference counting augmented by a cyclic-garbage collector. Understanding this execution model is the prerequisite for every performance, concurrency, and packaging decision in the rest of the series.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/1-what-is-python/vocabulary.svg)
 
 **CPython**: The canonical reference implementation of Python, written in C. When someone says "Python," they almost always mean CPython. Compiled to a `.pyc` bytecode file, executed by the CPython virtual machine (ceval.c).
 
@@ -65,11 +67,15 @@ print(sys.implementation.name)  # >>> 'cpython'
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/1-what-is-python/intuition.svg)
+
 Think of Python as a thin, expressive shell over C. When you write `x = [1, 2, 3]`, CPython allocates a `PyListObject` on the C heap, sets `ob_refcnt = 1`, and stores the name `x` in the current namespace dictionary. When you write `x.append(4)`, it calls `list_append` in `listobject.c`. The Python syntax is ergonomic; the actual work happens in C. This is why Python can be both "slow" (interpreter overhead per bytecode instruction) and "fast in practice" (NumPy's inner loops are BLAS C/Fortran, bypassing the interpreter).
 
 The "everything is an object" philosophy means there are no primitives in the Java/C sense. The integer `42`, the function `len`, the class `str`, the module `os` — all are objects with identity, type, and value. This uniformity is what makes Python's runtime model so composable: you can pass a class to a function, store a function in a list, dynamically add methods to an object. The cost is indirection: every attribute lookup traverses a chain of dictionaries.
 
 ## History and the Interpreter Model
+
+![Visual diagram: History and the Interpreter Model](./assets/1-what-is-python/history-and-the-interpreter-model.svg)
 
 Python was created by Guido van Rossum and first released in 1991. Python 2 and Python 3 coexisted for over a decade; Python 2 reached end-of-life on 2020-01-01. The series assumes Python 3.11+ throughout.
 
@@ -85,12 +91,12 @@ When you run `python3 script.py`, CPython performs these steps:
 
 ```mermaid
 flowchart LR
-    SRC[".py source"] --> TOK["Tokeniser<br/>token stream"]
-    TOK --> PARSE["Parser<br/>AST"]
-    PARSE --> COMPILE["Compiler<br/>code object + bytecode"]
+    SRC[".py source"] --> TOK["Tokeniser / token stream"]
+    TOK --> PARSE["Parser / AST"]
+    PARSE --> COMPILE["Compiler / code object + bytecode"]
     COMPILE --> CACHE["__pycache__/*.pyc"]
-    CACHE --> VM["CPython VM<br/>ceval.c eval loop"]
-    VM --> OBJ["Python objects<br/>on the C heap"]
+    CACHE --> VM["CPython VM / ceval.c eval loop"]
+    VM --> OBJ["Python objects / on the C heap"]
 ```
 
 You can inspect any step of this pipeline from Python itself:
@@ -143,6 +149,8 @@ with open(pyc_path, "rb") as f:
 
 ## Memory Management: Reference Counting and Cyclic GC
 
+![Visual diagram: Memory Management: Reference Counting and Cyclic GC](./assets/1-what-is-python/memory-management-reference-counting-and-cyclic-gc.svg)
+
 Python's memory model has two layers. Understanding both is essential for diagnosing memory leaks in long-running services.
 
 ### Reference Counting
@@ -171,9 +179,9 @@ Reference counting cannot collect cycles. If object A holds a reference to B and
 
 ```mermaid
 flowchart TD
-    A["Object A<br/>ob_refcnt=1"] -- "a.ref = B" --> B["Object B<br/>ob_refcnt=1"]
+    A["Object A / ob_refcnt=1"] -- "a.ref = B" --> B["Object B / ob_refcnt=1"]
     B -- "b.ref = A" --> A
-    NOTE["No external refs to A or B<br/>refcount never reaches 0<br/>cyclic GC finds and collects this"]
+    NOTE["No external refs to A or B / refcount never reaches 0 / cyclic GC finds and collects this"]
 ```
 
 The GC divides objects into three generations (0, 1, 2). New objects start in generation 0. Objects that survive a collection are promoted. Generation 0 is collected most frequently; generation 2 rarely. You can control this:
@@ -192,21 +200,23 @@ print(gc.get_count()) # (gen0_count, gen1_count, gen2_count)
 
 ## CPython vs PyPy vs MicroPython
 
+![Visual diagram: CPython vs PyPy vs MicroPython](./assets/1-what-is-python/cpython-vs-pypy-vs-micropython.svg)
+
 The three implementations differ in architecture, performance profile, and ecosystem compatibility.
 
 ```mermaid
 flowchart LR
     subgraph CPython
         CP_SRC[".py source"] --> CP_BC["Bytecode (.pyc)"]
-        CP_BC --> CP_VM["C interpreter loop<br/>ceval.c"]
+        CP_BC --> CP_VM["C interpreter loop / ceval.c"]
     end
     subgraph PyPy
         PP_SRC[".py source"] --> PP_BC["RPython bytecode"]
-        PP_BC --> PP_JIT["Tracing JIT<br/>→ machine code"]
+        PP_BC --> PP_JIT["Tracing JIT / → machine code"]
     end
     subgraph MicroPython
         MP_SRC[".py source"] --> MP_BC["Minimal bytecode"]
-        MP_BC --> MP_VM["Tiny C VM<br/>no full stdlib"]
+        MP_BC --> MP_VM["Tiny C VM / no full stdlib"]
     end
 ```
 
@@ -223,6 +233,8 @@ flowchart LR
 > For CPU-bound Python code that cannot use NumPy/C extensions, **PyPy is the right answer** — not multiprocessing, not Cython. PyPy's JIT compiler sees the same code and generates native machine code. The tradeoff is that libraries with CPython C extensions (NumPy, pandas, PyTorch) either don't work or work via a slow compatibility shim.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/1-what-is-python/real-world-example.svg)
 
 This example shows the full lifecycle of a module — source to bytecode to execution — and demonstrates the key memory primitives from this note.
 
@@ -282,6 +294,8 @@ if __name__ == "__main__":
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/1-what-is-python/in-practice.svg)
+
 **Import cost is real.** Every `import` statement the first time executes the module's top-level code, compiles it to bytecode, caches the `.pyc`, and stores the module object in `sys.modules`. Subsequent imports are a dictionary lookup. The practical consequence: never do heavy imports inside a hot path. Always import at the module level.
 
 **`sys.modules` is the import cache.** If you mutate `sys.modules['foo']` you can inject mock modules for testing. Removing an entry from `sys.modules` forces a reimport — used in plugin reloading and some test frameworks.
@@ -295,6 +309,8 @@ if __name__ == "__main__":
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/1-what-is-python/pitfalls.svg)
+
 - **"Python is slow."** — CPython's interpreter overhead is real, but most Python programs are I/O-bound or call into C extensions. NumPy, pandas, PyTorch, and asyncio all bypass the slow VM loop for their hot paths. Profile first; optimise the bottleneck, not the language.
 - **"`.pyc` means compiled."** — `.pyc` files are bytecode for CPython's *virtual machine*, not native machine code. They are faster to load (skip parse/compile) but they still run through the interpreter loop. PyPy's JIT produces actual machine code.
 - **"Deleting a variable frees the memory."** — `del x` decrements `ob_refcnt`. If anything else references the same object, the memory is not freed. Use `gc.collect()` to force cycle collection, and hold weak references (`weakref`) to avoid being the thing keeping an object alive.
@@ -302,6 +318,8 @@ if __name__ == "__main__":
 - **"PyPy is a drop-in replacement."** — For pure Python it is. For code that depends on CPython C extensions (NumPy, Pillow, cryptography), PyPy's compatibility shim often has correctness or performance gaps. Test thoroughly before switching.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/1-what-is-python/exercises.svg)
 
 ### Exercise 1 — Bytecode reading
 

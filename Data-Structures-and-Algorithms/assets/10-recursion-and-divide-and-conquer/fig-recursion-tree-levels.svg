@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Recursion tree for T(n) = 2T(n/2) + cn</title>
+  <desc id="desc">A binary recursion tree. The root costs cn, the two children cost cn/2 each, the four grandchildren cost cn/4 each, down to n leaves costing c each. A right-hand column shows that every level sums to cn, and with log2 n plus one levels the total is Theta of n log n.</desc>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .node  { font: 700 22px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+  </style>
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <text class="title" x="40" y="56">Recursion tree: T(n) = 2T(n/2) + cn</text>
+  <line x1="40" y1="74" x2="1160" y2="74" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- depth arrow -->
+  <line x1="44" y1="118" x2="44" y2="460" stroke="#0ea5e9" stroke-width="3" marker-start="url(#arrowBlue)" marker-end="url(#arrowBlue)"/>
+  <text class="small" transform="rotate(-90 22 289)" x="22" y="289" text-anchor="middle">log₂ n + 1 levels</text>
+
+  <!-- edges -->
+  <g stroke="#6b7280" stroke-width="2">
+    <line x1="430" y1="154" x2="240" y2="205"/>
+    <line x1="430" y1="154" x2="620" y2="205"/>
+    <line x1="240" y1="249" x2="140" y2="300"/>
+    <line x1="240" y1="249" x2="340" y2="300"/>
+    <line x1="620" y1="249" x2="540" y2="300"/>
+    <line x1="620" y1="249" x2="740" y2="300"/>
+  </g>
+
+  <!-- level 0 -->
+  <rect x="370" y="110" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="430" y="140" text-anchor="middle">cn</text>
+
+  <!-- level 1 -->
+  <rect x="180" y="205" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="240" y="235" text-anchor="middle">cn/2</text>
+  <rect x="560" y="205" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="620" y="235" text-anchor="middle">cn/2</text>
+
+  <!-- level 2 -->
+  <rect x="80" y="300" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="140" y="330" text-anchor="middle">cn/4</text>
+  <rect x="280" y="300" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="340" y="330" text-anchor="middle">cn/4</text>
+  <rect x="480" y="300" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="540" y="330" text-anchor="middle">cn/4</text>
+  <rect x="680" y="300" width="120" height="44" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="node" x="740" y="330" text-anchor="middle">cn/4</text>
+
+  <!-- vertical dots -->
+  <text class="muted" x="140" y="388" text-anchor="middle">⋮</text>
+  <text class="muted" x="340" y="388" text-anchor="middle">⋮</text>
+  <text class="muted" x="540" y="388" text-anchor="middle">⋮</text>
+  <text class="muted" x="740" y="388" text-anchor="middle">⋮</text>
+
+  <!-- leaves -->
+  <g fill="#dcfce7" stroke="#86efac" stroke-width="2">
+    <rect x="105" y="425" width="50" height="40" rx="6"/>
+    <rect x="185" y="425" width="50" height="40" rx="6"/>
+    <rect x="265" y="425" width="50" height="40" rx="6"/>
+    <rect x="345" y="425" width="50" height="40" rx="6"/>
+    <rect x="425" y="425" width="50" height="40" rx="6"/>
+    <rect x="505" y="425" width="50" height="40" rx="6"/>
+    <rect x="585" y="425" width="50" height="40" rx="6"/>
+    <rect x="665" y="425" width="50" height="40" rx="6"/>
+  </g>
+  <text class="node" x="130" y="452" text-anchor="middle">c</text>
+  <text class="node" x="210" y="452" text-anchor="middle">c</text>
+  <text class="node" x="290" y="452" text-anchor="middle">c</text>
+  <text class="node" x="370" y="452" text-anchor="middle">c</text>
+  <text class="node" x="450" y="452" text-anchor="middle">c</text>
+  <text class="node" x="530" y="452" text-anchor="middle">c</text>
+  <text class="node" x="610" y="452" text-anchor="middle">c</text>
+  <text class="node" x="690" y="452" text-anchor="middle">c</text>
+  <text class="small" x="410" y="496" text-anchor="middle">n leaves, each costing c</text>
+
+  <!-- per-level cost column -->
+  <line x1="860" y1="96" x2="860" y2="500" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="small" x="900" y="118">COST PER LEVEL</text>
+  <text class="node" x="900" y="142">1 · cn = cn</text>
+  <text class="node" x="900" y="237">2 · cn/2 = cn</text>
+  <text class="node" x="900" y="332">4 · cn/4 = cn</text>
+  <text class="muted" x="900" y="400">⋮</text>
+  <text class="node" x="900" y="455">n · c = cn</text>
+
+  <!-- total -->
+  <line x1="40" y1="520" x2="1160" y2="520" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="80" y="568">Every level sums to the same cost:</text>
+  <text class="node" x="520" y="568">cn · (log₂ n + 1) = Θ(n log n)</text>
+</svg>

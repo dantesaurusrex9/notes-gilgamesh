@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-labelledby="title desc">
+  <title id="title">N-Queens constant-time safety check with three constraint sets</title>
+  <desc id="desc">A 5 by 5 board with queens at row 0 column 1 and row 1 column 3. Row 2 squares are shaded: four red squares are attacked through the cols, diag, or anti sets; the single green square at column 0 passes all three set lookups. A side panel shows the set contents and the membership test.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h2    { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .tag   { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .queen { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .cell    { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+    .qcell   { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .attacked{ fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .safe    { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+  </style>
+  <rect x="0" y="0" width="1200" height="680" fill="#ffffff"/>
+  <text x="40" y="56" class="title">N-Queens: O(1) safety check via three sets</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- column labels -->
+  <text x="152" y="158" class="small" text-anchor="middle">0</text>
+  <text x="236" y="158" class="small" text-anchor="middle">1</text>
+  <text x="320" y="158" class="small" text-anchor="middle">2</text>
+  <text x="404" y="158" class="small" text-anchor="middle">3</text>
+  <text x="488" y="158" class="small" text-anchor="middle">4</text>
+  <!-- row labels -->
+  <text x="92" y="218" class="small" text-anchor="end">0</text>
+  <text x="92" y="302" class="small" text-anchor="end">1</text>
+  <text x="92" y="386" class="small" text-anchor="end">2</text>
+  <text x="92" y="470" class="small" text-anchor="end">3</text>
+  <text x="92" y="554" class="small" text-anchor="end">4</text>
+
+  <!-- row 0 -->
+  <rect x="110" y="170" width="84" height="84" class="cell"/>
+  <rect x="194" y="170" width="84" height="84" class="qcell"/>
+  <rect x="278" y="170" width="84" height="84" class="cell"/>
+  <rect x="362" y="170" width="84" height="84" class="cell"/>
+  <rect x="446" y="170" width="84" height="84" class="cell"/>
+  <text x="236" y="224" class="queen" text-anchor="middle">Q</text>
+  <!-- row 1 -->
+  <rect x="110" y="254" width="84" height="84" class="cell"/>
+  <rect x="194" y="254" width="84" height="84" class="cell"/>
+  <rect x="278" y="254" width="84" height="84" class="cell"/>
+  <rect x="362" y="254" width="84" height="84" class="qcell"/>
+  <rect x="446" y="254" width="84" height="84" class="cell"/>
+  <text x="404" y="308" class="queen" text-anchor="middle">Q</text>
+  <!-- row 2: the row being placed -->
+  <rect x="110" y="338" width="84" height="84" class="safe"/>
+  <rect x="194" y="338" width="84" height="84" class="attacked"/>
+  <rect x="278" y="338" width="84" height="84" class="attacked"/>
+  <rect x="362" y="338" width="84" height="84" class="attacked"/>
+  <rect x="446" y="338" width="84" height="84" class="attacked"/>
+  <text x="152" y="386" class="tag" text-anchor="middle">✓ safe</text>
+  <text x="236" y="386" class="tag" text-anchor="middle">col</text>
+  <text x="320" y="386" class="tag" text-anchor="middle">r+c</text>
+  <text x="404" y="386" class="tag" text-anchor="middle">col</text>
+  <text x="488" y="386" class="tag" text-anchor="middle">r−c</text>
+  <!-- row 3 -->
+  <rect x="110" y="422" width="84" height="84" class="cell"/>
+  <rect x="194" y="422" width="84" height="84" class="cell"/>
+  <rect x="278" y="422" width="84" height="84" class="cell"/>
+  <rect x="362" y="422" width="84" height="84" class="cell"/>
+  <rect x="446" y="422" width="84" height="84" class="cell"/>
+  <!-- row 4 -->
+  <rect x="110" y="506" width="84" height="84" class="cell"/>
+  <rect x="194" y="506" width="84" height="84" class="cell"/>
+  <rect x="278" y="506" width="84" height="84" class="cell"/>
+  <rect x="362" y="506" width="84" height="84" class="cell"/>
+  <rect x="446" y="506" width="84" height="84" class="cell"/>
+  <!-- board outline -->
+  <rect x="110" y="170" width="420" height="420" fill="none" stroke="#6b7280" stroke-width="2"/>
+
+  <text x="110" y="632" class="muted">Queens at (0,1) and (1,3). Placing row 2: only column 0 survives all three lookups.</text>
+
+  <!-- right panel: the bookkeeping -->
+  <text x="660" y="205" class="h2">Constraint-set bookkeeping</text>
+  <text x="660" y="252" class="code">cols = {1, 3}</text>
+  <text x="920" y="252" class="small">occupied columns</text>
+  <text x="660" y="292" class="code">diag = {-1, -2}</text>
+  <text x="920" y="292" class="small">r − c, “\” diagonals</text>
+  <text x="660" y="332" class="code">anti = {1, 4}</text>
+  <text x="920" y="332" class="small">r + c, “/” diagonals</text>
+
+  <text x="660" y="400" class="h2">Safety test for square (2, 0)</text>
+  <text x="660" y="446" class="code">0 in cols        → False</text>
+  <text x="660" y="486" class="code">2-0 = 2 in diag  → False</text>
+  <text x="660" y="526" class="code">2+0 = 2 in anti  → False</text>
+  <text x="660" y="576" class="body">All three miss → safe. Place, recurse, undo.</text>
+  <text x="660" y="616" class="muted">Square (2,2) dies instantly: 2+2 = 4 ∈ anti.</text>
+</svg>

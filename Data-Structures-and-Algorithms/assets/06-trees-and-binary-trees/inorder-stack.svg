@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Iterative inorder, frozen mid-run</title>
+  <desc id="desc">The six-node tree on the left with the left spine 1, 2, 4 highlighted. On the right, the explicit stack holds 1 at the bottom, 2 in the middle, and 4 on top. The output list is still empty.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .val   { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; text-anchor: middle; }
+    .spine { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .plain { fill: #ffffff; stroke: #6b7280; stroke-width: 2.5; }
+    .edge  { stroke: #4b5563; stroke-width: 2.5; }
+    .cell  { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2.5; }
+    .top   { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2.5; }
+    .ann   { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+
+  <text x="40" y="56" class="title">Iterative inorder, frozen mid-run</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- tree edges -->
+  <line x1="280" y1="180" x2="180" y2="300" class="edge"/>
+  <line x1="280" y1="180" x2="380" y2="300" class="edge"/>
+  <line x1="180" y1="300" x2="110" y2="420" class="edge"/>
+  <line x1="180" y1="300" x2="250" y2="420" class="edge"/>
+  <line x1="380" y1="300" x2="470" y2="420" class="edge"/>
+
+  <!-- tree nodes: spine 1,2,4 pushed -->
+  <circle cx="280" cy="180" r="32" class="spine"/><text x="280" y="189" class="val">1</text>
+  <circle cx="180" cy="300" r="32" class="spine"/><text x="180" y="309" class="val">2</text>
+  <circle cx="380" cy="300" r="32" class="plain"/><text x="380" y="309" class="val">3</text>
+  <circle cx="110" cy="420" r="32" class="spine"/><text x="110" y="429" class="val">4</text>
+  <circle cx="250" cy="420" r="32" class="plain"/><text x="250" y="429" class="val">5</text>
+  <circle cx="470" cy="420" r="32" class="plain"/><text x="470" y="429" class="val">6</text>
+
+  <text x="60" y="500" class="muted">blue = pushed left spine. cur walked 1 → 2 → 4 → None.</text>
+
+  <!-- stack -->
+  <text x="700" y="188" class="body">stack — deferred ancestors</text>
+  <rect x="700" y="216" width="170" height="58" class="top"/>
+  <text x="785" y="252" class="val">4</text>
+  <rect x="700" y="278" width="170" height="58" class="cell"/>
+  <text x="785" y="314" class="val">2</text>
+  <rect x="700" y="340" width="170" height="58" class="cell"/>
+  <text x="785" y="376" class="val">1</text>
+  <line x1="692" y1="404" x2="878" y2="404" stroke="#4b5563" stroke-width="4"/>
+
+  <text x="592" y="252" class="small">top</text>
+  <line x1="636" y1="245" x2="692" y2="245" class="ann" marker-end="url(#arr2)"/>
+
+  <!-- what happens next -->
+  <text x="940" y="188" class="body">next steps</text>
+  <text x="940" y="226" class="small">pop 4 → output 4</text>
+  <text x="940" y="254" class="small">cur = 4.right = None</text>
+  <text x="940" y="282" class="small">pop 2 → output 2</text>
+  <text x="940" y="310" class="small">cur = 2.right = 5, push 5</text>
+  <text x="940" y="338" class="small">pop 5, pop 1, walk into 3 …</text>
+
+  <!-- output -->
+  <text x="700" y="470" class="code">output = []</text>
+  <text x="700" y="500" class="muted">nothing visited yet — every visit is a pop</text>
+</svg>

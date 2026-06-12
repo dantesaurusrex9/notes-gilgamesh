@@ -1,7 +1,7 @@
 ---
 title: "10 - Performance and the Standard Library"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Python performance work starts with measurement (`timeit`, `cProfile`, `dis`), locates the bottleneck (almost always a small fraction of the code), and applies the minimum-invasive fix: vectorisation with NumPy, JIT with numba, or precompilation with Cython. The standard library's `collections`, `itertools`, `functools`, and `pathlib` replace entire categories of hand-rolled code with faster, idiomatic alternatives.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/10-performance-and-the-standard-library/vocabulary.svg)
 
 **`timeit`**: Standard-library module for micro-benchmarking small snippets. Runs the snippet many times and reports the best time per execution to reduce OS jitter.
 
@@ -68,11 +70,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/10-performance-and-the-standard-library/intuition.svg)
+
 Python performance is a two-speed world. The slow tier is Python bytecode: roughly 50–200 million simple operations per second per core. The fast tier is C/Fortran/BLAS, accessed through libraries like NumPy, pandas, and PyTorch: 1–10 billion FLOP/s per core. The performance engineer's job is to push as much work as possible into the fast tier without rewriting in C.
 
 The 80/20 rule holds acutely in Python: 20% of the code accounts for 80% of execution time. Profile first, always. The most impactful change is almost never what you expect.
 
 ## Measuring Performance
+
+![Visual diagram: Measuring Performance](./assets/10-performance-and-the-standard-library/measuring-performance.svg)
 
 ### `timeit` — Micro-benchmarks
 
@@ -169,6 +175,8 @@ print(sys.getsizeof(0))            # >>> 24   int object
 
 ## NumPy Vectorisation
 
+![Visual diagram: NumPy Vectorisation](./assets/10-performance-and-the-standard-library/numpy-vectorisation.svg)
+
 The canonical optimisation for numerical Python code. Replace explicit for-loops over arrays with NumPy array operations that execute in C.
 
 ```python
@@ -202,6 +210,8 @@ print(f"Python: {t_py:.2f}s  NumPy: {t_np:.4f}s  Speedup: {t_py/t_np:.0f}x")
 
 ## numba `@jit` — JIT Compilation
 
+![Visual diagram: numba @jit - JIT Compilation](./assets/10-performance-and-the-standard-library/numba-jit-jit-compilation.svg)
+
 For code that cannot be vectorised into NumPy (irregular loops, tree traversals, custom reductions), `numba` JIT-compiles Python functions to LLVM IR → native code.
 
 ```python
@@ -226,6 +236,8 @@ print(result)  # >>> 3.3333328333335e+20
 `nopython=True` (required for maximum speed) means numba must be able to infer types for every variable. If it cannot, it raises a compilation error. `cache=True` writes the compiled code to disk so reloads are fast.
 
 ## Key Standard-Library Modules
+
+![Visual diagram: Key Standard-Library Modules](./assets/10-performance-and-the-standard-library/key-standard-library-modules.svg)
 
 ### `collections`
 
@@ -322,6 +334,8 @@ print(process_directory(base))
 
 ## Real-world Example
 
+![Visual diagram: Real-world Example](./assets/10-performance-and-the-standard-library/real-world-example.svg)
+
 A realistic performance optimisation workflow: profile, locate the bottleneck, fix with NumPy, verify.
 
 ```python
@@ -369,6 +383,8 @@ print(f"Pure Python: {t_slow:.2f}s | NumPy: {t_fast:.4f}s | Speedup: {t_slow/t_f
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/10-performance-and-the-standard-library/in-practice.svg)
+
 **Profile in production with `py-spy`.** `py-spy top --pid <pid>` attaches to a running Python process without code modification and shows a live top-like view of hot functions. `py-spy record -o profile.svg --pid <pid>` generates a flame graph. Zero overhead on the traced process — ideal for production profiling.
 
 **The `__slots__` + `namedtuple` + `dataclass(slots=True)` hierarchy.** For memory-sensitive code with millions of instances, `dataclass(slots=True)` (Python 3.10+) gives the ergonomics of `dataclass` with the memory savings of `__slots__`. Reduces per-instance overhead from ~200 bytes to ~56 bytes.
@@ -380,6 +396,8 @@ print(f"Pure Python: {t_slow:.2f}s | NumPy: {t_fast:.4f}s | Speedup: {t_slow/t_f
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/10-performance-and-the-standard-library/pitfalls.svg)
+
 - **"I should optimise this loop."** — Only after profiling proves it is the bottleneck. Premature optimisation is the most common waste of Python engineering time.
 - **"`timeit` measures real-world performance."** — `timeit` measures isolated snippet performance, not I/O, startup cost, or GC pressure. Use `cProfile` or `py-spy` for real-world profiling.
 - **"NumPy is always faster than pure Python."** — For tiny arrays (n < 10), Python list operations can be faster due to NumPy's object-creation overhead. Profile at the target data size.
@@ -387,6 +405,8 @@ print(f"Pure Python: {t_slow:.2f}s | NumPy: {t_fast:.4f}s | Speedup: {t_slow/t_f
 - **"Cython is the right first step."** — Only for highly specific numerical kernels that cannot be expressed as NumPy/numba. Cython requires a build step, C knowledge for type annotations, and creates a maintenance burden. NumPy → numba → Cython is the right escalation ladder.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/10-performance-and-the-standard-library/exercises.svg)
 
 ### Exercise 1 — Identify the bottleneck
 

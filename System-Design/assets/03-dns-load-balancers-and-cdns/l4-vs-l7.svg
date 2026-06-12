@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">L4 versus L7: what the load balancer can see</title>
+  <desc id="desc">Left panel: an L4 balancer sees only the green 5-tuple cells (source IP, destination IP, source port, destination port); the HTTP payload is a large red opaque TLS ciphertext block. Right panel: an L7 balancer terminates TLS and sees the request line and every header as green routable cells.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .sm { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cs { font: 600 18px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .mid { text-anchor: middle; }
+  </style>
+  <rect width="1200" height="640" fill="#ffffff"/>
+
+  <text class="t" x="40" y="56">L4 vs L7: what the load balancer can see</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="600" y1="95" x2="600" y2="600" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Left: L4 -->
+  <text class="h" x="40" y="124">L4 — routes on the connection</text>
+  <text class="sm" x="40" y="152">decision made the moment the TCP SYN arrives</text>
+
+  <rect x="40" y="175" width="122" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="101" y="209">src IP</text>
+  <rect x="170" y="175" width="122" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="231" y="209">dst IP</text>
+  <rect x="300" y="175" width="122" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="361" y="209">src port</text>
+  <rect x="430" y="175" width="122" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="491" y="209">dst port</text>
+  <text class="sm mid" x="296" y="256">the 5-tuple — all an L4 device ever reads</text>
+
+  <rect x="40" y="282" width="512" height="150" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="h mid" x="296" y="346">TLS ciphertext — opaque</text>
+  <text class="s mid" x="296" y="380">path? headers? cookies? user? — unknowable</text>
+
+  <text class="s" x="40" y="478">✓ microseconds per packet; millions of connections</text>
+  <text class="s" x="40" y="510">✓ any TCP/UDP protocol — not just HTTP</text>
+  <text class="s" x="40" y="542">✗ cannot route /api vs /static, no cookie stickiness</text>
+  <text class="s" x="40" y="574">✗ no retries, no header rewrite, no response caching</text>
+
+  <!-- Right: L7 -->
+  <text class="h" x="640" y="124">L7 — routes on the request</text>
+  <text class="sm" x="640" y="152">terminates TLS, parses HTTP, then decides</text>
+
+  <rect x="640" y="175" width="110" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="695" y="209">GET</text>
+  <rect x="760" y="175" width="220" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="870" y="209">/api/v1/cart</text>
+  <rect x="990" y="175" width="160" height="54" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="c mid" x="1070" y="209">HTTP/1.1</text>
+  <text class="sm mid" x="895" y="256">request line — parsed and routable</text>
+
+  <rect x="640" y="282" width="510" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="cs" x="656" y="309">Host: shop.example.com</text>
+  <rect x="640" y="330" width="510" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="cs" x="656" y="357">Cookie: session=9f2c…</text>
+  <rect x="640" y="378" width="510" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="cs" x="656" y="405">Authorization: Bearer eyJh…</text>
+  <text class="sm mid" x="895" y="450">headers — route, rewrite, or reject on any of them</text>
+
+  <text class="s" x="640" y="478">✓ path/host routing: /api → pool B, canary by header</text>
+  <text class="s" x="640" y="510">✓ retries, timeouts, caching, auth at the edge</text>
+  <text class="s" x="640" y="542">✗ more CPU: TLS handshake + parse on every request</text>
+  <text class="s" x="640" y="574">✗ must re-encrypt to backends or trust the network</text>
+</svg>

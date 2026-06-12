@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Circuit breaker state machine</title>
+  <desc id="desc">Three states: closed, open, and half-open. Failures at or above the threshold trip closed to open. After the recovery timeout, open allows one probe in half-open. A successful probe closes the circuit; a failed probe re-opens it.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .state { font: 700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .edge { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Circuit breaker: three states, four transitions</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <!-- start arrow into CLOSED -->
+  <line class="edge" x1="230" y1="112" x2="230" y2="164" marker-end="url(#arrow)"/>
+  <text class="small" x="245" y="140">start</text>
+
+  <!-- CLOSED -->
+  <rect x="90" y="170" width="280" height="130" rx="12" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="state" x="230" y="215" text-anchor="middle">CLOSED</text>
+  <text class="small" x="230" y="248" text-anchor="middle">requests flow through</text>
+  <text class="small" x="230" y="274" text-anchor="middle">consecutive failures counted</text>
+
+  <!-- OPEN -->
+  <rect x="830" y="170" width="280" height="130" rx="12" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+  <text class="state" x="970" y="215" text-anchor="middle">OPEN</text>
+  <text class="small" x="970" y="248" text-anchor="middle">fast-fail immediately</text>
+  <text class="small" x="970" y="274" text-anchor="middle">zero load on dependency</text>
+
+  <!-- HALF-OPEN -->
+  <rect x="460" y="390" width="280" height="130" rx="12" fill="#fef3c7" stroke="#fcd34d" stroke-width="3"/>
+  <text class="state" x="600" y="435" text-anchor="middle">HALF-OPEN</text>
+  <text class="small" x="600" y="468" text-anchor="middle">one probe allowed</text>
+  <text class="small" x="600" y="494" text-anchor="middle">all other calls rejected</text>
+
+  <!-- CLOSED -> OPEN (trip) -->
+  <line class="edge" x1="374" y1="210" x2="824" y2="210" marker-end="url(#arrow)"/>
+  <text class="body" x="600" y="196" text-anchor="middle">failures &#8805; threshold</text>
+  <text class="small" x="600" y="240" text-anchor="middle">trip: e.g. 5 consecutive failures</text>
+
+  <!-- OPEN -> HALF-OPEN (recovery timeout) -->
+  <polyline class="edge" points="970,304 970,455 748,455" marker-end="url(#arrow)"/>
+  <text class="small" x="985" y="350">recovery timeout</text>
+  <text class="small" x="985" y="374">elapses (e.g. 30 s)</text>
+
+  <!-- HALF-OPEN -> OPEN (probe fails) -->
+  <polyline class="edge" points="660,386 660,330 890,330 890,308" marker-end="url(#arrow)"/>
+  <text class="small" x="775" y="318" text-anchor="middle">probe fails &#8594; re-trip</text>
+
+  <!-- HALF-OPEN -> CLOSED (probe succeeds) -->
+  <polyline class="edge" points="456,455 230,455 230,308" marker-end="url(#arrow)"/>
+  <text class="small" x="215" y="350" text-anchor="end">probe succeeds</text>
+  <text class="small" x="215" y="374" text-anchor="end">&#8594; close, reset counter</text>
+
+  <!-- footer -->
+  <text class="muted" x="600" y="548" text-anchor="middle" font-size="18">One breaker per remote dependency. Every operation is O(1) time and O(1) space.</text>
+</svg>

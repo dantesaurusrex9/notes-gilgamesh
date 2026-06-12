@@ -1,7 +1,7 @@
 ---
 title: "13 - Access Control, Modules, Packages, and DocC"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, modules, docc]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift codebases scale through module boundaries. Access control, package targets, public API design, semantic versioning, and DocC documentation decide whether a library remains maintainable as it grows.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/13-access-control-modules-packages-and-docc/real-world-example.svg)
 
 This example exposes a small public API while keeping implementation details internal. Callers can create and use `RateLimiter`, but cannot mutate its storage directly.
 
@@ -38,6 +40,8 @@ public struct RateLimiter {
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/13-access-control-modules-packages-and-docc/vocabulary.svg)
+
 **Module**: A separately compiled unit imported with `import`.
 
 ---
@@ -62,11 +66,15 @@ public struct RateLimiter {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/13-access-control-modules-packages-and-docc/intuition.svg)
+
 A module is a wall. Inside the wall, you can refactor aggressively. Across the wall, every public declaration becomes a promise. Senior Swift developers design module boundaries so that dependencies flow in one direction and implementation details stay hidden.
 
 Access control is not bureaucracy. It is how you stop accidental coupling. If a symbol does not need to be public, keep it internal or private. Future you will have more freedom.
 
 ## Access Levels
+
+![Visual diagram: Access Levels](./assets/13-access-control-modules-packages-and-docc/access-levels.svg)
 
 Use the narrowest access that supports the intended use.
 
@@ -80,6 +88,8 @@ Use the narrowest access that supports the intended use.
 | `open` | Public and subclassable/overridable outside the module |
 
 ## Package Boundaries
+
+![Visual diagram: Package Boundaries](./assets/13-access-control-modules-packages-and-docc/package-boundaries.svg)
 
 A useful package layout separates domain, infrastructure, executable, and tests.
 
@@ -98,6 +108,8 @@ The direction should be boring: app depends on features, features depend on core
 
 ## Documentation Comments
 
+![Visual diagram: Documentation Comments](./assets/13-access-control-modules-packages-and-docc/documentation-comments.svg)
+
 Doc comments are part of API design. A good summary explains what a declaration does and what it returns without restating the obvious.
 
 ```swift
@@ -113,6 +125,8 @@ public struct RateLimiter {
 ```
 
 ## DocC Workflow
+
+![Visual diagram: DocC Workflow](./assets/13-access-control-modules-packages-and-docc/docc-workflow.svg)
 
 DocC can generate structured documentation for public Swift symbols and article pages. For packages, use the SwiftPM DocC plugin or Xcode's Build Documentation command.
 
@@ -130,6 +144,8 @@ For libraries, document:
 
 ## Versioning
 
+![Visual diagram: Versioning](./assets/13-access-control-modules-packages-and-docc/versioning.svg)
+
 Public packages should follow semantic versioning. Breaking public API changes require a major version bump. Adding a new public method is usually minor. Fixing a bug without API change is patch.
 
 ```text
@@ -139,6 +155,8 @@ major.minor.patch
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/13-access-control-modules-packages-and-docc/pitfalls.svg)
+
 - **Making everything public**: Public API is expensive to change.
 - **Open classes by default**: `open` is a commitment to subclassing behavior. Avoid it unless you are designing inheritance.
 - **Leaky modules**: If every target imports every other target, boundaries are fake.
@@ -146,6 +164,8 @@ major.minor.patch
 - **Docs that repeat names**: "Gets user" is not useful. Explain behavior, constraints, and failure.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/13-access-control-modules-packages-and-docc/exercises.svg)
 
 1. Split a toy package into `Core`, `CLI`, and `CoreTests`.
 2. Change one public type to internal and explain what client code can no longer do.

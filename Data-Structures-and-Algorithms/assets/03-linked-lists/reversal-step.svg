@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="title desc">
+  <title id="title">Three-pointer iterative reversal, frozen mid-step</title>
+  <desc id="desc">A four-node list during reversal. Nodes 1 and 2 are already reversed (green, arrows point left). Node 3 is current (blue) and its arrow is about to be re-pointed at prev. Node 4 (amber) is the rest of the list, saved in nxt.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .done { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cur  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .rest { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .rev  { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .fwd  { stroke: #6b7280; stroke-width: 3; fill: none; }
+    .ptr  { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+  </style>
+  <rect width="1200" height="540" fill="#ffffff"/>
+  <defs>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="aGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="aPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <text class="t" x="60" y="64">Three-pointer reversal, frozen mid-step</text>
+  <line class="rule" x1="60" y1="90" x2="1140" y2="90"/>
+
+  <text class="c" x="60" y="160">nxt = curr.next;  curr.next = prev;  prev = curr;  curr = nxt</text>
+  <text class="s" x="60" y="196">state after two completed loop iterations, about to run the third</text>
+
+  <!-- None on the left -->
+  <text class="c" x="30" y="290">None</text>
+
+  <!-- nodes -->
+  <rect class="done" x="170" y="240" width="140" height="84" rx="8"/>
+  <text class="b" x="240" y="292" text-anchor="middle">1</text>
+  <rect class="done" x="430" y="240" width="140" height="84" rx="8"/>
+  <text class="b" x="500" y="292" text-anchor="middle">2</text>
+  <rect class="cur" x="690" y="240" width="140" height="84" rx="8"/>
+  <text class="b" x="760" y="292" text-anchor="middle">3</text>
+  <rect class="rest" x="950" y="240" width="140" height="84" rx="8"/>
+  <text class="b" x="1020" y="292" text-anchor="middle">4</text>
+
+  <!-- reversed arrows (point left, blue) -->
+  <line class="rev" x1="165" y1="282" x2="100" y2="282" marker-end="url(#aBlue)"/>
+  <line class="rev" x1="425" y1="282" x2="318" y2="282" marker-end="url(#aBlue)"/>
+
+  <!-- forward arrows (untouched, gray) -->
+  <line class="fwd" x1="835" y1="282" x2="942" y2="282" marker-end="url(#aGray)"/>
+  <line class="fwd" x1="1095" y1="282" x2="1135" y2="282" marker-end="url(#aGray)"/>
+  <text class="s" x="1142" y="290">None</text>
+
+  <!-- pointer labels below -->
+  <line class="ptr" x1="500" y1="400" x2="500" y2="334" marker-end="url(#aPurple)"/>
+  <text class="c" x="500" y="432" text-anchor="middle">prev</text>
+  <line class="ptr" x1="760" y1="400" x2="760" y2="334" marker-end="url(#aPurple)"/>
+  <text class="c" x="760" y="432" text-anchor="middle">curr</text>
+  <line class="ptr" x1="1020" y1="400" x2="1020" y2="334" marker-end="url(#aPurple)"/>
+  <text class="c" x="1020" y="432" text-anchor="middle">nxt</text>
+
+  <!-- caption -->
+  <text class="m" x="60" y="486">Green = already reversed. Blue = curr, whose arrow is about to be re-pointed at prev.</text>
+  <text class="m" x="60" y="518">Amber = the rest of the list, kept reachable only because nxt saved it before the cut.</text>
+</svg>

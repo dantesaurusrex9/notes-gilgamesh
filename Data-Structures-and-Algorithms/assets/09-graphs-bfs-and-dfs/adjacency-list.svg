@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Adjacency list representation of a small undirected graph</title>
+  <desc id="desc">Left: an undirected graph with five vertices A through E and five edges. Right: the same graph stored as a Python dict mapping each vertex to a list of its neighbors. The total number of list cells is ten, which is twice the edge count.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .node { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .key  { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2.5; }
+    .cell { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .edge { stroke: #6b7280; stroke-width: 3; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .arrow { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+  </style>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+
+  <text x="40" y="60" class="t">Adjacency list — dict of neighbor lists</text>
+  <line x1="40" y1="82" x2="1160" y2="82" class="rule"/>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <!-- graph edges (drawn first, circles cover the endpoints) -->
+  <line x1="220" y1="200" x2="120" y2="350" class="edge"/>
+  <line x1="220" y1="200" x2="330" y2="350" class="edge"/>
+  <line x1="120" y1="350" x2="220" y2="500" class="edge"/>
+  <line x1="330" y1="350" x2="220" y2="500" class="edge"/>
+  <line x1="220" y1="500" x2="460" y2="500" class="edge"/>
+
+  <!-- graph nodes -->
+  <circle cx="220" cy="200" r="32" class="node"/>
+  <text x="220" y="210" class="b" text-anchor="middle" font-weight="700">A</text>
+  <circle cx="120" cy="350" r="32" class="node"/>
+  <text x="120" y="360" class="b" text-anchor="middle" font-weight="700">B</text>
+  <circle cx="330" cy="350" r="32" class="node"/>
+  <text x="330" y="360" class="b" text-anchor="middle" font-weight="700">C</text>
+  <circle cx="220" cy="500" r="32" class="node"/>
+  <text x="220" y="510" class="b" text-anchor="middle" font-weight="700">D</text>
+  <circle cx="460" cy="500" r="32" class="node"/>
+  <text x="460" y="510" class="b" text-anchor="middle" font-weight="700">E</text>
+
+  <text x="280" y="590" class="m" text-anchor="middle">Undirected graph: V = 5, E = 5</text>
+
+  <!-- adjacency rows -->
+  <!-- A -->
+  <rect x="620" y="130" width="80" height="56" rx="8" class="key"/>
+  <text x="660" y="166" class="b" text-anchor="middle" font-weight="700">A</text>
+  <line x1="700" y1="158" x2="746" y2="158" class="arrow" marker-end="url(#arr)"/>
+  <rect x="752" y="130" width="90" height="56" class="cell"/>
+  <text x="797" y="166" class="c" text-anchor="middle">B</text>
+  <rect x="842" y="130" width="90" height="56" class="cell"/>
+  <text x="887" y="166" class="c" text-anchor="middle">C</text>
+
+  <!-- B -->
+  <rect x="620" y="220" width="80" height="56" rx="8" class="key"/>
+  <text x="660" y="256" class="b" text-anchor="middle" font-weight="700">B</text>
+  <line x1="700" y1="248" x2="746" y2="248" class="arrow" marker-end="url(#arr)"/>
+  <rect x="752" y="220" width="90" height="56" class="cell"/>
+  <text x="797" y="256" class="c" text-anchor="middle">A</text>
+  <rect x="842" y="220" width="90" height="56" class="cell"/>
+  <text x="887" y="256" class="c" text-anchor="middle">D</text>
+
+  <!-- C -->
+  <rect x="620" y="310" width="80" height="56" rx="8" class="key"/>
+  <text x="660" y="346" class="b" text-anchor="middle" font-weight="700">C</text>
+  <line x1="700" y1="338" x2="746" y2="338" class="arrow" marker-end="url(#arr)"/>
+  <rect x="752" y="310" width="90" height="56" class="cell"/>
+  <text x="797" y="346" class="c" text-anchor="middle">A</text>
+  <rect x="842" y="310" width="90" height="56" class="cell"/>
+  <text x="887" y="346" class="c" text-anchor="middle">D</text>
+
+  <!-- D -->
+  <rect x="620" y="400" width="80" height="56" rx="8" class="key"/>
+  <text x="660" y="436" class="b" text-anchor="middle" font-weight="700">D</text>
+  <line x1="700" y1="428" x2="746" y2="428" class="arrow" marker-end="url(#arr)"/>
+  <rect x="752" y="400" width="90" height="56" class="cell"/>
+  <text x="797" y="436" class="c" text-anchor="middle">B</text>
+  <rect x="842" y="400" width="90" height="56" class="cell"/>
+  <text x="887" y="436" class="c" text-anchor="middle">C</text>
+  <rect x="932" y="400" width="90" height="56" class="cell"/>
+  <text x="977" y="436" class="c" text-anchor="middle">E</text>
+
+  <!-- E -->
+  <rect x="620" y="490" width="80" height="56" rx="8" class="key"/>
+  <text x="660" y="526" class="b" text-anchor="middle" font-weight="700">E</text>
+  <line x1="700" y1="518" x2="746" y2="518" class="arrow" marker-end="url(#arr)"/>
+  <rect x="752" y="490" width="90" height="56" class="cell"/>
+  <text x="797" y="526" class="c" text-anchor="middle">D</text>
+
+  <text x="620" y="590" class="s">Total list cells = 2 · E = 10  →  space is O(V + E)</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Leftmost-prefix rule for a composite index on (a, b, c)</title>
+  <desc id="desc">Query shapes that can and cannot use a composite index on columns a, b, c. Equality on a prefix is usable; skipping the leading column is not.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .ok { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .amb { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="640" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Leftmost prefix: index on (a, b, c)</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="40" y="116">Index entries are sorted by a, then b, then c — like a phone book sorted by last, first, middle.</text>
+
+  <text class="b" x="40" y="172" font-weight="700">Usable</text>
+  <rect class="ok" x="40" y="190" width="540" height="52" rx="8"/>
+  <text class="c" x="60" y="224">WHERE a = 1</text>
+  <rect class="ok" x="40" y="256" width="540" height="52" rx="8"/>
+  <text class="c" x="60" y="290">WHERE a = 1 AND b = 2</text>
+  <rect class="ok" x="40" y="322" width="540" height="52" rx="8"/>
+  <text class="c" x="60" y="356">WHERE a = 1 AND b = 2 AND c = 3</text>
+  <rect class="amb" x="40" y="388" width="540" height="52" rx="8"/>
+  <text class="c" x="60" y="422">WHERE a = 1 AND b &gt; 5 AND c = 3</text>
+  <text class="s" x="60" y="468">amber: range on b stops the index at b — c becomes a</text>
+  <text class="s" x="60" y="492">post-filter, not a seek condition</text>
+
+  <text class="b" x="620" y="172" font-weight="700">Not usable (for seeking)</text>
+  <rect class="bad" x="620" y="190" width="540" height="52" rx="8"/>
+  <text class="c" x="640" y="224">WHERE b = 2</text>
+  <rect class="bad" x="620" y="256" width="540" height="52" rx="8"/>
+  <text class="c" x="640" y="290">WHERE b = 2 AND c = 3</text>
+  <rect class="bad" x="620" y="322" width="540" height="52" rx="8"/>
+  <text class="c" x="640" y="356">WHERE c = 3</text>
+  <rect class="bad" x="620" y="388" width="540" height="52" rx="8"/>
+  <text class="c" x="640" y="422">WHERE a LIKE '%x'</text>
+  <text class="s" x="640" y="468">red: leading column a is unconstrained — the sorted</text>
+  <text class="s" x="640" y="492">order gives no starting point, so the engine scans</text>
+
+  <line x1="40" y1="524" x2="1160" y2="524" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="40" y="562">Rule: the index helps through the longest prefix of (a, b, c) bound by equality, plus at most</text>
+  <text class="m" x="40" y="594">one trailing range. Skip a column and everything to its right is dead weight for the seek.</text>
+</svg>

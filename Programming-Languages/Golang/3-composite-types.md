@@ -1,7 +1,7 @@
 ---
 title: "3 - Composite Types: Arrays, Slices, Maps, Structs"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, slices, maps, structs, composite-types]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go's four composite types — arrays, slices, maps, and structs — are the building blocks of every real Go program. Slices are the workhorse (not arrays), and their three-word header (pointer, length, capacity) is the key to understanding `append` semantics, subslice aliasing, and why passing a slice to a function does not always behave like passing by reference. Maps are hash tables with O(1) amortised operations but unordered iteration. Structs enable composition over inheritance, and embedding is Go's mechanism for code reuse without subtyping.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/3-composite-types/vocabulary.svg)
 
 **Array**: A fixed-length, contiguous sequence of elements of a single type. Length is part of the type: `[3]int` and `[4]int` are distinct, incompatible types. Arrays are value types — assignment copies all elements.
 
@@ -72,6 +74,8 @@ type User struct {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/3-composite-types/intuition.svg)
+
 Think of an array as a fixed-length stack allocation — its size is baked into its type, so it behaves more like a C array (`int arr[5]`) than a Python list. Slices are the Go equivalent of Python lists or Java `ArrayList`: a window into a potentially larger array, with a length (how much is visible) and a capacity (how much room before reallocation). The most important thing to internalise is that slices are headers, not containers — two slices can point at the same backing array, and a mutation through one is visible through the other.
 
 Maps are Go's hash table, straightforward to use but with two sharp edges: nil maps panic on write, and iteration order is deliberately randomised on every run (the runtime permutes the hash seed at startup, specifically to prevent programs from relying on a specific order).
@@ -79,6 +83,8 @@ Maps are Go's hash table, straightforward to use but with two sharp edges: nil m
 Structs are Go's primary way to group state. There is no class hierarchy — instead, Go uses embedding (a struct contains another struct's fields and methods inline) to achieve reuse. The mantra is "prefer composition over inheritance," and embedding makes that idiom syntactically cheap.
 
 ## Arrays
+
+![Visual diagram: Arrays](./assets/3-composite-types/arrays.svg)
 
 Arrays are value types with a fixed length that is part of the type. They are rarely used directly in Go — slices are almost always what you want. Arrays matter as the backing storage for slices and as a way to ensure a fixed-size allocation without heap escape.
 
@@ -95,6 +101,8 @@ fmt.Println(a == [5]int{})  // true — arrays support == when element type does
 > Passing an array to a function passes a copy of the entire array. For a `[1024]byte` this copies 1 KiB. If you need the function to see the original, pass a slice (`a[:]`) or a pointer (`&a`).
 
 ## Slices
+
+![Visual diagram: Slices](./assets/3-composite-types/slices.svg)
 
 Slices are the most important data structure in Go. Every slice is a three-word value: a pointer to the first visible element in a backing array, a length (number of visible elements), and a capacity (number of elements from the pointer to the end of the backing array).
 
@@ -181,6 +189,8 @@ fmt.Println(len(emptySlice))    // 0
 
 ## Maps
 
+![Visual diagram: Maps](./assets/3-composite-types/maps.svg)
+
 A map is a reference type backed by a runtime hash table. The key type must be comparable (`==` defined). Common key types: `string`, integer types, structs with all-comparable fields. Slices, maps, and functions cannot be map keys.
 
 ```go
@@ -221,6 +231,8 @@ The Go runtime map is a hash table with open addressing at the bucket level. Eac
 > Go maps are NOT safe for concurrent use. Concurrent reads are fine, but any concurrent write (including `delete`) races with any other read or write. Use `sync.RWMutex` or `sync.Map` for concurrent access. The race detector (`go test -race`) catches these; the runtime also detects concurrent map writes and panics with "concurrent map writes."
 
 ## Structs
+
+![Visual diagram: Structs](./assets/3-composite-types/structs.svg)
 
 A struct is a named collection of fields. It is a value type — assignment copies all fields. Structs are the primary way to group state in Go; there are no classes.
 
@@ -293,6 +305,8 @@ Tag keys are conventionally lowercase. Multiple tags for different packages are 
 
 ## Real-world Example
 
+![Visual diagram: Real-world Example](./assets/3-composite-types/real-world-example.svg)
+
 The following function aggregates log lines by service name, returning a summary map and a sorted-key slice. It exercises slice append, map creation, and struct usage in a realistic ETL pattern.
 
 ```go
@@ -354,6 +368,8 @@ func main() {
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/3-composite-types/in-practice.svg)
+
 **Slice pre-allocation**: If you know the approximate final size of a slice, pre-allocate with `make([]T, 0, n)`. This avoids repeated `append` reallocations, each of which copies all existing elements. For large slices in hot paths, this is a measurable improvement.
 
 **Map pre-sizing**: `make(map[K]V, hint)` passes a size hint to the runtime, which pre-allocates buckets. For a map you know will hold ~N entries, `make(map[K]V, N)` avoids incremental rehashing.
@@ -365,6 +381,8 @@ func main() {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/3-composite-types/pitfalls.svg)
+
 - **"Appending to a nil slice requires special handling."** — A nil slice is a perfectly valid `append` target. `append(nil, 1, 2, 3)` returns `[]int{1, 2, 3}`. No special case needed.
 - **"Passing a slice to a function lets the function resize it."** — The function receives a copy of the slice header (pointer, len, cap). It can mutate elements through the pointer, but if it appends past capacity, the new slice is local to the function. The caller's slice is unchanged. Return the new slice if you need the caller to see a resized version.
 - **"Map iteration order is undefined but stable within a run."** — The order is NOT stable within a run. The Go runtime shuffles the start bucket on every `range`. Programs that relied on stability before this was randomised (Go 1.0) were broken. Never assume any order.
@@ -372,6 +390,8 @@ func main() {
 - **"A nil map read always panics."** — Reading from a nil map returns the zero value and does not panic. Only writing to a nil map panics.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/3-composite-types/exercises.svg)
 
 ### Exercise 1 — Code output: What does this print?
 

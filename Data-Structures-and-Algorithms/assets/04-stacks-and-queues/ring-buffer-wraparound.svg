@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Ring buffer wraparound</title>
+  <desc id="desc">An eight-slot physical array storing the logical queue C, D, E, F, G. The head pointer sits at index 5 and the tail pointer at index 2; the queue contents wrap past the end of the array from index 7 back to index 0, shown by a curved arrow underneath.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cell { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .green { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .arr { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .ptr { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="ab2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="ap2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+
+  <text class="t" x="60" y="64">Ring buffer: head and tail wrap modulo capacity</text>
+  <line class="rule" x1="60" y1="86" x2="1140" y2="86"/>
+
+  <text class="m" x="60" y="134">Logical queue (front → back): C, D, E, F, G — stored wrapped in 8 physical slots</text>
+
+  <!-- head / tail pointers -->
+  <text class="b" x="420" y="178" text-anchor="middle">tail — next enqueue</text>
+  <line class="ptr" x1="420" y1="190" x2="420" y2="222" marker-end="url(#ap2)"/>
+  <text class="b" x="780" y="178" text-anchor="middle">head — dequeue here</text>
+  <line class="ptr" x1="780" y1="190" x2="780" y2="222" marker-end="url(#ap2)"/>
+
+  <!-- cells -->
+  <rect class="green" x="120" y="230" width="120" height="90"/>
+  <text class="b" x="180" y="285" text-anchor="middle">F</text>
+  <rect class="green" x="240" y="230" width="120" height="90"/>
+  <text class="b" x="300" y="285" text-anchor="middle">G</text>
+  <rect class="cell" x="360" y="230" width="120" height="90"/>
+  <rect class="cell" x="480" y="230" width="120" height="90"/>
+  <rect class="cell" x="600" y="230" width="120" height="90"/>
+  <rect class="green" x="720" y="230" width="120" height="90"/>
+  <text class="b" x="780" y="285" text-anchor="middle">C</text>
+  <rect class="green" x="840" y="230" width="120" height="90"/>
+  <text class="b" x="900" y="285" text-anchor="middle">D</text>
+  <rect class="green" x="960" y="230" width="120" height="90"/>
+  <text class="b" x="1020" y="285" text-anchor="middle">E</text>
+
+  <!-- index labels -->
+  <text class="s" x="180" y="352" text-anchor="middle">0</text>
+  <text class="s" x="300" y="352" text-anchor="middle">1</text>
+  <text class="s" x="420" y="352" text-anchor="middle">2</text>
+  <text class="s" x="540" y="352" text-anchor="middle">3</text>
+  <text class="s" x="660" y="352" text-anchor="middle">4</text>
+  <text class="s" x="780" y="352" text-anchor="middle">5</text>
+  <text class="s" x="900" y="352" text-anchor="middle">6</text>
+  <text class="s" x="1020" y="352" text-anchor="middle">7</text>
+
+  <!-- wraparound arrow -->
+  <path class="arr" d="M 1020 372 C 1020 455, 180 455, 180 380" marker-end="url(#ab2)"/>
+  <text class="m" x="600" y="475" text-anchor="middle">wraparound: after index 7, the next slot is index 0</text>
+
+  <text class="c" x="600" y="525" text-anchor="middle">physical_index = (head + i) % capacity</text>
+</svg>

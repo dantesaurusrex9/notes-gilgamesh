@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-labelledby="title desc">
+  <title id="title">Prim grows one tree; a min-heap holds the crossing edges</title>
+  <desc id="desc">Left: a partially built Prim tree with nodes A, B, C in the tree and D, E, F outside; dashed edges cross the frontier. Right: the Python heapq list of weight-edge tuples, with the minimum tuple highlighted as the next pop and one stale tuple marked red because both endpoints are already in the tree.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .ok { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #15803d; }
+    .no { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b91c1c; }
+    .hl { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .nl { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .w  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+
+  <text class="t" x="60" y="58">Prim: one growing tree + a min-heap of crossing edges</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- ===== left: graph mid-execution (tree = {A, B, C}) ===== -->
+  <!-- non-tree edges among unreached nodes -->
+  <line x1="520" y1="200" x2="560" y2="420" stroke="#d1d5db" stroke-width="2"/>
+  <text class="s" x="552" y="310">7</text>
+  <line x1="200" y1="470" x2="560" y2="420" stroke="#d1d5db" stroke-width="2"/>
+  <text class="s" x="380" y="432">6</text>
+
+  <!-- edge with both endpoints already in tree (its heap entry is stale) -->
+  <line x1="170" y1="250" x2="340" y2="170" stroke="#d1d5db" stroke-width="2"/>
+  <text class="s" x="240" y="198">4</text>
+
+  <!-- tree edges -->
+  <line x1="170" y1="250" x2="340" y2="350" stroke="#0ea5e9" stroke-width="5"/>
+  <text class="s" x="232" y="288">3</text>
+  <line x1="340" y1="350" x2="340" y2="170" stroke="#0ea5e9" stroke-width="5"/>
+  <text class="s" x="352" y="262">1</text>
+
+  <!-- crossing edges (dashed purple) -->
+  <line x1="340" y1="170" x2="520" y2="200" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="s" x="424" y="172">2</text>
+  <line x1="340" y1="350" x2="520" y2="200" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="s" x="442" y="276">4</text>
+  <line x1="340" y1="350" x2="200" y2="470" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="s" x="252" y="408">5</text>
+  <line x1="170" y1="250" x2="200" y2="470" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="s" x="158" y="365">8</text>
+
+  <!-- nodes in tree (green) -->
+  <circle cx="170" cy="250" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="170" y="259" text-anchor="middle">A</text>
+  <circle cx="340" cy="170" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="340" y="179" text-anchor="middle">B</text>
+  <circle cx="340" cy="350" r="32" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="nl" x="340" y="359" text-anchor="middle">C</text>
+
+  <!-- nodes not yet reached (gray) -->
+  <circle cx="520" cy="200" r="32" fill="#f3f4f6" stroke="#d1d5db" stroke-width="3"/>
+  <text class="nl" x="520" y="209" text-anchor="middle" fill="#6b7280">D</text>
+  <circle cx="560" cy="420" r="32" fill="#f3f4f6" stroke="#d1d5db" stroke-width="3"/>
+  <text class="nl" x="560" y="429" text-anchor="middle" fill="#6b7280">E</text>
+  <circle cx="200" cy="470" r="32" fill="#f3f4f6" stroke="#d1d5db" stroke-width="3"/>
+  <text class="nl" x="200" y="479" text-anchor="middle" fill="#6b7280">F</text>
+
+  <!-- legend -->
+  <circle cx="80" cy="540" r="12" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="s" x="100" y="546">in tree</text>
+  <line x1="180" y1="540" x2="230" y2="540" stroke="#0ea5e9" stroke-width="5"/>
+  <text class="s" x="240" y="546">tree edge</text>
+  <line x1="340" y1="540" x2="390" y2="540" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8 6"/>
+  <text class="s" x="400" y="546">crossing edge (in heap)</text>
+
+  <!-- ===== right: the heap as a Python list ===== -->
+  <text class="b" x="680" y="150">frontier heap — Python list of tuples, index 0 = min</text>
+
+  <text class="s" x="668" y="205" text-anchor="end">0</text>
+  <rect x="680" y="170" width="440" height="56" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <text class="c" x="700" y="206">(2, B, D)</text>
+  <text class="hl" x="850" y="205">← pop next: D joins the tree</text>
+
+  <text class="s" x="668" y="273" text-anchor="end">1</text>
+  <rect x="680" y="238" width="440" height="56" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="3"/>
+  <text class="c" x="700" y="274">(4, A, B)</text>
+  <text class="no" x="850" y="273">stale: B already in tree</text>
+
+  <text class="s" x="668" y="341" text-anchor="end">2</text>
+  <rect x="680" y="306" width="440" height="56" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="3"/>
+  <text class="c" x="700" y="342">(4, C, D)</text>
+
+  <text class="s" x="668" y="409" text-anchor="end">3</text>
+  <rect x="680" y="374" width="440" height="56" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="3"/>
+  <text class="c" x="700" y="410">(5, C, F)</text>
+
+  <text class="s" x="668" y="477" text-anchor="end">4</text>
+  <rect x="680" y="442" width="440" height="56" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="3"/>
+  <text class="c" x="700" y="478">(8, A, F)</text>
+
+  <!-- caption -->
+  <line x1="60" y1="568" x2="1140" y2="568" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="m" x="60" y="604">heapq has no decrease-key: push duplicates, discard stale tuples at pop time (lazy deletion). Heap holds O(E) entries.</text>
+</svg>

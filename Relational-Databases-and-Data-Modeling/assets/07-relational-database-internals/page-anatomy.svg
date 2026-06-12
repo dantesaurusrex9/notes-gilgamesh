@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-labelledby="title desc">
+  <title id="title">Anatomy of an 8 KB heap page</title>
+  <desc id="desc">A heap page has a header, an array of line pointers growing down from the top, free space in the middle, and tuples growing up from the bottom; one tuple is shown dead awaiting vacuum.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .hdr { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .lp { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; }
+    .free { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; stroke-dasharray: 8 6; }
+    .live { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .dead { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .ptr { stroke: #8b5cf6; stroke-width: 2.5; fill: none; }
+  </style>
+  <defs>
+    <marker id="pa" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="520" fill="#ffffff"/>
+  <text x="40" y="58" class="t">Anatomy of an 8 KB heap page</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- page frame -->
+  <rect x="80" y="110" width="700" height="360" fill="none" stroke="#111827" stroke-width="2.5" rx="6"/>
+  <text x="80" y="500" class="s">offset 0 (top) ... offset 8192 (bottom)</text>
+
+  <!-- header -->
+  <rect x="80" y="110" width="700" height="50" class="hdr"/>
+  <text x="100" y="143" class="b">page header (LSN, free-space bounds, checksum)</text>
+
+  <!-- line pointers -->
+  <rect x="80" y="160" width="160" height="44" class="lp"/>
+  <text x="110" y="190" class="c">lp1</text>
+  <rect x="240" y="160" width="160" height="44" class="lp"/>
+  <text x="270" y="190" class="c">lp2</text>
+  <rect x="400" y="160" width="160" height="44" class="lp"/>
+  <text x="430" y="190" class="c">lp3</text>
+  <text x="580" y="190" class="s">line-pointer array grows down</text>
+
+  <!-- free space -->
+  <rect x="80" y="204" width="700" height="116" class="free"/>
+  <text x="330" y="270" class="s">free space</text>
+
+  <!-- tuples -->
+  <rect x="80" y="320" width="700" height="50" class="live"/>
+  <text x="100" y="353" class="b">tuple 3 — header (xmin=910, xmax=0) + row data</text>
+  <rect x="80" y="370" width="700" height="50" class="dead"/>
+  <text x="100" y="403" class="b">tuple 2 — DEAD (xmax=905 committed) — waits for VACUUM</text>
+  <rect x="80" y="420" width="700" height="50" class="live"/>
+  <text x="100" y="453" class="b">tuple 1 — header (xmin=812, xmax=0) + row data</text>
+
+  <!-- pointers from line pointers to tuples -->
+  <path d="M160,204 C 60,300 40,445 80,445" class="ptr" marker-end="url(#pa)"/>
+  <path d="M320,204 C 850,230 850,395 782,395" class="ptr" marker-end="url(#pa)"/>
+  <path d="M480,204 C 760,250 820,345 782,345" class="ptr" marker-end="url(#pa)"/>
+
+  <!-- legend -->
+  <rect x="840" y="380" width="24" height="24" class="live"/>
+  <text x="874" y="399" class="s">live tuple</text>
+  <rect x="840" y="416" width="24" height="24" class="dead"/>
+  <text x="874" y="435" class="s">dead tuple (bloat)</text>
+  <text x="840" y="140" class="s">An index entry points at a line</text>
+  <text x="840" y="164" class="s">pointer, not the raw byte offset,</text>
+  <text x="840" y="188" class="s">so tuples can move inside the</text>
+  <text x="840" y="212" class="s">page without touching indexes.</text>
+</svg>

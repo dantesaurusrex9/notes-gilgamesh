@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Subset decision tree for [1, 2, 3]</title>
+  <desc id="desc">A binary decision tree of depth 3. Each level decides whether one element of [1, 2, 3] is included or skipped. Internal nodes show the partial path; the 8 green leaves are the 8 subsets, matching 2 to the power 3.</desc>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .inc   { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .node  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+    .internal { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .leaf     { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .edge     { stroke: #6b7280; stroke-width: 2; fill: none; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+  <text x="40" y="56" class="title">Subset decision tree for [1, 2, 3]</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- edges: root to level 1 -->
+  <line class="edge" x1="600" y1="172" x2="312" y2="240" marker-end="url(#arrow)"/>
+  <line class="edge" x1="600" y1="172" x2="888" y2="240" marker-end="url(#arrow)"/>
+  <text x="435" y="198" class="inc" text-anchor="end">+1</text>
+  <text x="765" y="198" class="small" text-anchor="start">skip 1</text>
+
+  <!-- edges: level 1 to level 2 -->
+  <line class="edge" x1="312" y1="284" x2="168" y2="352" marker-end="url(#arrow)"/>
+  <line class="edge" x1="312" y1="284" x2="456" y2="352" marker-end="url(#arrow)"/>
+  <line class="edge" x1="888" y1="284" x2="744" y2="352" marker-end="url(#arrow)"/>
+  <line class="edge" x1="888" y1="284" x2="1032" y2="352" marker-end="url(#arrow)"/>
+  <text x="228" y="312" class="inc" text-anchor="end">+2</text>
+  <text x="396" y="312" class="small" text-anchor="start">skip 2</text>
+  <text x="804" y="312" class="inc" text-anchor="end">+2</text>
+  <text x="972" y="312" class="small" text-anchor="start">skip 2</text>
+
+  <!-- edges: level 2 to leaves -->
+  <line class="edge" x1="168" y1="396" x2="96" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="168" y1="396" x2="240" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="456" y1="396" x2="384" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="456" y1="396" x2="528" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="744" y1="396" x2="672" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="744" y1="396" x2="816" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="1032" y1="396" x2="960" y2="470" marker-end="url(#arrow)"/>
+  <line class="edge" x1="1032" y1="396" x2="1104" y2="470" marker-end="url(#arrow)"/>
+  <text x="122" y="428" class="inc" text-anchor="end">+3</text>
+  <text x="214" y="428" class="small" text-anchor="start">skip 3</text>
+
+  <!-- root -->
+  <rect x="550" y="128" width="100" height="44" rx="8" class="internal"/>
+  <text x="600" y="158" class="node" text-anchor="middle">[]</text>
+
+  <!-- level 1: decision on element 1 -->
+  <rect x="262" y="240" width="100" height="44" rx="8" class="internal"/>
+  <text x="312" y="270" class="node" text-anchor="middle">[1]</text>
+  <rect x="838" y="240" width="100" height="44" rx="8" class="internal"/>
+  <text x="888" y="270" class="node" text-anchor="middle">[]</text>
+
+  <!-- level 2: decision on element 2 -->
+  <rect x="113" y="352" width="110" height="44" rx="8" class="internal"/>
+  <text x="168" y="382" class="node" text-anchor="middle">[1,2]</text>
+  <rect x="401" y="352" width="110" height="44" rx="8" class="internal"/>
+  <text x="456" y="382" class="node" text-anchor="middle">[1]</text>
+  <rect x="689" y="352" width="110" height="44" rx="8" class="internal"/>
+  <text x="744" y="382" class="node" text-anchor="middle">[2]</text>
+  <rect x="977" y="352" width="110" height="44" rx="8" class="internal"/>
+  <text x="1032" y="382" class="node" text-anchor="middle">[]</text>
+
+  <!-- leaves: all 8 subsets -->
+  <rect x="31" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="96" y="500" class="node" text-anchor="middle">[1,2,3]</text>
+  <rect x="175" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="240" y="500" class="node" text-anchor="middle">[1,2]</text>
+  <rect x="319" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="384" y="500" class="node" text-anchor="middle">[1,3]</text>
+  <rect x="463" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="528" y="500" class="node" text-anchor="middle">[1]</text>
+  <rect x="607" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="672" y="500" class="node" text-anchor="middle">[2,3]</text>
+  <rect x="751" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="816" y="500" class="node" text-anchor="middle">[2]</text>
+  <rect x="895" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="960" y="500" class="node" text-anchor="middle">[3]</text>
+  <rect x="1039" y="470" width="130" height="44" rx="8" class="leaf"/>
+  <text x="1104" y="500" class="node" text-anchor="middle">[]</text>
+
+  <!-- caption -->
+  <text x="40" y="566" class="body">Depth 3 decisions, branching 2 at every node: 2 × 2 × 2 = 2³ = 8 leaves. A copy of path is recorded at each leaf.</text>
+  <text x="40" y="602" class="muted">Blue = partial solution still being decided. Green = complete subset. Left edge appends the element; the pop on unwind erases it.</text>
+</svg>

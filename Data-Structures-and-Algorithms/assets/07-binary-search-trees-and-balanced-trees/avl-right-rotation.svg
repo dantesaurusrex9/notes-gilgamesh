@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">AVL right rotation, before and after</title>
+  <desc id="desc">A left-heavy subtree rooted at y with balance factor plus two is fixed by one right rotation: x becomes the root, y adopts subtree B, and inorder order A x B y C is preserved.</desc>
+  <rect x="0" y="0" width="1200" height="640" fill="#ffffff"/>
+  <style>
+    .t    { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b    { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m    { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s    { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c    { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .key  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #111827; }
+    .edge { stroke: #6b7280; stroke-width: 2.5; }
+    .bad  { fill: #fee2e2; stroke: #fca5a5; stroke-width: 3; }
+    .good { fill: #dcfce7; stroke: #86efac; stroke-width: 3; }
+    .hot  { fill: #dbeafe; stroke: #38bdf8; stroke-width: 3; }
+    .tri  { fill: #fef3c7; stroke: #fcd34d; stroke-width: 3; }
+  </style>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">AVL right rotation fixes the LL case</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- BEFORE -->
+  <text class="s" x="60" y="120">BEFORE — left-heavy at y</text>
+
+  <line class="edge" x1="300" y1="190" x2="185" y2="300"/>
+  <line class="edge" x1="300" y1="190" x2="415" y2="300"/>
+  <line class="edge" x1="185" y1="300" x2="105" y2="395"/>
+  <line class="edge" x1="185" y1="300" x2="265" y2="395"/>
+
+  <polygon class="tri" points="105,390 55,510 155,510"/>
+  <polygon class="tri" points="265,390 215,510 315,510"/>
+  <polygon class="tri" points="415,300 365,420 465,420"/>
+
+  <circle class="bad" cx="300" cy="190" r="30"/>
+  <circle class="hot" cx="185" cy="300" r="30"/>
+
+  <text class="key" x="300" y="199" text-anchor="middle">y</text>
+  <text class="key" x="185" y="309" text-anchor="middle">x</text>
+
+  <text class="c" x="345" y="180">bf(y) = +2</text>
+  <text class="c" x="60"  y="280">bf(x) = +1</text>
+
+  <text class="b" x="105" y="475" text-anchor="middle">A</text>
+  <text class="b" x="265" y="475" text-anchor="middle">B</text>
+  <text class="b" x="415" y="390" text-anchor="middle">C</text>
+
+  <text class="s" x="105" y="540" text-anchor="middle">height h + 1</text>
+  <text class="s" x="265" y="540" text-anchor="middle">height h</text>
+  <text class="s" x="415" y="450" text-anchor="middle">height h</text>
+
+  <!-- transition arrow -->
+  <line x1="545" y1="300" x2="645" y2="300" stroke="#0ea5e9" stroke-width="3.5" marker-end="url(#arr2)"/>
+  <text class="c" x="595" y="270" text-anchor="middle">rotate_right(y)</text>
+
+  <!-- AFTER -->
+  <text class="s" x="700" y="120">AFTER — balanced</text>
+
+  <line class="edge" x1="890" y1="190" x2="770"  y2="295"/>
+  <line class="edge" x1="890" y1="190" x2="1005" y2="300"/>
+  <line class="edge" x1="1005" y1="300" x2="940"  y2="395"/>
+  <line class="edge" x1="1005" y1="300" x2="1075" y2="395"/>
+
+  <polygon class="tri" points="770,290 720,410 820,410"/>
+  <polygon class="tri" points="940,390 890,510 990,510"/>
+  <polygon class="tri" points="1075,390 1025,510 1125,510"/>
+
+  <circle class="good" cx="890"  cy="190" r="30"/>
+  <circle class="good" cx="1005" cy="300" r="30"/>
+
+  <text class="key" x="890"  y="199" text-anchor="middle">x</text>
+  <text class="key" x="1005" y="309" text-anchor="middle">y</text>
+
+  <text class="c" x="935"  y="180">bf(x) = 0</text>
+  <text class="c" x="1050" y="290">bf(y) = 0</text>
+
+  <text class="b" x="770"  y="375" text-anchor="middle">A</text>
+  <text class="b" x="940"  y="475" text-anchor="middle">B</text>
+  <text class="b" x="1075" y="475" text-anchor="middle">C</text>
+
+  <text class="s" x="770"  y="440" text-anchor="middle">height h + 1</text>
+  <text class="s" x="940"  y="540" text-anchor="middle">height h</text>
+  <text class="s" x="1075" y="540" text-anchor="middle">height h</text>
+
+  <text class="m" x="60" y="608">Three pointer writes, O(1): y.left ← B, x.right ← y. Inorder order A, x, B, y, C never changes.</text>
+</svg>

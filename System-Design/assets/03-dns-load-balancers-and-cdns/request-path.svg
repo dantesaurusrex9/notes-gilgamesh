@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-labelledby="title desc">
+  <title id="title">The request path: client to DNS to CDN to load balancer to service</title>
+  <desc id="desc">Top: a recursive resolver walks root, TLD, and authoritative servers to resolve cdn.example.com. Bottom: the client sends HTTPS to a CDN edge POP; on a cache miss the request continues to an L7 load balancer which picks a service instance. A dashed purple arrow shows the cache-hit path returning straight from the edge.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .sm { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .num { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .mid { text-anchor: middle; }
+  </style>
+  <rect width="1200" height="680" fill="#ffffff"/>
+  <defs>
+    <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+
+  <text class="t" x="40" y="56">The request path: client → DNS → CDN → LB → service</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Phase 1: DNS -->
+  <text class="sm" x="40" y="112">DNS — turns the name into an IP (paid once per TTL)</text>
+
+  <rect x="40" y="125" width="260" height="80" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="h mid" x="170" y="160">Recursive resolver</text>
+  <text class="sm mid" x="170" y="188">ISP / 8.8.8.8 — caches</text>
+
+  <rect x="560" y="105" width="400" height="48" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="s mid" x="760" y="134">root servers — "ask the .com servers"</text>
+  <rect x="560" y="165" width="400" height="48" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="s mid" x="760" y="194">.com TLD — "ask ns1.example.com"</text>
+  <rect x="560" y="225" width="400" height="48" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="s mid" x="760" y="254">authoritative — A 203.0.113.7 · TTL 60 s</text>
+
+  <line x1="300" y1="145" x2="556" y2="128" stroke="#6b7280" stroke-width="2" marker-end="url(#mg)"/>
+  <line x1="300" y1="165" x2="556" y2="188" stroke="#6b7280" stroke-width="2" marker-end="url(#mg)"/>
+  <line x1="300" y1="185" x2="556" y2="248" stroke="#6b7280" stroke-width="2" marker-end="url(#mg)"/>
+  <text class="num mid" x="430" y="128">②</text>
+  <text class="num mid" x="430" y="170">③</text>
+  <text class="num mid" x="430" y="212">④</text>
+  <text class="sm" x="560" y="302">referrals ② ③ ④ happen only when the resolver cache is cold</text>
+
+  <!-- Client to resolver arrows -->
+  <line x1="100" y1="420" x2="100" y2="209" stroke="#0ea5e9" stroke-width="2.5" marker-end="url(#mb)"/>
+  <line x1="180" y1="205" x2="180" y2="416" stroke="#6b7280" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#mg)"/>
+  <text class="s" x="215" y="290">① up: "A? cdn.example.com"</text>
+  <text class="s" x="215" y="322">⑤ down: 203.0.113.7 — cached for TTL</text>
+
+  <!-- Phase 2: HTTP -->
+  <text class="sm" x="450" y="405">HTTP — every request follows this lane</text>
+
+  <rect x="40" y="420" width="200" height="90" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="h mid" x="140" y="456">Client</text>
+  <text class="sm mid" x="140" y="486">browser + stub</text>
+
+  <rect x="420" y="420" width="220" height="90" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="h mid" x="530" y="456">CDN edge POP</text>
+  <text class="sm mid" x="530" y="486">cache near the user</text>
+
+  <rect x="745" y="420" width="230" height="90" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="h mid" x="860" y="456">L7 load balancer</text>
+  <text class="sm mid" x="860" y="486">TLS terminates here</text>
+
+  <rect x="1030" y="405" width="130" height="30" rx="6" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="s mid" x="1095" y="426">api-1</text>
+  <rect x="1030" y="442" width="130" height="30" rx="6" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="s mid" x="1095" y="463">api-2</text>
+  <rect x="1030" y="479" width="130" height="30" rx="6" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="s mid" x="1095" y="500">api-3</text>
+  <text class="sm mid" x="1095" y="540">service pool</text>
+
+  <line x1="240" y1="465" x2="416" y2="465" stroke="#0ea5e9" stroke-width="2.5" marker-end="url(#mb)"/>
+  <text class="s mid" x="330" y="448">⑥ GET /hero.jpg</text>
+  <line x1="640" y1="465" x2="741" y2="465" stroke="#0ea5e9" stroke-width="2.5" marker-end="url(#mb)"/>
+  <text class="s mid" x="692" y="448">⑦ on MISS</text>
+  <line x1="975" y1="465" x2="1026" y2="465" stroke="#0ea5e9" stroke-width="2.5" marker-end="url(#mb)"/>
+  <text class="s mid" x="1000" y="448">⑧</text>
+
+  <!-- Cache HIT return path -->
+  <path d="M 530 510 C 530 605, 140 605, 140 514" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#mp)"/>
+  <text class="s mid" x="380" y="633" fill="#8b5cf6">cache HIT — served at the edge; the LB and origin never see the request</text>
+</svg>

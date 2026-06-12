@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-labelledby="title desc">
+  <title id="title">Star schema for retail sales</title>
+  <desc id="desc">A central fact_sales table surrounded by four dimension tables: dim_date, dim_product, dim_store, dim_customer, each joined by a foreign key arrow.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .dim { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+    .fact { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .hdrF { fill: #0ea5e9; }
+    .hdrD { fill: #8b5cf6; }
+  </style>
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Star schema: fact at the center, dimensions around it</text>
+  <line x1="40" y1="76" x2="1160" y2="76" stroke="#e5e7eb" stroke-width="2"/>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <!-- fact table center -->
+  <rect class="fact" x="440" y="270" width="320" height="240" rx="10"/>
+  <rect class="hdrF" x="440" y="270" width="320" height="40" rx="10"/>
+  <rect class="hdrF" x="440" y="292" width="320" height="18"/>
+  <text class="h" x="600" y="296" text-anchor="middle">fact_sales (grain: 1 row per line item)</text>
+  <text class="c" x="460" y="344">date_key  →</text>
+  <text class="c" x="460" y="378">product_key  →</text>
+  <text class="c" x="460" y="412">store_key  →</text>
+  <text class="c" x="460" y="446">customer_key  →</text>
+  <text class="b" x="460" y="486">qty, revenue, cost</text>
+
+  <!-- dim_date top-left -->
+  <rect class="dim" x="80" y="110" width="280" height="130" rx="10"/>
+  <rect class="hdrD" x="80" y="110" width="280" height="40" rx="10"/>
+  <rect class="hdrD" x="80" y="132" width="280" height="18"/>
+  <text class="h" x="220" y="136" text-anchor="middle">dim_date</text>
+  <text class="b" x="100" y="182">date_key (PK)</text>
+  <text class="m" x="100" y="216">year, quarter, month…</text>
+
+  <!-- dim_product top-right -->
+  <rect class="dim" x="840" y="110" width="280" height="130" rx="10"/>
+  <rect class="hdrD" x="840" y="110" width="280" height="40" rx="10"/>
+  <rect class="hdrD" x="840" y="132" width="280" height="18"/>
+  <text class="h" x="980" y="136" text-anchor="middle">dim_product</text>
+  <text class="b" x="860" y="182">product_key (PK)</text>
+  <text class="m" x="860" y="216">sku, name, category…</text>
+
+  <!-- dim_store bottom-left -->
+  <rect class="dim" x="80" y="540" width="280" height="130" rx="10"/>
+  <rect class="hdrD" x="80" y="540" width="280" height="40" rx="10"/>
+  <rect class="hdrD" x="80" y="562" width="280" height="18"/>
+  <text class="h" x="220" y="566" text-anchor="middle">dim_store</text>
+  <text class="b" x="100" y="612">store_key (PK)</text>
+  <text class="m" x="100" y="646">city, region, sqft…</text>
+
+  <!-- dim_customer bottom-right -->
+  <rect class="dim" x="840" y="540" width="280" height="130" rx="10"/>
+  <rect class="hdrD" x="840" y="540" width="280" height="40" rx="10"/>
+  <rect class="hdrD" x="840" y="562" width="280" height="18"/>
+  <text class="h" x="980" y="566" text-anchor="middle">dim_customer</text>
+  <text class="b" x="860" y="612">customer_key (PK)</text>
+  <text class="m" x="860" y="646">name, segment, tier…</text>
+
+  <!-- arrows from fact to dims -->
+  <line x1="460" y1="300" x2="350" y2="220" stroke="#4b5563" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="740" y1="300" x2="850" y2="220" stroke="#4b5563" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="460" y1="480" x2="350" y2="560" stroke="#4b5563" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="740" y1="480" x2="850" y2="560" stroke="#4b5563" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text class="s" x="368" y="246">FK join</text>
+  <text class="s" x="762" y="246">FK join</text>
+  <text class="s" x="368" y="544">FK join</text>
+  <text class="s" x="762" y="544">FK join</text>
+
+  <text class="m" x="40" y="706">Fact: narrow and tall (billions of rows, numeric measures). Dimensions: wide and short (thousands of rows, descriptive text).</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Quorum overlap with N=3, W=2, R=2</title>
+  <desc id="desc">Three replicas. A write lands on replicas 1 and 2. A read contacts replicas 2 and 3. Replica 2 is in both sets, so the read sees the latest write.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .rule { stroke: #e5e7eb; stroke-width: 2; }
+    .edge { stroke: #0ea5e9; stroke-width: 3; fill: none; }
+    .edger { stroke: #8b5cf6; stroke-width: 3; fill: none; }
+  </style>
+  <defs>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Quorum overlap: N = 3, W = 2, R = 2 (W + R &gt; N)</text>
+  <line class="rule" x1="40" y1="76" x2="1160" y2="76"/>
+
+  <!-- Writer -->
+  <rect x="80" y="140" width="220" height="70" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="h" x="120" y="172">Writer</text>
+  <text class="c" x="120" y="200">x = 2 (v9)</text>
+
+  <!-- Reader -->
+  <rect x="900" y="140" width="220" height="70" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="h" x="940" y="172">Reader</text>
+  <text class="c" x="940" y="200">read(x)</text>
+
+  <!-- Replicas -->
+  <rect x="170" y="330" width="240" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="h" x="200" y="368">Replica 1</text>
+  <text class="c" x="200" y="400">x = 2 (v9)</text>
+  <text class="s" x="200" y="426">write quorum</text>
+
+  <rect x="480" y="330" width="240" height="110" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="h" x="510" y="368">Replica 2</text>
+  <text class="c" x="510" y="400">x = 2 (v9)</text>
+  <text class="s" x="510" y="426">OVERLAP: in both quorums</text>
+
+  <rect x="790" y="330" width="240" height="110" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="h" x="820" y="368">Replica 3</text>
+  <text class="c" x="820" y="400">x = 1 (v8)</text>
+  <text class="s" x="820" y="426">stale — outvoted by v9</text>
+
+  <!-- Write edges -->
+  <line class="edge" x1="200" y1="210" x2="270" y2="325" marker-end="url(#aw)"/>
+  <line class="edge" x1="270" y1="210" x2="560" y2="325" marker-end="url(#aw)"/>
+  <text class="s" x="120" y="270" fill="#0ea5e9">write to W = 2 replicas</text>
+
+  <!-- Read edges -->
+  <line class="edger" x1="980" y1="210" x2="650" y2="325" marker-end="url(#ar)"/>
+  <line class="edger" x1="1040" y1="210" x2="930" y2="325" marker-end="url(#ar)"/>
+  <text class="s" x="930" y="270" fill="#8b5cf6">read from R = 2 replicas</text>
+
+  <text class="m" x="40" y="500">Read set {2, 3} returns versions v9 and v8. The reader keeps the highest version: v9. Because W + R = 4 &gt; N = 3,</text>
+  <text class="m" x="40" y="532">every read set must intersect every write set in at least one replica — the stale replica can never win the vote.</text>
+</svg>

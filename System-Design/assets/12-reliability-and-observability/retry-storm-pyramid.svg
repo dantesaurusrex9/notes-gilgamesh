@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Retry storm amplification pyramid</title>
+  <desc id="desc">One client request becomes 3 attempts at the API layer, 9 at the service layer, and 27 at the database, because each of three layers retries three times. Amplification is r to the power L.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .mult { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .cell { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+  </style>
+  <rect width="1200" height="640" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Retry storm: 3 attempts per layer &#8594; 27&#215; at the bottom</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Layer 0: client, 1 request -->
+  <text class="small" x="500" y="128">Layer 0 &#8212; client sends 1 request</text>
+  <rect x="500" y="140" width="120" height="56" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="cell" x="560" y="174" text-anchor="middle">request</text>
+  <text class="mult" x="1160" y="176" text-anchor="end">&#215;1</text>
+
+  <!-- Layer 1: API -> service A, 3 attempts -->
+  <text class="small" x="350" y="240">Layer 1 &#8212; API retries: 3 attempts against service A</text>
+  <rect x="350" y="252" width="120" height="56" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <rect x="500" y="252" width="120" height="56" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <rect x="650" y="252" width="120" height="56" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="cell" x="410" y="286" text-anchor="middle">1</text>
+  <text class="cell" x="560" y="286" text-anchor="middle">2</text>
+  <text class="cell" x="710" y="286" text-anchor="middle">3</text>
+  <text class="mult" x="1160" y="288" text-anchor="end">&#215;3 (3&#185;)</text>
+
+  <!-- Layer 2: service A -> service B, 9 attempts -->
+  <text class="small" x="144" y="344">Layer 2 &#8212; service A retries: 9 attempts against service B</text>
+  <rect x="144" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="238" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="332" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="426" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="520" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="614" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="708" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="802" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="896" y="356" width="80" height="48" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="mult" x="1160" y="388" text-anchor="end">&#215;9 (3&#178;)</text>
+
+  <!-- Layer 3: service B -> database, 27 attempts -->
+  <text class="small" x="104" y="440">Layer 3 &#8212; service B retries: 27 attempts hit the database</text>
+  <rect x="104" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="138" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="172" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="206" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="240" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="274" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="308" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="342" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="376" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="410" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="444" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="478" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="512" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="546" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="580" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="614" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="648" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="682" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="716" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="750" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="784" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="818" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="852" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="886" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="920" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="954" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <rect x="988" y="452" width="28" height="40" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="mult" x="1160" y="482" text-anchor="end">&#215;27 (3&#179;)</text>
+
+  <!-- footer -->
+  <line x1="40" y1="530" x2="1160" y2="530" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="40" y="570">Amplification = 3 &#215; 3 &#215; 3 = 27: every layer multiplies the layer below it.</text>
+  <text class="body" x="40" y="602">Fix: retry at ONE layer, cap retries with a budget (&#8776;10%), fast-fail the rest with a breaker.</text>
+</svg>

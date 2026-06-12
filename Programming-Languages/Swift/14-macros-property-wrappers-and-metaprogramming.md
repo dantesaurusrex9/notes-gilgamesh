@@ -1,7 +1,7 @@
 ---
 title: "14 - Macros, Property Wrappers, and Metaprogramming"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, macros, property-wrappers]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift metaprogramming is compile-time code generation with guardrails. Property wrappers change storage access patterns, result builders shape DSLs, and macros add code during compilation without deleting or rewriting existing source.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/14-macros-property-wrappers-and-metaprogramming/real-world-example.svg)
 
 This example uses a property wrapper to centralize clamping logic. Callers see a normal property, while the wrapper controls assignment.
 
@@ -44,6 +46,8 @@ print(progress.fraction)
 
 ## Vocabulary
 
+![Visual diagram: Vocabulary](./assets/14-macros-property-wrappers-and-metaprogramming/vocabulary.svg)
+
 **Property wrapper**: A type annotated with `@propertyWrapper` that controls storage and access for a property.
 
 ---
@@ -68,11 +72,15 @@ print(progress.fraction)
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/14-macros-property-wrappers-and-metaprogramming/intuition.svg)
+
 Metaprogramming should remove repetition without hiding the model. The danger is not that macros or wrappers are bad. The danger is making code harder to reason about than the boilerplate it replaced.
 
 Swift macros are additive. They add generated declarations or expressions; they do not delete or mutate existing source. The compiler type-checks both the macro input and the expanded output, which keeps the feature more disciplined than text substitution.
 
 ## Property Wrappers
+
+![Visual diagram: Property Wrappers](./assets/14-macros-property-wrappers-and-metaprogramming/property-wrappers.svg)
 
 Use wrappers when many properties share the same storage policy: clamping, validation, persistence, locking, environment lookup, or observation. This example imports Foundation for string trimming character sets.
 
@@ -99,6 +107,8 @@ struct Form {
 
 ## Result Builders
 
+![Visual diagram: Result Builders](./assets/14-macros-property-wrappers-and-metaprogramming/result-builders.svg)
+
 Result builders are why SwiftUI can express a view tree as nested declarations. You can use them for DSLs, but most app code should consume builders more often than it creates them.
 
 ```swift
@@ -122,6 +132,8 @@ let items = makeList {
 
 ## Macros
 
+![Visual diagram: Macros](./assets/14-macros-property-wrappers-and-metaprogramming/macros.svg)
+
 Macros are declared separately from their implementation. The implementation runs during compilation. SwiftPM can create a macro package template.
 
 ```bash
@@ -131,6 +143,8 @@ swift package init --type macro
 Use macros when generation needs syntax awareness and type checking. Do not use a macro when a function, generic type, property wrapper, or protocol extension is enough.
 
 ## Practical Use Cases
+
+![Visual diagram: Practical Use Cases](./assets/14-macros-property-wrappers-and-metaprogramming/practical-use-cases.svg)
 
 Good uses:
 
@@ -148,6 +162,8 @@ Bad uses:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/14-macros-property-wrappers-and-metaprogramming/pitfalls.svg)
+
 - **Magic over clarity**: Generated code still has to be understood during debugging.
 - **Wrapper side effects**: Assignment should not unexpectedly block, allocate heavily, or perform IO.
 - **Macro build cost**: Macro implementations are compiler plugins and affect build behavior.
@@ -155,6 +171,8 @@ Bad uses:
 - **DSL addiction**: Not every domain deserves custom syntax.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/14-macros-property-wrappers-and-metaprogramming/exercises.svg)
 
 1. Build a `@Trimmed` property wrapper and test assignment behavior.
 2. Add a projected value to expose whether the original value changed.

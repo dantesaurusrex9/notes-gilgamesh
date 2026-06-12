@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">Call stack at the deepest point of fib(4)</title>
+  <desc id="desc">Five stacked call frames: the module frame at the bottom, then fib(4), fib(3), fib(2), and fib(1) on top. Each frame lists its local variable n and what it is waiting on. Annotations explain what a frame stores, the O(n) stack space of linear recursion, and the CPython recursion limit.</desc>
+  <rect width="1200" height="700" fill="#ffffff"/>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .muted { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+
+  <text class="title" x="40" y="56">Call stack at the deepest point of fib(4)</text>
+  <line x1="40" y1="74" x2="1160" y2="74" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- growth arrow on the left -->
+  <line x1="95" y1="626" x2="95" y2="134" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text class="small" transform="rotate(-90 66 380)" x="66" y="380" text-anchor="middle">push on call — stack grows upward</text>
+
+  <!-- frames, bottom to top -->
+  <rect x="130" y="538" width="430" height="88" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="code" x="150" y="574">&lt;module&gt;</text>
+  <text class="small" x="150" y="606">called fib(4) · waiting for the result</text>
+
+  <rect x="130" y="436" width="430" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="code" x="150" y="472">fib(n=4)</text>
+  <text class="small" x="150" y="504">n=4 · waiting on the fib(3) call</text>
+
+  <rect x="130" y="334" width="430" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="code" x="150" y="370">fib(n=3)</text>
+  <text class="small" x="150" y="402">n=3 · waiting on the fib(2) call</text>
+
+  <rect x="130" y="232" width="430" height="88" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="code" x="150" y="268">fib(n=2)</text>
+  <text class="small" x="150" y="300">n=2 · waiting on the fib(1) call</text>
+
+  <rect x="130" y="130" width="430" height="88" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="code" x="150" y="166">fib(n=1)</text>
+  <text class="small" x="150" y="198">base case — about to return 1</text>
+
+  <!-- annotation 1: top frame -->
+  <line x1="562" y1="174" x2="606" y2="174" stroke="#38bdf8" stroke-width="2"/>
+  <text class="body" x="620" y="158">Top frame = the code running right now.</text>
+  <text class="muted" x="620" y="192">fib(1) returns 1; its frame is popped</text>
+  <text class="muted" x="620" y="224">and fib(2) resumes where it paused.</text>
+
+  <!-- annotation 2: frame contents -->
+  <text class="body" x="620" y="292">Every frame stores:</text>
+  <text class="muted" x="620" y="328">• locals (here just n)</text>
+  <text class="muted" x="620" y="362">• the resume point (return address)</text>
+  <text class="muted" x="620" y="396">• a link to its caller's frame</text>
+
+  <!-- annotation 3: space cost -->
+  <text class="body" x="620" y="468">Depth = 4 frames here, so linear</text>
+  <text class="body" x="620" y="502">recursion costs O(n) extra space.</text>
+
+  <!-- annotation 4: recursion limit -->
+  <text class="body" x="620" y="572">CPython refuses to push past</text>
+  <text class="code" x="620" y="608">sys.getrecursionlimit()</text>
+  <text class="muted" x="962" y="608">(≈ 1000)</text>
+  <text class="muted" x="620" y="642">and raises RecursionError, not a crash.</text>
+</svg>

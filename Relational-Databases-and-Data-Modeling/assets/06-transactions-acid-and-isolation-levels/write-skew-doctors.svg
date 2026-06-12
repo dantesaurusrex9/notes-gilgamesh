@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 580" width="1200" height="580" role="img" aria-labelledby="title desc">
+  <title id="title">Write skew: the on-call doctors example under snapshot isolation</title>
+  <desc id="desc">Two-lane timeline. Alice and Bob each check that at least two doctors are on call, see two in their snapshots, and each removes themselves. Both commits succeed and zero doctors remain on call.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .lane { fill: none; stroke: #e5e7eb; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="580" fill="#ffffff"/>
+  <text x="40" y="60" class="t">Write skew survives snapshot isolation</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="40" y="160" class="b" font-weight="700">T1 (Alice)</text>
+  <line x1="220" y1="152" x2="1140" y2="152" class="lane"/>
+  <text x="40" y="300" class="b" font-weight="700">T2 (Bob)</text>
+  <line x1="220" y1="292" x2="1140" y2="292" class="lane"/>
+
+  <!-- T1 -->
+  <rect x="230" y="120" width="310" height="52" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="246" y="154" class="c">COUNT(on_call) → 2 ✓</text>
+  <rect x="640" y="120" width="290" height="52" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="656" y="154" class="c">Alice → off, COMMIT</text>
+
+  <!-- T2 -->
+  <rect x="320" y="260" width="310" height="52" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="336" y="294" class="c">COUNT(on_call) → 2 ✓</text>
+  <rect x="850" y="260" width="280" height="52" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="866" y="294" class="c">Bob → off, COMMIT</text>
+
+  <text x="320" y="350" class="m">Both snapshots show 2 doctors. Each transaction writes a DIFFERENT row,</text>
+  <text x="320" y="376" class="m">so first-committer-wins never fires — there is no write-write conflict.</text>
+
+  <rect x="230" y="420" width="910" height="120" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="250" y="455" class="b" font-weight="700">Result: zero doctors on call.</text>
+  <text x="250" y="490" class="b">The invariant "at least one on call" spanned rows that neither transaction wrote.</text>
+  <text x="250" y="520" class="b">Fixes: SERIALIZABLE, or SELECT ... FOR UPDATE on the rows the decision reads.</text>
+</svg>

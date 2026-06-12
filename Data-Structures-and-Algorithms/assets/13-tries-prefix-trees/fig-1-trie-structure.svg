@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">Trie storing cat, car, card, care</title>
+  <desc id="desc">A trie drawn root-down. The shared prefix nodes c and a are highlighted in blue. Terminal nodes t, r, d, e are green. Four words share the prefix ca, which is stored exactly once.</desc>
+  <style>
+    .t  { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .edge   { stroke: #6b7280; stroke-width: 2.5; }
+    .shared { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2.5; }
+    .term   { fill: #dcfce7; stroke: #86efac; stroke-width: 2.5; }
+    .plain  { fill: #ffffff; stroke: #6b7280; stroke-width: 2.5; }
+  </style>
+  <rect width="1200" height="700" fill="#ffffff"/>
+
+  <text class="t" x="40" y="58">Trie storing cat, car, card, care</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- edges (under the nodes) -->
+  <line class="edge" x1="680" y1="160" x2="680" y2="268"/>
+  <line class="edge" x1="680" y1="268" x2="680" y2="376"/>
+  <line class="edge" x1="680" y1="376" x2="540" y2="490"/>
+  <line class="edge" x1="680" y1="376" x2="820" y2="490"/>
+  <line class="edge" x1="820" y1="490" x2="730" y2="606"/>
+  <line class="edge" x1="820" y1="490" x2="910" y2="606"/>
+
+  <!-- nodes -->
+  <circle class="plain"  cx="680" cy="160" r="36"/>
+  <circle class="shared" cx="680" cy="268" r="36"/>
+  <circle class="shared" cx="680" cy="376" r="36"/>
+  <circle class="term"   cx="540" cy="490" r="36"/>
+  <circle class="term"   cx="820" cy="490" r="36"/>
+  <circle class="term"   cx="730" cy="606" r="36"/>
+  <circle class="term"   cx="910" cy="606" r="36"/>
+
+  <!-- node characters -->
+  <text class="c" x="680" y="277" text-anchor="middle">c</text>
+  <text class="c" x="680" y="385" text-anchor="middle">a</text>
+  <text class="c" x="540" y="499" text-anchor="middle">t</text>
+  <text class="c" x="820" y="499" text-anchor="middle">r</text>
+  <text class="c" x="730" y="615" text-anchor="middle">d</text>
+  <text class="c" x="910" y="615" text-anchor="middle">e</text>
+
+  <!-- side labels -->
+  <text class="s" x="726" y="156">root (empty string)</text>
+  <text class="s" x="540" y="556" text-anchor="middle">word: cat</text>
+  <text class="s" x="866" y="466">word: car</text>
+  <text class="s" x="730" y="672" text-anchor="middle">word: card</text>
+  <text class="s" x="910" y="672" text-anchor="middle">word: care</text>
+
+  <!-- legend -->
+  <text class="b" x="40" y="158">Legend</text>
+  <rect class="shared" x="40" y="180" width="30" height="30"/>
+  <text class="m" x="86" y="203">shared prefix path (c, a)</text>
+  <rect class="term" x="40" y="232" width="30" height="30"/>
+  <text class="m" x="86" y="255">terminal: is_word = True</text>
+  <rect class="plain" x="40" y="284" width="30" height="30"/>
+  <text class="m" x="86" y="307">internal node / root</text>
+
+  <text class="m" x="40" y="392">4 words, but only 6 character</text>
+  <text class="m" x="40" y="424">nodes: the prefix &#8220;ca&#8221; is</text>
+  <text class="m" x="40" y="456">stored once and shared by</text>
+  <text class="m" x="40" y="488">every word that uses it.</text>
+
+  <text class="s" x="40" y="560">A node holds the character of its</text>
+  <text class="s" x="40" y="586">incoming edge. A green node can</text>
+  <text class="s" x="40" y="612">still have children (see r: card, care).</text>
+</svg>

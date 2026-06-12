@@ -1,7 +1,7 @@
 ---
 title: "18 - Deployment, Operations, Security, and Release Engineering"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [python, programming-languages, deployment, security, operations]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Shipping Python means controlling the interpreter version, dependencies, environment, entry points, config, logs, metrics, migrations, secrets, and upgrade path. A master Python engineer can explain both how code runs and how it survives production.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/18-deployment-operations-security-and-release-engineering/real-world-example.svg)
 
 This Dockerfile installs a package with locked dependencies, runs as a non-root user, and launches the module entry point. It is a practical baseline, not a universal template.
 
@@ -34,6 +36,8 @@ CMD ["uv", "run", "python", "-m", "myservice"]
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/18-deployment-operations-security-and-release-engineering/vocabulary.svg)
 
 **Wheel**: A built Python distribution archive installed without running arbitrary build steps.
 
@@ -59,11 +63,15 @@ CMD ["uv", "run", "python", "-m", "myservice"]
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/18-deployment-operations-security-and-release-engineering/intuition.svg)
+
 Python production failures often come from the edges: wrong interpreter, wrong dependency version, import path mismatch, unbounded logging, missing timeout, secret in source, or an image that differs from CI. Deployment is the art of removing those guesses.
 
 The application should start the same way locally, in CI, and in production. The closer those paths are, the fewer "works on my machine" bugs you will see.
 
 ## Release Inputs
+
+![Visual diagram: Release Inputs](./assets/18-deployment-operations-security-and-release-engineering/release-inputs.svg)
 
 Pin and record these:
 
@@ -78,6 +86,8 @@ Pin and record these:
 
 ## Application Startup
 
+![Visual diagram: Application Startup](./assets/18-deployment-operations-security-and-release-engineering/application-startup.svg)
+
 Prefer module execution or a console script entry point.
 
 ```bash
@@ -88,6 +98,8 @@ myservice
 Avoid starting production by importing random files from a working directory. Package the code and run a known entry point.
 
 ## Configuration and Secrets
+
+![Visual diagram: Configuration and Secrets](./assets/18-deployment-operations-security-and-release-engineering/configuration-and-secrets.svg)
 
 Use environment variables or a secret manager for deployment-specific config. Validate config at startup and fail fast.
 
@@ -109,6 +121,8 @@ class Settings:
 ```
 
 ## Observability
+
+![Visual diagram: Observability](./assets/18-deployment-operations-security-and-release-engineering/observability.svg)
 
 Use structured logs and keep high-cardinality or sensitive data under control.
 
@@ -133,6 +147,8 @@ def log_request(request_id: str, status_code: int, duration_ms: float) -> None:
 
 ## Security Baseline
 
+![Visual diagram: Security Baseline](./assets/18-deployment-operations-security-and-release-engineering/security-baseline.svg)
+
 - Pin dependencies and update deliberately.
 - Prefer wheels from trusted indexes.
 - Scan dependencies with a known tool in CI.
@@ -144,6 +160,8 @@ def log_request(request_id: str, status_code: int, duration_ms: float) -> None:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/18-deployment-operations-security-and-release-engineering/pitfalls.svg)
+
 - **Unpinned dependencies**: A deploy can change without code changing.
 - **Importing from the working directory accidentally**: Package layout and entry points prevent this.
 - **No startup config validation**: Missing config becomes a runtime incident.
@@ -151,6 +169,8 @@ def log_request(request_id: str, status_code: int, duration_ms: float) -> None:
 - **Logging secrets**: Logs are production data stores; treat them accordingly.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/18-deployment-operations-security-and-release-engineering/exercises.svg)
 
 1. Add a console script entry point to a Python package.
 2. Write a `Settings.from_env()` that validates required config.

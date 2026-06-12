@@ -1,7 +1,7 @@
 ---
 title: "15 - Buffers, Input, and Output"
 created: 2026-05-24
-updated: 2026-05-24
+updated: 2026-06-12
 tags: [golang, programming-languages, io, bufio, buffers, debugging]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** In Go, input and output are usually byte streams behind the `io.Reader` and `io.Writer` interfaces. A buffer is temporary memory placed between the program and a slower source or sink, such as a terminal, file, socket, or HTTP body. When debugging `bufio.Reader`, the useful value is usually the line or token returned by the read call; the internal backing buffer often contains extra zero bytes because it was allocated with spare capacity.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/15-buffers-input-and-output/vocabulary.svg)
 
 **Byte stream**: A sequence of bytes read or written in order. Files, terminal input, network connections, and HTTP bodies are all modeled as streams.
 
@@ -52,6 +54,8 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/15-buffers-input-and-output/intuition.svg)
+
 Raw I/O is slow compared with memory. A terminal, file, or socket often delivers bytes in chunks, while the program may want one line, one token, or one field at a time. A buffer absorbs that mismatch: it reads or writes in efficient chunks while exposing a convenient API to the rest of the program.
 
 For input, the buffer answers "what bytes have arrived but have not been consumed yet?" For output, the buffer answers "what bytes has my program produced but not pushed out yet?" The same word "buffer" appears in both directions, but the ownership and failure modes differ.
@@ -65,6 +69,8 @@ flowchart LR
 ```
 
 ## How Input Works
+
+![Visual diagram: How Input Works](./assets/15-buffers-input-and-output/how-input-works.svg)
 
 Input starts outside the program. When a user types `3` and presses Enter in a terminal, the terminal provides two bytes to the process: the ASCII byte for `3`, then a newline byte. In decimal that is `[51, 10]`; in hex that is `[0x33, 0x0a]`.
 
@@ -124,6 +130,8 @@ The meaningful bytes are the first two: `51` is the ASCII byte for `"3"`, and `1
 
 ## How Output Works
 
+![Visual diagram: How Output Works](./assets/15-buffers-input-and-output/how-output-works.svg)
+
 Output is the reverse direction. The program produces bytes and writes them to an `io.Writer`, such as `os.Stdout`, `os.Stderr`, a file, an HTTP response, or a `bytes.Buffer` in a test.
 
 ### Direct Writes
@@ -162,6 +170,8 @@ Until `Flush` runs, the output may still be inside the process. That is differen
 > If you use `bufio.Writer`, always flush it before returning, exiting, or handing control back to code that expects the output to be visible. A missing `Flush` is one of the most common buffered-output bugs.
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/15-buffers-input-and-output/real-world-example.svg)
 
 This example models a CLI prompt without using the real terminal. The input is a `strings.Reader`; the output is a `bytes.Buffer`. That lets a test prove the menu behavior without typing interactively.
 
@@ -222,6 +232,8 @@ Choose an option:
 
 ## Debugging Checklist
 
+![Visual diagram: Debugging Checklist](./assets/15-buffers-input-and-output/debugging-checklist.svg)
+
 When a buffered input or output path looks confusing, start with the values your code actually consumes. Internal buffers are implementation details, and they often contain stale or unused bytes that distract from the bug.
 
 1. Break on the read call, such as `ReadString`, `ReadBytes`, `Scanner.Scan`, or `io.ReadAll`.
@@ -235,6 +247,8 @@ When a buffered input or output path looks confusing, start with the values your
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/15-buffers-input-and-output/in-practice.svg)
+
 Use `bufio.Reader` when you need line-oriented or token-oriented input from a stream. Use `bufio.Scanner` for simple token loops, but remember its default token limit. Use `ReadString`, `ReadBytes`, or `ReadSlice` when you need explicit delimiter behavior or very long lines.
 
 Use `bytes.Buffer` or `strings.Builder` when the data lives entirely in memory. Use `bytes.Buffer` when you need `[]byte` behavior or an `io.Writer`; use `strings.Builder` when you are building text and only need the final string.
@@ -242,6 +256,8 @@ Use `bytes.Buffer` or `strings.Builder` when the data lives entirely in memory. 
 For CLIs, prefer function signatures like `func run(args []string, in io.Reader, out io.Writer) error`. That keeps terminal I/O at the boundary and makes the core behavior testable with memory-backed readers and writers.
 
 ## Pitfalls
+
+![Visual diagram: Pitfalls](./assets/15-buffers-input-and-output/pitfalls.svg)
 
 Most buffering bugs come from looking at the wrong layer. Ask whether the problem is in the bytes supplied by the source, the buffered wrapper, the parsed value, or the final destination.
 

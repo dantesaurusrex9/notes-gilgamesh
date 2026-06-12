@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-labelledby="title desc">
+  <title id="title">Idempotency-key request flow: first attempt is processed and recorded, the retry replays the recorded response</title>
+  <desc id="desc">Sequence diagram with three lifelines: client, API server, and key store plus database. The first POST with idempotency key a1b2 misses the store, charges the card once, records the response, but the 201 reply is lost in a timeout. The client retries with the same key, the store hits, and the recorded 201 is replayed without running the handler again.</desc>
+  <defs>
+    <marker id="arrdark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrred" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fca5a5"/>
+    </marker>
+    <marker id="arrgreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#86efac"/>
+    </marker>
+  </defs>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .head  { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; text-anchor: middle; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .msg   { font: 700 18px "SFMono-Regular", Consolas, monospace; fill: #d63384; text-anchor: middle; }
+    .bad   { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b91c1c; text-anchor: middle; }
+    .good  { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #15803d; text-anchor: middle; }
+    .note  { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; text-anchor: middle; }
+    .lane  { stroke: #e5e7eb; stroke-width: 2; stroke-dasharray: 8 6; }
+    .flow  { stroke: #4b5563; stroke-width: 2.5; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="720" fill="#ffffff"/>
+  <text class="title" x="40" y="52">Idempotency key: safe retries, one charge</text>
+  <line x1="40" y1="72" x2="1160" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- lifeline headers -->
+  <rect x="60"  y="96" width="220" height="48" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="490" y="96" width="220" height="48" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="890" y="96" width="240" height="48" rx="8" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="head" x="170"  y="128">Client</text>
+  <text class="head" x="600"  y="128">API server</text>
+  <text class="head" x="1010" y="128">Key store + DB</text>
+
+  <!-- lifelines -->
+  <line class="lane" x1="170"  y1="144" x2="170"  y2="648"/>
+  <line class="lane" x1="600"  y1="144" x2="600"  y2="648"/>
+  <line class="lane" x1="1010" y1="144" x2="1010" y2="648"/>
+
+  <!-- 1. first POST -->
+  <text class="msg" x="385" y="182">POST /payments  Idempotency-Key: a1b2</text>
+  <line class="flow" x1="170" y1="192" x2="592" y2="192" marker-end="url(#arrdark)"/>
+
+  <!-- 2. store miss -->
+  <text class="msg" x="805" y="238">GET key a1b2 &#8594; miss</text>
+  <line class="flow" x1="600" y1="248" x2="1002" y2="248" marker-end="url(#arrdark)"/>
+
+  <!-- 3. charge once -->
+  <text class="msg" x="805" y="294">INSERT payment (card charged ONCE)</text>
+  <line class="flow" x1="600" y1="304" x2="1002" y2="304" marker-end="url(#arrdark)"/>
+
+  <!-- 4. record response -->
+  <text class="msg" x="805" y="350">SET key a1b2 = (201, body), TTL 24h</text>
+  <line class="flow" x1="600" y1="360" x2="1002" y2="360" marker-end="url(#arrdark)"/>
+
+  <!-- 5. reply lost -->
+  <rect x="205" y="392" width="360" height="34" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text class="bad" x="385" y="416">201 reply LOST — client times out</text>
+  <line x1="600" y1="444" x2="178" y2="444" stroke="#fca5a5" stroke-width="2.5" stroke-dasharray="10 7" marker-end="url(#arrred)"/>
+
+  <!-- 6. retry -->
+  <text class="msg" x="385" y="496">retry with the SAME key a1b2</text>
+  <line class="flow" x1="170" y1="506" x2="592" y2="506" marker-end="url(#arrdark)"/>
+
+  <!-- 7. store hit -->
+  <text class="msg" x="805" y="552">GET key a1b2 &#8594; hit (201, body)</text>
+  <line class="flow" x1="600" y1="562" x2="1002" y2="562" marker-end="url(#arrdark)"/>
+
+  <!-- 8. replay -->
+  <rect x="185" y="588" width="400" height="34" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="good" x="385" y="612">201 replayed — handler never runs again</text>
+  <line x1="600" y1="640" x2="178" y2="640" stroke="#86efac" stroke-width="2.5" marker-end="url(#arrgreen)"/>
+
+  <text class="note" x="600" y="692">Record atomically (SETNX + TTL). Scope the key to route + caller. Concurrent duplicate in flight &#8594; 409 or wait.</text>
+</svg>

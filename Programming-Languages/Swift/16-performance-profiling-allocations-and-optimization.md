@@ -1,7 +1,7 @@
 ---
 title: "16 - Performance, Profiling, Allocations, and Optimization"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, performance, profiling]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift performance work should be measured, release-mode, and workload-specific. Watch allocations, ARC traffic, string and collection copies, protocol dispatch, actor hops, bridging, and algorithmic complexity before reaching for unsafe code.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/16-performance-profiling-allocations-and-optimization/real-world-example.svg)
 
 This example avoids repeated intermediate arrays by using a single reduction. It is still readable, and it gives the optimizer fewer allocations to manage.
 
@@ -28,6 +30,8 @@ print(sumOfEvenSquares)
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/16-performance-profiling-allocations-and-optimization/vocabulary.svg)
 
 **Hot path**: Code that runs frequently enough to affect latency, throughput, battery, or memory.
 
@@ -57,11 +61,15 @@ print(sumOfEvenSquares)
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/16-performance-profiling-allocations-and-optimization/intuition.svg)
+
 Performance is a product property, not a personality trait of code. A beautiful abstraction in a cold path is fine. A tiny allocation in a million-iteration hot path can dominate. The senior move is to measure before changing design.
 
 Swift's optimizer is strong. Clean, direct Swift often optimizes better than hand-clever code. Unsafe APIs are a last resort after algorithmic fixes, data layout fixes, and measured allocation reductions.
 
 ## Release Mode First
+
+![Visual diagram: Release Mode First](./assets/16-performance-profiling-allocations-and-optimization/release-mode-first.svg)
 
 Debug builds are for debugging, not performance truth.
 
@@ -77,6 +85,8 @@ swift build -c release -Xswiftc -cross-module-optimization
 ```
 
 ## Allocation Reduction
+
+![Visual diagram: Allocation Reduction](./assets/16-performance-profiling-allocations-and-optimization/allocation-reduction.svg)
 
 Use `reduce(into:)` when building an accumulated result so the accumulator can be mutated in place.
 
@@ -101,6 +111,8 @@ for value in 0..<10_000 {
 
 ## ARC and Classes
 
+![Visual diagram: ARC and Classes](./assets/16-performance-profiling-allocations-and-optimization/arc-and-classes.svg)
+
 ARC is usually cheap, but retain/release traffic in tight loops can matter. Prefer value types for simple data, avoid unnecessary boxing, and keep class reference lifetimes clear.
 
 ```swift
@@ -111,6 +123,8 @@ struct Point {
 ```
 
 ## Dispatch Costs
+
+![Visual diagram: Dispatch Costs](./assets/16-performance-profiling-allocations-and-optimization/dispatch-costs.svg)
 
 Dynamic dispatch, existential dispatch, and generic specialization all have tradeoffs. Do not rewrite APIs blindly. In public libraries, API clarity and resilience matter too.
 
@@ -128,6 +142,8 @@ For a hot generic path, a generic parameter may preserve more static type inform
 
 ## Profiling Tools
 
+![Visual diagram: Profiling Tools](./assets/16-performance-profiling-allocations-and-optimization/profiling-tools.svg)
+
 Use the tool that matches the platform:
 
 - Apple apps: Instruments Time Profiler, Allocations, Leaks, Hangs, Energy.
@@ -137,6 +153,8 @@ Use the tool that matches the platform:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/16-performance-profiling-allocations-and-optimization/pitfalls.svg)
+
 - **Optimizing debug builds**: You may fix a debug artifact, not production behavior.
 - **Replacing algorithms with unsafe code**: An O(n squared) algorithm stays bad in unsafe Swift.
 - **Ignoring strings**: Unicode-correct string work can be expensive. Parse carefully.
@@ -144,6 +162,8 @@ Use the tool that matches the platform:
 - **Actor hop spam**: Excessive cross-actor calls can serialize or add scheduling overhead.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/16-performance-profiling-allocations-and-optimization/exercises.svg)
 
 1. Benchmark `map().filter().reduce()` against one `reduce(into:)` for a large input.
 2. Add `reserveCapacity` to a loop that builds an array.

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Kahn's algorithm peels off zero-indegree waves</title>
+  <desc id="desc">Four columns labeled wave 0 through wave 3. Wave 0 removes CS101 and MATH110, dropping CS201's indegree to zero. Wave 1 removes CS201, unlocking CS301, CS320, and CS330. Wave 2 removes those three, dropping CS490 to zero. Wave 3 removes CS490 and the queue is empty with all seven nodes emitted.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .done { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .edge { stroke: #4b5563; stroke-width: 2.5; fill: none; }
+  </style>
+  <rect width="1200" height="640" fill="#ffffff"/>
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <text class="t" x="40" y="58">Kahn’s algorithm peels off zero-indegree waves</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- column headers -->
+  <text class="h" x="170" y="140" text-anchor="middle">Wave 0</text>
+  <text class="h" x="460" y="140" text-anchor="middle">Wave 1</text>
+  <text class="h" x="750" y="140" text-anchor="middle">Wave 2</text>
+  <text class="h" x="1040" y="140" text-anchor="middle">Wave 3</text>
+
+  <!-- wave 0 -->
+  <rect class="done" x="85" y="177" width="170" height="56" rx="10"/>
+  <text class="b" x="170" y="213" text-anchor="middle">CS101</text>
+  <rect class="done" x="85" y="257" width="170" height="56" rx="10"/>
+  <text class="b" x="170" y="293" text-anchor="middle">MATH110</text>
+
+  <!-- wave 1 -->
+  <rect class="done" x="375" y="217" width="170" height="56" rx="10"/>
+  <text class="b" x="460" y="253" text-anchor="middle">CS201</text>
+
+  <!-- wave 2 -->
+  <rect class="done" x="665" y="177" width="170" height="56" rx="10"/>
+  <text class="b" x="750" y="213" text-anchor="middle">CS301</text>
+  <rect class="done" x="665" y="257" width="170" height="56" rx="10"/>
+  <text class="b" x="750" y="293" text-anchor="middle">CS320</text>
+  <rect class="done" x="665" y="337" width="170" height="56" rx="10"/>
+  <text class="b" x="750" y="373" text-anchor="middle">CS330</text>
+
+  <!-- wave 3 -->
+  <rect class="done" x="955" y="257" width="170" height="56" rx="10"/>
+  <text class="b" x="1040" y="293" text-anchor="middle">CS490</text>
+
+  <!-- arrows between waves -->
+  <line class="edge" x1="265" y1="270" x2="365" y2="260" marker-end="url(#arr2)"/>
+  <line class="edge" x1="555" y1="250" x2="655" y2="270" marker-end="url(#arr2)"/>
+  <line class="edge" x1="845" y1="285" x2="945" y2="285" marker-end="url(#arr2)"/>
+
+  <!-- per-wave indegree effects -->
+  <text class="s" x="170" y="440" text-anchor="middle">indegree[CS201]: 2 → 0</text>
+  <text class="s" x="460" y="440" text-anchor="middle">CS301, CS320, CS330: 1 → 0</text>
+  <text class="s" x="750" y="440" text-anchor="middle">indegree[CS490]: 3 → 0</text>
+  <text class="s" x="1040" y="440" text-anchor="middle">queue empty — 7/7 emitted</text>
+
+  <line x1="40" y1="475" x2="1160" y2="475" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="40" y="520">order = [CS101, MATH110, CS201, CS301, CS320, CS330, CS490]</text>
+  <text class="m" x="40" y="565">A node’s wave index equals the length of its longest prerequisite chain.</text>
+  <text class="m" x="40" y="600">Nodes in the same wave share no edges — they can be processed in parallel.</text>
+</svg>

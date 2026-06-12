@@ -1,7 +1,7 @@
 ---
 title: "9 - Memory Management and the GC"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: [golang, programming-languages, memory, garbage-collector, escape-analysis, gc]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Go uses a concurrent, tri-color mark-sweep garbage collector that runs alongside application goroutines with sub-millisecond stop-the-world pauses (< 1 ms for most workloads). The key levers are escape analysis (the compiler decides stack vs heap at compile time), `GOGC` (controls GC frequency as a percentage of live heap), and `GOMEMLIMIT` (Go 1.19+, hard memory ceiling). Understanding where allocations go — and how to avoid them — is the primary performance skill for Go at scale.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/9-memory-management-gc/vocabulary.svg)
 
 **Stack allocation**: A value that lives in the goroutine's stack frame. Allocation is a pointer bump; deallocation is automatic when the frame returns. Stack grows and shrinks dynamically in Go (initial ~2 KB, can grow to GB).
 
@@ -52,11 +54,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/9-memory-management-gc/intuition.svg)
+
 Think of Go's GC as a janitor that wakes up when the room gets messy and cleans while the party is still going on. The janitor is concurrent — the party (your goroutines) does not stop for the cleaning. There are two brief moments when the music stops: when the janitor starts sweeping (mark setup) and when the janitor confirms the room is clean (mark termination). Both are kept under 1 ms.
 
 The key insight for performance: **the GC only frees what it can find, so it only costs proportional to what you allocated**. If you reduce allocations (by reusing objects, by keeping values on the stack), you reduce GC work and improve tail latency. Go gives you precise control over this through escape analysis and `sync.Pool`.
 
 ## Stack vs Heap — Escape Analysis
+
+![Visual diagram: Stack vs Heap - Escape Analysis](./assets/9-memory-management-gc/stack-vs-heap-escape-analysis.svg)
 
 The compiler performs escape analysis on every function. A value escapes to the heap when:
 
@@ -94,6 +100,8 @@ go build -gcflags='-m -m' ./...
 
 ## The Tri-Color Mark-Sweep GC
 
+![Visual diagram: The Tri-Color Mark-Sweep GC](./assets/9-memory-management-gc/the-tri-color-mark-sweep-gc.svg)
+
 Go's GC algorithm works in four phases per cycle:
 
 ```mermaid
@@ -130,6 +138,8 @@ The GC scans for white (unreachable) objects and reclaims their memory. This run
 
 ## GC Pacing — GOGC and GOMEMLIMIT
 
+![Visual diagram: GC Pacing - GOGC and GOMEMLIMIT](./assets/9-memory-management-gc/gc-pacing-gogc-and-gomemlimit.svg)
+
 ### GOGC
 
 `GOGC` (default 100) sets the heap growth target. After a GC cycle, if the live heap is H bytes, the next GC triggers when the heap reaches H × (1 + GOGC/100).
@@ -159,6 +169,8 @@ The recommended pattern for Kubernetes: set `GOMEMLIMIT` to ~90% of the containe
 > `GOMEMLIMIT` does not prevent OOM if the live heap exceeds the limit — it can only control GC frequency to try to stay below it. If your program's actual live objects exceed the limit, the GC will thrash (run continuously) and your program will slow to a crawl. Profile first to confirm your live heap is well below the limit.
 
 ## Common Allocation Gotchas
+
+![Visual diagram: Common Allocation Gotchas](./assets/9-memory-management-gc/common-allocation-gotchas.svg)
 
 ### Interface Boxing
 
@@ -212,6 +224,8 @@ result := b.String()
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/9-memory-management-gc/real-world-example.svg)
 
 Using `pprof` to find and fix a heap allocation hot spot in an HTTP handler:
 
@@ -275,6 +289,8 @@ go tool pprof -alloc_objects http://localhost:8080/debug/pprof/allocs
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/9-memory-management-gc/in-practice.svg)
+
 **The ballast trick**: Some services pre-allocate a large slice of bytes at startup (`_ = make([]byte, 1<<30)`) to tell the GC that the live heap is large, causing it to set a high trigger threshold and run less frequently. This is a workaround for `GOGC`'s proportional nature — replaced by `GOMEMLIMIT` in Go 1.19, which is the recommended approach.
 
 **Finalizers (`runtime.SetFinalizer`)**: Go supports finalizers — functions called when an object is about to be GC'd. They are rarely needed (most resources should be closed explicitly via `defer`) and add GC latency. Avoid them in new code.
@@ -296,6 +312,8 @@ func BenchmarkHandler(b *testing.B) {
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/9-memory-management-gc/pitfalls.svg)
+
 - **"Returning a pointer is always faster than returning a value."** — For small structs, returning by value is often faster because it stays on the stack. Returning a pointer causes the value to escape to the heap, adding an allocation. Measure with `-benchmem`.
 - **"Interfaces have no performance cost."** — Storing a value in an interface boxes it (may heap-allocate). Interface method calls are virtual dispatch (one pointer indirection). In very tight loops this is measurable.
 - **"GOGC=off is a good optimisation."** — Only for programs that run briefly (CLI tools). For long-running services, disabling GC means the heap grows indefinitely until OOM.
@@ -303,6 +321,8 @@ func BenchmarkHandler(b *testing.B) {
 - **"Small allocations are free."** — Each allocation has a small but real cost: the allocator must find free memory, write a type descriptor, and the GC must trace and sweep the object. At millions of allocations per second, this adds up. Profile before dismissing small-allocation concerns.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/9-memory-management-gc/exercises.svg)
 
 ### Exercise 1 — Conceptual: Why does `fmt.Sprintf("%d", x)` allocate and `strconv.Itoa(x)` allocate less?
 

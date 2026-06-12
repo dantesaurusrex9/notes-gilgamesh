@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">One topic, three partitions, two independent consumer groups</title>
+  <desc id="desc">Three horizontal arrays of cells represent partitions 0, 1, and 2 of one topic. Cells hold messages at offsets 0 through 6; the dashed amber cell at offset 7 is the next write position, the log end offset. Blue and purple arrows beneath each partition mark the next offset each consumer group will read. The two groups advance independently and at different speeds.</desc>
+  <defs>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <style>
+    .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body  { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .code  { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .ga    { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0ea5e9; }
+    .gb    { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8b5cf6; }
+    .cell  { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .leo   { fill: #fef3c7; stroke: #fcd34d; stroke-width: 2; stroke-dasharray: 6 4; }
+    .arrowA { stroke: #0ea5e9; stroke-width: 3; }
+    .arrowB { stroke: #8b5cf6; stroke-width: 3; }
+  </style>
+  <rect width="1200" height="700" fill="#ffffff"/>
+
+  <text x="40" y="54" class="title">One topic, three partitions, two consumer groups</text>
+  <line x1="40" y1="72" x2="1160" y2="72" stroke="#e5e7eb" stroke-width="2"/>
+
+  <path d="M44,104 L56,104 L50,92 z" fill="#0ea5e9"/>
+  <text x="64" y="104" class="small">group A — next offset to read</text>
+  <path d="M384,104 L396,104 L390,92 z" fill="#8b5cf6"/>
+  <text x="404" y="104" class="small">group B — next offset to read</text>
+  <rect x="724" y="90" width="16" height="16" class="leo"/>
+  <text x="748" y="104" class="small">next write position (log end offset)</text>
+
+  <!-- partition 0 : cells y=120..180 -->
+  <text x="40" y="158" class="body">partition 0</text>
+  <rect x="200" y="120" width="104" height="60" class="cell"/>
+  <text x="252" y="158" class="code" text-anchor="middle">m0</text>
+  <rect x="312" y="120" width="104" height="60" class="cell"/>
+  <text x="364" y="158" class="code" text-anchor="middle">m1</text>
+  <rect x="424" y="120" width="104" height="60" class="cell"/>
+  <text x="476" y="158" class="code" text-anchor="middle">m2</text>
+  <rect x="536" y="120" width="104" height="60" class="cell"/>
+  <text x="588" y="158" class="code" text-anchor="middle">m3</text>
+  <rect x="648" y="120" width="104" height="60" class="cell"/>
+  <text x="700" y="158" class="code" text-anchor="middle">m4</text>
+  <rect x="760" y="120" width="104" height="60" class="cell"/>
+  <text x="812" y="158" class="code" text-anchor="middle">m5</text>
+  <rect x="872" y="120" width="104" height="60" class="cell"/>
+  <text x="924" y="158" class="code" text-anchor="middle">m6</text>
+  <rect x="984" y="120" width="104" height="60" class="leo"/>
+  <text x="1036" y="158" class="small" text-anchor="middle">next</text>
+  <text x="252" y="202" class="small" text-anchor="middle">0</text>
+  <text x="364" y="202" class="small" text-anchor="middle">1</text>
+  <text x="476" y="202" class="small" text-anchor="middle">2</text>
+  <text x="588" y="202" class="small" text-anchor="middle">3</text>
+  <text x="700" y="202" class="small" text-anchor="middle">4</text>
+  <text x="812" y="202" class="small" text-anchor="middle">5</text>
+  <text x="924" y="202" class="small" text-anchor="middle">6</text>
+  <text x="1036" y="202" class="small" text-anchor="middle">7</text>
+  <line x1="812" y1="256" x2="812" y2="216" class="arrowA" marker-end="url(#arrA)"/>
+  <text x="812" y="282" class="ga" text-anchor="middle">group A next: 5</text>
+  <line x1="476" y1="256" x2="476" y2="216" class="arrowB" marker-end="url(#arrB)"/>
+  <text x="476" y="282" class="gb" text-anchor="middle">group B next: 2</text>
+
+  <!-- partition 1 : cells y=310..370 -->
+  <text x="40" y="348" class="body">partition 1</text>
+  <rect x="200" y="310" width="104" height="60" class="cell"/>
+  <text x="252" y="348" class="code" text-anchor="middle">m0</text>
+  <rect x="312" y="310" width="104" height="60" class="cell"/>
+  <text x="364" y="348" class="code" text-anchor="middle">m1</text>
+  <rect x="424" y="310" width="104" height="60" class="cell"/>
+  <text x="476" y="348" class="code" text-anchor="middle">m2</text>
+  <rect x="536" y="310" width="104" height="60" class="cell"/>
+  <text x="588" y="348" class="code" text-anchor="middle">m3</text>
+  <rect x="648" y="310" width="104" height="60" class="cell"/>
+  <text x="700" y="348" class="code" text-anchor="middle">m4</text>
+  <rect x="760" y="310" width="104" height="60" class="cell"/>
+  <text x="812" y="348" class="code" text-anchor="middle">m5</text>
+  <rect x="872" y="310" width="104" height="60" class="cell"/>
+  <text x="924" y="348" class="code" text-anchor="middle">m6</text>
+  <rect x="984" y="310" width="104" height="60" class="leo"/>
+  <text x="1036" y="348" class="small" text-anchor="middle">next</text>
+  <text x="252" y="392" class="small" text-anchor="middle">0</text>
+  <text x="364" y="392" class="small" text-anchor="middle">1</text>
+  <text x="476" y="392" class="small" text-anchor="middle">2</text>
+  <text x="588" y="392" class="small" text-anchor="middle">3</text>
+  <text x="700" y="392" class="small" text-anchor="middle">4</text>
+  <text x="812" y="392" class="small" text-anchor="middle">5</text>
+  <text x="924" y="392" class="small" text-anchor="middle">6</text>
+  <text x="1036" y="392" class="small" text-anchor="middle">7</text>
+  <line x1="924" y1="446" x2="924" y2="406" class="arrowA" marker-end="url(#arrA)"/>
+  <text x="924" y="472" class="ga" text-anchor="middle">group A next: 6</text>
+  <line x1="364" y1="446" x2="364" y2="406" class="arrowB" marker-end="url(#arrB)"/>
+  <text x="364" y="472" class="gb" text-anchor="middle">group B next: 1</text>
+
+  <!-- partition 2 : cells y=500..560 -->
+  <text x="40" y="538" class="body">partition 2</text>
+  <rect x="200" y="500" width="104" height="60" class="cell"/>
+  <text x="252" y="538" class="code" text-anchor="middle">m0</text>
+  <rect x="312" y="500" width="104" height="60" class="cell"/>
+  <text x="364" y="538" class="code" text-anchor="middle">m1</text>
+  <rect x="424" y="500" width="104" height="60" class="cell"/>
+  <text x="476" y="538" class="code" text-anchor="middle">m2</text>
+  <rect x="536" y="500" width="104" height="60" class="cell"/>
+  <text x="588" y="538" class="code" text-anchor="middle">m3</text>
+  <rect x="648" y="500" width="104" height="60" class="cell"/>
+  <text x="700" y="538" class="code" text-anchor="middle">m4</text>
+  <rect x="760" y="500" width="104" height="60" class="cell"/>
+  <text x="812" y="538" class="code" text-anchor="middle">m5</text>
+  <rect x="872" y="500" width="104" height="60" class="cell"/>
+  <text x="924" y="538" class="code" text-anchor="middle">m6</text>
+  <rect x="984" y="500" width="104" height="60" class="leo"/>
+  <text x="1036" y="538" class="small" text-anchor="middle">next</text>
+  <text x="252" y="582" class="small" text-anchor="middle">0</text>
+  <text x="364" y="582" class="small" text-anchor="middle">1</text>
+  <text x="476" y="582" class="small" text-anchor="middle">2</text>
+  <text x="588" y="582" class="small" text-anchor="middle">3</text>
+  <text x="700" y="582" class="small" text-anchor="middle">4</text>
+  <text x="812" y="582" class="small" text-anchor="middle">5</text>
+  <text x="924" y="582" class="small" text-anchor="middle">6</text>
+  <text x="1036" y="582" class="small" text-anchor="middle">7</text>
+  <line x1="700" y1="636" x2="700" y2="596" class="arrowA" marker-end="url(#arrA)"/>
+  <text x="700" y="662" class="ga" text-anchor="middle">group A next: 4</text>
+  <line x1="588" y1="636" x2="588" y2="596" class="arrowB" marker-end="url(#arrB)"/>
+  <text x="588" y="662" class="gb" text-anchor="middle">group B next: 3</text>
+</svg>

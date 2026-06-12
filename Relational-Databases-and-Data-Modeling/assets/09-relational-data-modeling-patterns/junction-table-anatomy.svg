@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Junction table anatomy</title>
+  <desc id="desc">A many-to-many enrollment junction table between students and courses, showing composite primary key columns and a relationship attribute.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .hdr { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+  </style>
+  <rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="40" y="58">Junction table anatomy: M:N with attributes</text>
+  <line x1="40" y1="78" x2="1160" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- student table -->
+  <rect x="60" y="140" width="260" height="60" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="hdr" x="190" y="178" text-anchor="middle">student</text>
+  <rect x="60" y="200" width="260" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="80" y="233">id PK</text>
+  <rect x="60" y="250" width="260" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="80" y="283">name</text>
+  <text class="s" x="60" y="330">one student</text>
+
+  <!-- course table -->
+  <rect x="880" y="140" width="260" height="60" fill="#dbeafe" stroke="#38bdf8" stroke-width="2"/>
+  <text class="hdr" x="1010" y="178" text-anchor="middle">course</text>
+  <rect x="880" y="200" width="260" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="900" y="233">id PK</text>
+  <rect x="880" y="250" width="260" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="900" y="283">title</text>
+  <text class="s" x="880" y="330">one course</text>
+
+  <!-- junction table -->
+  <rect x="440" y="140" width="320" height="60" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text class="hdr" x="600" y="178" text-anchor="middle">enrollment</text>
+  <rect x="440" y="200" width="320" height="50" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="c" x="460" y="233">student_id PK, FK</text>
+  <rect x="440" y="250" width="320" height="50" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text class="c" x="460" y="283">course_id  PK, FK</text>
+  <rect x="440" y="300" width="320" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="460" y="333">grade</text>
+  <rect x="440" y="350" width="320" height="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="c" x="460" y="383">enrolled_at</text>
+
+  <!-- arrows -->
+  <defs>
+    <marker id="arr" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 z" fill="#0ea5e9"/>
+    </marker>
+  </defs>
+  <line x1="440" y1="225" x2="330" y2="225" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+  <line x1="760" y1="275" x2="870" y2="275" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr)"/>
+  <text class="s" x="350" y="210">FK</text>
+  <text class="s" x="800" y="260">FK</text>
+
+  <!-- annotations -->
+  <text class="m" x="440" y="450">Composite PK (student_id, course_id) = "a student enrolls in a course at most once".</text>
+  <text class="m" x="440" y="485">Amber rows form the natural composite key; extra rows are relationship attributes</text>
+  <text class="m" x="440" y="520">that belong to the pair, not to either side.</text>
+  <text class="s" x="60" y="450">N students</text>
+  <text class="s" x="60" y="480">x</text>
+  <text class="s" x="60" y="510">M courses</text>
+</svg>

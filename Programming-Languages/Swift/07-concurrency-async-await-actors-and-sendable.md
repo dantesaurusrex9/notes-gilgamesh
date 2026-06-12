@@ -1,7 +1,7 @@
 ---
 title: "07 - Concurrency: Async, Await, Actors, and Sendable"
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-12
 tags: [swift, programming-languages, concurrency, actors]
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Swift concurrency is not just nicer callback syntax. It is a type-system-backed model for async work, structured tasks, actor isolation, and data-race safety. In Swift 6 language mode, many unsafe cross-concurrency patterns become compiler errors.
 
 ## Real-World Example
+
+![Visual diagram: Real-World Example](./assets/07-concurrency-async-await-actors-and-sendable/real-world-example.svg)
 
 This example uses an actor to protect mutable cache state while async functions perform network-like work. The cache can be called from concurrent tasks without exposing a mutable dictionary directly. Foundation provides `URL`, `Data`, and `URLSession`.
 
@@ -43,6 +45,8 @@ func fetchData(from url: URL, cache: ImageCache) async throws -> Data {
 ```
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/07-concurrency-async-await-actors-and-sendable/vocabulary.svg)
 
 **Async function**: A function marked `async` that can suspend while waiting for work.
 
@@ -76,11 +80,15 @@ func fetchData(from url: URL, cache: ImageCache) async throws -> Data {
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/07-concurrency-async-await-actors-and-sendable/intuition.svg)
+
 Concurrency has two different problems: waiting and sharing. `async`/`await` solves waiting. Actors and `Sendable` solve sharing. Many bugs happen when developers learn only the first half.
 
 Swift wants you to isolate mutation. Instead of sharing a mutable dictionary across queues and hoping every access is locked, put the dictionary behind an actor. Instead of passing non-thread-safe reference types into detached work, make the boundary explicit.
 
 ## Async and Await
+
+![Visual diagram: Async and Await](./assets/07-concurrency-async-await-actors-and-sendable/async-and-await.svg)
 
 An async function can suspend. Suspension is not the same as blocking a thread. The task pauses and the executor can run other work. This standalone sample imports Foundation for networking and URL handling.
 
@@ -97,6 +105,8 @@ func loadUserName(id: String) async throws -> String {
 Every `await` is a point where the world can change. Do not assume state before an `await` is still true after it unless your isolation model guarantees it.
 
 ## Task Groups
+
+![Visual diagram: Task Groups](./assets/07-concurrency-async-await-actors-and-sendable/task-groups.svg)
 
 Use task groups when you need concurrent child tasks with a clear parent scope. This keeps cancellation and error propagation understandable. The example imports Foundation for networking types.
 
@@ -123,6 +133,8 @@ func loadAll(_ urls: [URL]) async throws -> [Data] {
 
 ## Actors
 
+![Visual diagram: Actors](./assets/07-concurrency-async-await-actors-and-sendable/actors.svg)
+
 Actors protect their isolated state. Code outside the actor must `await` when calling isolated methods because the call may need to hop to the actor's executor.
 
 ```swift
@@ -142,6 +154,8 @@ print(value)
 
 ## Main Actor
 
+![Visual diagram: Main Actor](./assets/07-concurrency-async-await-actors-and-sendable/main-actor.svg)
+
 UI state belongs on the main actor. In SwiftUI and modern Apple frameworks, many UI-facing types are expected to be main-actor isolated.
 
 ```swift
@@ -157,6 +171,8 @@ final class ProfileViewModel: ObservableObject {
 
 ## Sendable
 
+![Visual diagram: Sendable](./assets/07-concurrency-async-await-actors-and-sendable/sendable.svg)
+
 `Sendable` tells the compiler a value can cross concurrency boundaries safely. Value types whose stored values are sendable often get this automatically. Mutable reference types usually need redesign, actor isolation, or explicit unsafe promises.
 
 ```swift
@@ -171,6 +187,8 @@ struct SearchRequest: Sendable {
 
 ## Swift 6 and Migration
 
+![Visual diagram: Swift 6 and Migration](./assets/07-concurrency-async-await-actors-and-sendable/swift-6-and-migration.svg)
+
 Swift 6 language mode turns full data-race safety checking into a core contract. Migrating older code often means adding actor annotations, replacing shared mutable state, tightening closure captures, and marking safe value types as `Sendable`.
 
 The practical migration order is:
@@ -183,6 +201,8 @@ The practical migration order is:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/07-concurrency-async-await-actors-and-sendable/pitfalls.svg)
+
 - **Using `Task.detached` casually**: Detached tasks do not inherit actor context the way structured child tasks do.
 - **Assuming `await` means background thread**: It means possible suspension, not a guaranteed thread hop.
 - **Mutating actor state across await points without thinking**: State can change between awaits.
@@ -190,6 +210,8 @@ The practical migration order is:
 - **Adding `@unchecked Sendable` to silence errors**: That removes compiler help at exactly the boundary where you need it.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/07-concurrency-async-await-actors-and-sendable/exercises.svg)
 
 1. Write an actor-backed counter and call it from ten child tasks.
 2. Convert a callback-based function into an async function.

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Three pillars of observability</title>
+  <desc id="desc">Three columns. Metrics answer whether something is wrong right now. Logs answer what happened in one specific request. Traces answer where the time went across services. The workflow is alert on metrics, find a slow trace, then read its logs by correlation id.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .h { font: 700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .q { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .body { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .small { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .code18 { font: 700 18px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+  </style>
+  <rect width="1200" height="600" fill="#ffffff"/>
+  <text class="t" x="40" y="56">Three pillars &#8212; the question each one answers</text>
+  <line x1="40" y1="80" x2="1160" y2="80" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Metrics column -->
+  <rect x="60" y="110" width="340" height="64" rx="10" fill="#dbeafe" stroke="#38bdf8" stroke-width="3"/>
+  <text class="h" x="230" y="152" text-anchor="middle">Metrics</text>
+  <rect x="60" y="186" width="340" height="300" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="q" x="80" y="224">Is something wrong</text>
+  <text class="q" x="80" y="252">right now? How big?</text>
+  <line x1="80" y1="272" x2="380" y2="272" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="small" x="80" y="304">Pre-aggregated time series</text>
+  <text class="small" x="80" y="334">RED: rate, errors, duration</text>
+  <text class="small" x="80" y="364">USE: util, saturation, errors</text>
+  <text class="small" x="80" y="394">Fixed cost, low cardinality</text>
+  <text class="small" x="80" y="424">Feeds alerts + SLO burn rate</text>
+
+  <!-- Logs column -->
+  <rect x="430" y="110" width="340" height="64" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="3"/>
+  <text class="h" x="600" y="152" text-anchor="middle">Logs</text>
+  <rect x="430" y="186" width="340" height="300" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="q" x="450" y="224">What happened in this</text>
+  <text class="q" x="450" y="252">one specific request?</text>
+  <line x1="450" y1="272" x2="750" y2="272" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="small" x="450" y="304">Structured JSON events</text>
+  <text class="code18" x="450" y="334">correlation_id joins lines</text>
+  <text class="small" x="450" y="364">High detail, high volume</text>
+  <text class="small" x="450" y="394">Searched after an alert fires</text>
+  <text class="small" x="450" y="424">Sampled or tiered to cut cost</text>
+
+  <!-- Traces column -->
+  <rect x="800" y="110" width="340" height="64" rx="10" fill="#fef3c7" stroke="#fcd34d" stroke-width="3"/>
+  <text class="h" x="970" y="152" text-anchor="middle">Traces</text>
+  <rect x="800" y="186" width="340" height="300" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="q" x="820" y="224">Where did the time go</text>
+  <text class="q" x="820" y="252">across services?</text>
+  <line x1="820" y1="272" x2="1120" y2="272" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="small" x="820" y="304">Tree of timed spans</text>
+  <text class="code18" x="820" y="334">trace_id + parent span_id</text>
+  <text class="small" x="820" y="364">Shows the slow hop instantly</text>
+  <text class="small" x="820" y="394">Head/tail sampling (1&#8211;10%)</text>
+  <text class="small" x="820" y="424">Built on context propagation</text>
+
+  <!-- workflow strip -->
+  <line x1="40" y1="516" x2="1160" y2="516" stroke="#e5e7eb" stroke-width="2"/>
+  <text class="body" x="600" y="556" text-anchor="middle">Debug loop: alert on metrics &#8594; find a slow trace &#8594; read its logs via correlation_id</text>
+</svg>

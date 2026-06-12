@@ -1,7 +1,7 @@
 ---
 title: "11 - Packaging, Tooling, Modern Workflows"
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-06-12
 tags: []
 aliases: []
 ---
@@ -13,6 +13,8 @@ aliases: []
 > **TL;DR:** Modern Python packaging is `pyproject.toml`-centric: one file declares build metadata, dependencies, tool configuration, and scripts. `uv` (Rust-based) has replaced `pip` + `venv` for day-to-day development — it is 10–100× faster. The canonical production stack is `uv` for package management, `ruff` for linting and formatting, `pyright` for type checking, `pytest` for testing, and `pre-commit` + GitHub Actions for CI enforcement.
 
 ## Vocabulary
+
+![Visual diagram: Vocabulary](./assets/11-packaging-tooling-modern-workflows/vocabulary.svg)
 
 **`pyproject.toml`**: The single PEP 517/518 configuration file for Python projects. Contains build backend declaration, project metadata, dependencies, and tool configuration (ruff, pyright, pytest, etc.).
 
@@ -64,11 +66,15 @@ aliases: []
 
 ## Intuition
 
+![Visual diagram: Intuition](./assets/11-packaging-tooling-modern-workflows/intuition.svg)
+
 Python's packaging history is famously chaotic — `setup.py`, `requirements.txt`, `setup.cfg`, `MANIFEST.in`, `tox.ini` all coexisted for a decade. `pyproject.toml` (PEP 518, 517) is the unification point: one file to describe what your package is, what it depends on, and how to build it. The tool ecosystem is now converging on this file as the single source of truth.
 
 `uv` changes the development-speed equation. Where `pip install numpy pandas scikit-learn` might take 30 seconds, `uv add numpy pandas scikit-learn` takes 2–3 seconds because `uv` downloads wheels in parallel, uses a global cache, and resolves dependencies in Rust.
 
 ## `pyproject.toml` Structure
+
+![Visual diagram: pyproject.toml Structure](./assets/11-packaging-tooling-modern-workflows/pyproject-toml-structure.svg)
 
 A complete `pyproject.toml` for a production-grade library:
 
@@ -121,6 +127,8 @@ addopts = "--tb=short -q"
 
 ## Package Management with `uv`
 
+![Visual diagram: Package Management with uv](./assets/11-packaging-tooling-modern-workflows/package-management-with-uv.svg)
+
 ### Daily Workflows
 
 ```bash
@@ -156,6 +164,8 @@ uv pip install -e ".[dev]"
 
 ## src Layout
 
+![Visual diagram: src Layout](./assets/11-packaging-tooling-modern-workflows/src-layout.svg)
+
 The `src` layout is the recommended project structure for libraries:
 
 ```
@@ -177,6 +187,8 @@ myproject/
 Without the `src` layout, Python can import your package directly from the project root even when it is not installed, masking missing `__init__.py` files and incorrect package boundaries. With `src`, the package is only importable after `pip install -e .`.
 
 ## Linting and Formatting with `ruff`
+
+![Visual diagram: Linting and Formatting with ruff](./assets/11-packaging-tooling-modern-workflows/linting-and-formatting-with-ruff.svg)
 
 `ruff` replaces `flake8`, `isort`, `pyupgrade`, and `black` in a single sub-millisecond tool.
 
@@ -211,6 +223,8 @@ ignore = ["E501"]  # line length handled by formatter
 ```
 
 ## Type Checking with `pyright`
+
+![Visual diagram: Type Checking with pyright](./assets/11-packaging-tooling-modern-workflows/type-checking-with-pyright.svg)
 
 `pyright` in `strict` mode catches: missing annotations, incompatible types, unreachable code, uninitialized variables, narrowing failures.
 
@@ -260,6 +274,8 @@ jobs:
 
 ## `pytest` and Test Structure
 
+![Visual diagram: pytest and Test Structure](./assets/11-packaging-tooling-modern-workflows/pytest-and-test-structure.svg)
+
 ```python
 # tests/conftest.py
 from typing import Generator
@@ -292,6 +308,8 @@ def test_process_parametrized(n: int, expected: int) -> None:
 
 ## `pre-commit` Hooks
 
+![Visual diagram: pre-commit Hooks](./assets/11-packaging-tooling-modern-workflows/pre-commit-hooks.svg)
+
 `pre-commit` runs checks automatically before every `git commit`, preventing bad code from reaching the repo.
 
 ```yaml
@@ -321,6 +339,8 @@ pre-commit run --all-files  # run on all files manually
 ```
 
 ## Real-world Example
+
+![Visual diagram: Real-world Example](./assets/11-packaging-tooling-modern-workflows/real-world-example.svg)
 
 A complete minimal project scaffold showing `pyproject.toml`, `src` layout, a typed module, and its test.
 
@@ -380,6 +400,8 @@ def test_double_parametric(n: int) -> None:
 
 ## In Practice
 
+![Visual diagram: In Practice](./assets/11-packaging-tooling-modern-workflows/in-practice.svg)
+
 **`uv` lockfile discipline.** Commit `uv.lock` to version control. This ensures every developer and CI run uses the exact same transitive dependency versions. Run `uv sync` after pulling to update your environment.
 
 **Pinning versions in `pyproject.toml`.** Use compatible-release constraints: `httpx>=0.27,<1.0` for libraries (avoid breaking changes); `httpx==0.27.3` only in application `pyproject.toml` where exact reproducibility matters more than flexibility.
@@ -391,6 +413,8 @@ def test_double_parametric(n: int) -> None:
 
 ## Pitfalls
 
+![Visual diagram: Pitfalls](./assets/11-packaging-tooling-modern-workflows/pitfalls.svg)
+
 - **"I'll manage dependencies with `requirements.txt`."** — `requirements.txt` has no dependency resolution — you must compute the transitive closure manually. Use `pyproject.toml` + `uv lock` for proper dependency management. `requirements.txt` is useful only for pinning for deployment.
 - **"Global pip install is fine for development."** — It pollutes the system Python and causes version conflicts between projects. Always use a virtual environment.
 - **"black and flake8 are the standard."** — As of 2024, `ruff` does both jobs 10–100× faster with zero configuration. New projects should use `ruff`.
@@ -398,6 +422,8 @@ def test_double_parametric(n: int) -> None:
 - **"Poetry's lock file is equivalent to uv.lock."** — Similar concept, different format. `poetry.lock` and `uv.lock` are not interchangeable. If you migrate from poetry to uv, regenerate the lock file.
 
 ## Exercises
+
+![Visual diagram: Exercises](./assets/11-packaging-tooling-modern-workflows/exercises.svg)
 
 ### Exercise 1 — `pyproject.toml` from scratch
 

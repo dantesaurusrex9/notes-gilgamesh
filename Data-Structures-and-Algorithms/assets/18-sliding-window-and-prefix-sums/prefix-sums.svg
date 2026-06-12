@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Prefix-sum array answering a range-sum query in constant time</title>
+  <desc id="desc">The array nums = 3, -1, 4, 1, -5, 9 on top and its prefix array P = 0, 3, 2, 6, 7, 2, 11 below, offset by half a cell so each P entry sits at an element boundary. A bracket marks the query sum of nums index 2 through 4, answered as P at 5 minus P at 2.</desc>
+  <style>
+    .t { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .b { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .m { font: 400 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .s { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
+    .c { font: 700 24px "SFMono-Regular", Consolas, monospace; fill: #d63384; }
+    .cellW { fill: #ffffff; stroke: #e5e7eb; stroke-width: 2; }
+    .cellG { fill: #dcfce7; stroke: #86efac; stroke-width: 2; }
+    .cellR { fill: #fee2e2; stroke: #fca5a5; stroke-width: 2; }
+    .cellB { fill: #dbeafe; stroke: #38bdf8; stroke-width: 2; }
+  </style>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text class="t" x="60" y="56">Prefix sums: any range sum in O(1)</text>
+  <line x1="60" y1="78" x2="1140" y2="78" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- legend -->
+  <rect class="cellG" x="950" y="96" width="22" height="22"/>
+  <text class="s" x="982" y="113">P[5] — kept</text>
+  <rect class="cellR" x="950" y="128" width="22" height="22"/>
+  <text class="s" x="982" y="145">P[2] — subtracted</text>
+
+  <!-- query bracket over nums[2..4] -->
+  <text class="c" x="625" y="124" text-anchor="middle">query: sum(nums[2:5])</text>
+  <path d="M460,156 L460,140 L790,140 L790,156" fill="none" stroke="#0ea5e9" stroke-width="3"/>
+
+  <!-- nums row -->
+  <text class="b" x="210" y="213" text-anchor="end">nums</text>
+  <rect class="cellW" x="240" y="170" width="110" height="70"/>
+  <rect class="cellW" x="350" y="170" width="110" height="70"/>
+  <rect class="cellB" x="460" y="170" width="110" height="70"/>
+  <rect class="cellB" x="570" y="170" width="110" height="70"/>
+  <rect class="cellB" x="680" y="170" width="110" height="70"/>
+  <rect class="cellW" x="790" y="170" width="110" height="70"/>
+  <text class="c" x="295" y="213" text-anchor="middle">3</text>
+  <text class="c" x="405" y="213" text-anchor="middle">-1</text>
+  <text class="c" x="515" y="213" text-anchor="middle">4</text>
+  <text class="c" x="625" y="213" text-anchor="middle">1</text>
+  <text class="c" x="735" y="213" text-anchor="middle">-5</text>
+  <text class="c" x="845" y="213" text-anchor="middle">9</text>
+  <text class="s" x="295" y="264" text-anchor="middle">0</text>
+  <text class="s" x="405" y="264" text-anchor="middle">1</text>
+  <text class="s" x="515" y="264" text-anchor="middle">2</text>
+  <text class="s" x="625" y="264" text-anchor="middle">3</text>
+  <text class="s" x="735" y="264" text-anchor="middle">4</text>
+  <text class="s" x="845" y="264" text-anchor="middle">5</text>
+
+  <!-- boundary guides from bracket ends down to the P cells -->
+  <line x1="460" y1="156" x2="460" y2="326" stroke="#6b7280" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="790" y1="156" x2="790" y2="326" stroke="#6b7280" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- P row, offset half a cell: P[i] sits at the boundary before nums[i] -->
+  <text class="b" x="160" y="373" text-anchor="end">P</text>
+  <rect class="cellW" x="185" y="330" width="110" height="70"/>
+  <rect class="cellW" x="295" y="330" width="110" height="70"/>
+  <rect class="cellR" x="405" y="330" width="110" height="70"/>
+  <rect class="cellW" x="515" y="330" width="110" height="70"/>
+  <rect class="cellW" x="625" y="330" width="110" height="70"/>
+  <rect class="cellG" x="735" y="330" width="110" height="70"/>
+  <rect class="cellW" x="845" y="330" width="110" height="70"/>
+  <text class="c" x="240" y="373" text-anchor="middle">0</text>
+  <text class="c" x="350" y="373" text-anchor="middle">3</text>
+  <text class="c" x="460" y="373" text-anchor="middle">2</text>
+  <text class="c" x="570" y="373" text-anchor="middle">6</text>
+  <text class="c" x="680" y="373" text-anchor="middle">7</text>
+  <text class="c" x="790" y="373" text-anchor="middle">2</text>
+  <text class="c" x="900" y="373" text-anchor="middle">11</text>
+  <text class="s" x="240" y="424" text-anchor="middle">P[0]</text>
+  <text class="s" x="350" y="424" text-anchor="middle">P[1]</text>
+  <text class="s" x="460" y="424" text-anchor="middle">P[2]</text>
+  <text class="s" x="570" y="424" text-anchor="middle">P[3]</text>
+  <text class="s" x="680" y="424" text-anchor="middle">P[4]</text>
+  <text class="s" x="790" y="424" text-anchor="middle">P[5]</text>
+  <text class="s" x="900" y="424" text-anchor="middle">P[6]</text>
+
+  <!-- formula -->
+  <text class="c" x="600" y="482" text-anchor="middle">sum(nums[2:5]) = P[5] - P[2] = 2 - 2 = 0</text>
+  <text class="m" x="600" y="522" text-anchor="middle">P has n + 1 entries: P[0] = 0, and P[i] sits at the boundary before nums[i]</text>
+</svg>
