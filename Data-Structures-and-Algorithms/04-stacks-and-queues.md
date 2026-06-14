@@ -1,7 +1,7 @@
 ---
 title: "Stacks and Queues"
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-12
 tags: [dsa, stacks, queues, monotonic-stack]
 aliases: []
 ---
@@ -74,9 +74,9 @@ The runtime's own stack of function frames. Every call pushes a frame; every ret
 
 ## Intuition
 
-Picture a stack of plates and a checkout line. With plates, you can only add or take from the top — whoever washed the last plate sees it used first. In a checkout line, the person who arrived first leaves first, and cutting in is forbidden. Neither picture says anything about *what the plates are stored in* — that is the whole point. Stack and queue are rules about *which element you're allowed to touch next*; arrays, linked lists, and block lists are just storage backends that implement the rule at different costs.
+Picture a stack of plates and a checkout line. With plates, you can only add or take from the top — whoever washed the last plate sees it used first. In a checkout line, the person who arrived first leaves first, and cutting in is forbidden. Neither picture says anything about *what the plates are stored in* — that is the whole poin**<u>t. Stack and queue are rules about *which element you're allowed to touch next*;</u>** arrays, linked lists, and block lists are just storage backends that implement the rule at different costs.
 
-The figure below shows the stack discipline concretely: push and pop only ever read or write the top slot, which is why both are O(1) — the cost never depends on how many plates are underneath.
+The figure below shows the stack discipline concretely: p**ush and pop only ever read or write the top slot, which is why both are O(1) — the cost never depends on how many plates are underneath.**
 
 ![Stack push and pop: three panels showing that only the top cell changes](./assets/04-stacks-and-queues/stack-push-pop.svg)
 
@@ -85,7 +85,7 @@ The figure below shows the stack discipline concretely: push and pop only ever r
 
 ## How it works
 
-This section walks each operation and algorithm in turn: list-as-stack, the call stack, the valid-parentheses pattern, the monotonic stack, why lists fail as queues, deques and ring buffers, and finally how the discipline choice produces BFS vs DFS.
+This section walks each operation and algorithm in turn: list-as-stack, the call stack, the valid-parentheses pattern, the monotonic stack, the queue refresher, deques and ring buffers, and finally how the discipline choice produces BFS vs DFS.
 
 ### Stack via Python list
 
@@ -105,7 +105,7 @@ The "amortized" qualifier on `append` exists because the array occasionally fill
 
 ### Recursion is a stack
 
-Every function call pushes a frame (locals, instruction pointer) onto the interpreter's call stack; every return pops it. So any recursive algorithm can be rewritten with an explicit stack — you manage the frames instead of the interpreter. This matters in Python because CPython caps recursion depth (default ~1000 via `sys.getrecursionlimit()`), while an explicit stack lives on the heap and is bounded only by memory.
+Every function call pushes a frame (locals, instruction pointer) onto the interpreter's call stack; every return pops it. **<u>So any recursive algorithm can be rewritten with an explicit stack</u>** — you manage the frames instead of the interpreter. This matters in Python because CPython caps recursion depth (default ~1000 via `sys.getrecursionlimit()`), while an explicit stack lives on the heap and is bounded only by memory.
 
 ```python
 def sum_recursive(values: list) -> int:
@@ -217,6 +217,31 @@ Final answer: `[4, 2, 4, -1, -1]`. Step 3 is where the magic happens — the fig
 > [!TIP]
 > Spot the pattern by the phrase "nearest greater/smaller to the left/right". Daily temperatures, stock span, largest rectangle in histogram, trapping rain water — all are this one trick with different bookkeeping. Note the equal-values case: `2` at index 2 does **not** pop `2` at index 0 because the comparison is strict.
 
+### Queue intro — FIFO line discipline
+
+A queue is the movie-ticket line rule in code: the first item to arrive is the first item served. New work enters at the back, also called the tail, and removal happens from the front, also called the head. This is the Core Patterns refresher version; if you are following a full foundation course, treat this as the quick review and use the deeper queue module for the long lesson.
+
+| Operation | Also called | End touched | Meaning |
+| :--- | :--- | :--- | :--- |
+| Insert | Push / enqueue | Back / tail | Put a new item at the end of the queue. |
+| Peek | Front | Front / head | Read the first item without removing it. |
+| Remove | Pop / dequeue | Front / head | Remove and return the first item. |
+
+A minimal Python queue uses `collections.deque` so front removal is O(1). The method names below line up with the abstract operations: `append` inserts at the back, `q[0]` peeks at the front, and `popleft` removes from the front.
+
+```python
+from collections import deque
+
+line: deque[str] = deque()
+line.append("first")          # insert / push / enqueue at the back
+line.append("second")
+line.append("third")
+
+assert line[0] == "first"     # peek at the front
+assert line.popleft() == "first"   # remove / pop / dequeue from the front
+assert list(line) == ["second", "third"]
+```
+
 ### Why a list is a bad queue
 
 A queue needs to remove from the *front*. On a list, `pop(0)` removes index 0 and then `memmove`s every remaining pointer one slot left to keep the array contiguous — O(n) per dequeue, O(n²) to drain a queue of n items. The benchmark below makes the asymmetry observable; at 20,000 elements the deque drains the same workload orders of magnitude faster.
@@ -244,6 +269,35 @@ assert deque_secs < list_secs   # typically 50-200x at this size
 
 > [!WARNING]
 > `list.pop(0)` and `list.insert(0, x)` both run in O(n) and look innocent in code review. Any loop containing them is quadratic. If both ends of a sequence get touched, reach for `collections.deque` before profiling tells you to.
+
+### Deque intro — both ends are live
+
+A deque, pronounced "deck", is a double-ended queue: it keeps an ordered sequence while allowing both the front and the back to accept inserts and removals. The bookshelf picture is useful: if both ends are reachable, you can add or take a book from either side without moving the middle books. A deque is the right interface when an algorithm needs queue behavior sometimes and stack-like end operations other times.
+
+| Operation | Python `deque` | End touched | Meaning |
+| :--- | :--- | :--- | :--- |
+| Insert front | `appendleft(x)` | Front | Put a new item at the beginning. |
+| Insert back | `append(x)` | Back | Put a new item at the end. |
+| Peek front | `d[0]` | Front | Read the first item without removing it. |
+| Peek back | `d[-1]` | Back | Read the last item without removing it. |
+| Remove front | `popleft()` | Front | Remove and return the first item. |
+| Remove back | `pop()` | Back | Remove and return the last item. |
+
+Here is the whole deque surface in a small trace. Watch that neither removal changes the middle order; only the chosen end moves.
+
+```python
+from collections import deque
+
+books: deque[str] = deque(["B", "C"])
+books.appendleft("A")         # insert front
+books.append("D")             # insert back
+
+assert books[0] == "A"        # peek front
+assert books[-1] == "D"       # peek back
+assert books.popleft() == "A" # remove front
+assert books.pop() == "D"     # remove back
+assert list(books) == ["B", "C"]
+```
 
 ### deque and the ring buffer mental model
 
@@ -503,6 +557,7 @@ Drills in dependency order; each adds exactly one idea to the previous.
 - Python wiki — Time Complexity of built-ins: https://wiki.python.org/moin/TimeComplexity
 - CPython source — `Modules/_collectionsmodule.c` (deque block design, `BLOCKLEN = 64`): https://github.com/python/cpython/blob/main/Modules/_collectionsmodule.c
 - Python docs — `queue` (thread-safe FIFO): https://docs.python.org/3/library/queue.html
+- Conversation with user on 2026-06-12 — Core Patterns queue and deque refresher text.
 
 ## Related
 
