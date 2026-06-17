@@ -1,0 +1,1 @@
+hello every time i type the companion does an animation :)
